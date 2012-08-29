@@ -4,6 +4,10 @@ import os
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 
+import json
+with open('/home/dotcloud/environment.json') as f:
+  env = json.load(f)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -15,12 +19,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'checkins',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'spadeace',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'happydb',
+        'USER': env['DOTCLOUD_DB_SQL_LOGIN'],
+        'PASSWORD': env['DOTCLOUD_DB_SQL_PASSWORD'],
+        'HOST': env['DOTCLOUD_DB_SQL_HOST'],
+        'PORT': int(env['DOTCLOUD_DB_SQL_PORT']),
     }
 }
 
