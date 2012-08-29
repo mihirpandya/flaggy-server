@@ -107,7 +107,7 @@ ROOT_URLCONF = 'flaggy.urls'
 WSGI_APPLICATION = 'flaggy.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'hellodjango/templates/'),
+    os.path.join(PROJECT_ROOT, 'flaggy/templates/'),
 )
 
 INSTALLED_APPS = (
