@@ -19,7 +19,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'checkins',
         'USER': env['DOTCLOUD_DB_SQL_LOGIN'],
         'PASSWORD': env['DOTCLOUD_DB_SQL_PASSWORD'],
