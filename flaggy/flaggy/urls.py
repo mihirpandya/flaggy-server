@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from checkins.views import hello_view
+from checkins.views import hello_view, userAdded
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -7,6 +7,7 @@ from checkins.views import hello_view
 
 urlpatterns = patterns('',
 	url(r'^$', view=hello_view, name='hello_page'),
+	url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),
     # url(r'^flaggy/', include('flaggy.foo.urls')),
