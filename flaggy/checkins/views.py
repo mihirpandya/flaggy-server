@@ -25,9 +25,13 @@ def addUser(request):
 		fb_id = request.GET.get('fb_id')
 		__addUser(f_n,l_n,fb_id) # Assuming giving less inputs automatically 
 								 # makes last inputs null
-								 
+
 		# handle request
 		return HttpResponseRedirect('/userAdded/')
+
+def userAdded():
+	t = loader.get_template('userAdded.html')
+	return HttpResponse(t.render())
 
 def checkIn(long, lat, user, comm):
 	d = datetime.datetime.now()
