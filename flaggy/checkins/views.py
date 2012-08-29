@@ -23,7 +23,7 @@ def addUser(request):
 		f_n = request.GET.get('fname')
 		l_n = request.GET.get('lname')
 		fb_id = request.GET.get('fb_id')
-		__addUser(f_n,l_n,fb_id, "") # Assuming giving less inputs automatically 
+		__addUser(f_n,l_n,fb_id, None) # Assuming giving less inputs automatically 
 								 # makes last inputs null
 
 		# handle request
