@@ -7,7 +7,7 @@ from checkins.views import hello_view, userAdded
 
 urlpatterns = patterns('',
 	url(r'^$', view=hello_view, name='hello_page'),
-	url(r'^userAdded/', view=userAdded, name='userAdded')
+	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),
     # url(r'^flaggy/', include('flaggy.foo.urls')),
