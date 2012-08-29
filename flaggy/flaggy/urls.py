@@ -6,7 +6,7 @@ from checkins.views import hello_view
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-	url(r'^$', hello_view, name='hello_page'),
+	url(r'^$', view=hello_view, name='hello_page'),
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),
     # url(r'^flaggy/', include('flaggy.foo.urls')),
