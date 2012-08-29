@@ -1,1 +1,1 @@
-python flaggy/manage.py syndb --noinput
+python flaggy/manage.py syncdb --noinput
