@@ -8,6 +8,7 @@ from checkins.views import hello_view, addUser
 urlpatterns = patterns('django.views.generic.simple',
     (r'^error/', 'direct_to_template', {'template': 'error.html'}),
     (r'^userAdded/', 'direct_to_template', {'template': 'userAdded.html'}),
+    (r'^userExists/', 'direct_to_template', {'template': 'userExists.html'}),
 	url(r'^$', view=hello_view, name='hello_page'),
 	url(r'^addUser/', view=addUser, name='addUser'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
