@@ -2,7 +2,7 @@ from checkins.models import User, CheckIn, Follow
 
 from django.template import Context, loader
 from datetime import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 def hello_view(request):
     """ Simple Hello World View """
