@@ -15,6 +15,7 @@ def hello_view(request):
 # CRUD
 
 def __addUser(f_n, l_n, fb, twitter):
+	if()
 	u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter)
 	u.save()
 
@@ -23,8 +24,9 @@ def addUser(request):
 		f_n = request.GET.get('fname')
 		l_n = request.GET.get('lname')
 		fb_id = request.GET.get('fb_id')
-		__addUser(f_n,l_n,fb_id, None) # Assuming giving less inputs automatically 
-								 # makes last inputs null
+		if(f_n != None and l_n != None and fb_id != None):
+			__addUser(f_n,l_n,fb_id, 0000) # Assuming giving less inputs automatically 
+					  					   # makes last inputs null
 
 		# handle request
 		return HttpResponseRedirect('/userAdded/')
