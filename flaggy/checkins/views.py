@@ -14,11 +14,11 @@ def hello_view(request):
 
 # CRUD
 
-def verifyExistence(obj, field, value):
+def verifyExistence(obj, value):
 	try:
-		obj.objects.get(field=value)
+		obj.objects.get(fb_id=value)
 		return True
-	except:
+	except DoesNotExist:
 		return False
 
 def __addUser(f_n, l_n, fb, twitter):
