@@ -30,7 +30,7 @@ def addUser(request):
 		# handle request
 		return HttpResponseRedirect('/userAdded/')
 
-def userAdded():
+def userAdded(request):
 	t = loader.get_template('userAdded.html')
 	return HttpResponse(t.render())
 
