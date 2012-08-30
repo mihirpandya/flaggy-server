@@ -18,7 +18,7 @@ def verifyExistence(obj, field, value):
 	try:
 		obj.objects.get(field=value)
 		return True
-	except DoesNotExist:
+	except:
 		return False
 
 def __addUser(f_n, l_n, fb, twitter):
