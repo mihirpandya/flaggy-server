@@ -15,7 +15,6 @@ def hello_view(request):
 # CRUD
 
 def __addUser(f_n, l_n, fb, twitter):
-	if()
 	u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter)
 	u.save()
 
