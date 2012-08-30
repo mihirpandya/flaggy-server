@@ -19,15 +19,12 @@ def __addUser(f_n, l_n, fb, twitter):
 	u.save()
 	return None
 
-def empty(s):
-	return (s == None or s == "")
-
 def addUser(request):
 	if request.method == 'GET':
 		f_n = request.GET.get('fname')
 		l_n = request.GET.get('lname')
 		fb_id = request.GET.get('fb_id')
-		if(!empty(f_n) and !empty(l_n) and !empty(fb_id)):
+		if(f_n != None and l_n != None and fb_id != None):
 			__addUser(f_n,l_n,fb_id, 0000)
 			return HttpResponseRedirect('/userAdded/')
 		else:
