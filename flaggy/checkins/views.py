@@ -17,6 +17,7 @@ def hello_view(request):
 def __addUser(f_n, l_n, fb, twitter):
 	u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter)
 	u.save()
+	return None
 
 def addUser(request):
 	if request.method == 'GET':
@@ -24,15 +25,12 @@ def addUser(request):
 		l_n = request.GET.get('lname')
 		fb_id = request.GET.get('fb_id')
 		if(f_n != None and l_n != None and fb_id != None):
-			__addUser(f_n,l_n,fb_id, 0000) # Assuming giving less inputs automatically 
-					  					   # makes last inputs null
+			__addUser(f_n,l_n,fb_id, 0000)
+			return HttpResponseRedirect('/userAdded/')
+		else:
+			return HttpResponseRedirect('/error/')
 
 		# handle request
-		return HttpResponseRedirect('/userAdded/')
-
-def userAdded(request):
-	t = loader.get_template('userAdded.html')
-	return HttpResponse(t.render())
 
 def checkIn(long, lat, user, comm):
 	d = datetime.datetime.now()
