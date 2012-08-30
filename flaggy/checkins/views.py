@@ -33,8 +33,7 @@ def addUser(request):
 		l_n = request.GET.get('lname')
 		fb_id = request.GET.get('fb_id')
 
-		if(f_n != None and l_n != None and fb_id != None 
-			and !verifyExistence(User, "fb_id", fb_id)):
+		if(f_n != None and l_n != None and fb_id != None and !verifyExistence(User, "fb_id", fb_id)):
 			__addUser(f_n,l_n,fb_id, 0000)
 			return HttpResponseRedirect('/userAdded/')
 		else:
