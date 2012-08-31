@@ -1,5 +1,7 @@
 from checkins.models import User, CheckIn, Follow
 from checkins.controllers import __addUser, __addFollow, __followers, verifyUser
+from django.utils import simplejson
+from django.core import serializers
 
 from django.template import Context, loader
 from datetime import datetime
@@ -28,9 +30,9 @@ def addUser(request):
 
 		if(not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id)) and not(verifyUser(User, fb_id))):
 			res = __addUser(f_n,l_n,fb_id, 0000, email)
-			return HttpResponseRedirect(res)
+			return HttpResponse("User created", mimetype='application/json')
 		else:
-			return HttpResponseRedirect('/error/')
+			return HttpResponse("Error. User could not be created", mimetype='application/json')
 
 	else: return HttpResponseRedirect('/notGETmethod/')
 		# handle request
