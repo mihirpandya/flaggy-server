@@ -6,6 +6,8 @@ class User(models.Model):
 	lname = models.CharField(max_length=30)
 	fb_id = models.IntegerField()
 	twitter_id = models.IntegerField()
+	email = models.EmailField(max_length=100)
+	date_joined - mails.DateField()
 
 class CheckIn(models.Model):
 	c_id = models.AutoField(primary_key=True)
