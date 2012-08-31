@@ -32,7 +32,7 @@ def addUser(request):
 		else:
 			return HttpResponseRedirect('/error/')
 
-	else return HttpResponseRedirect('/notGETmethod/')
+	else: return HttpResponseRedirect('/notGETmethod/')
 		# handle request
 
 #def addFollow(request):
