@@ -34,10 +34,10 @@ def __addFollow(follower, followed):
 
 def __followers(u_id):
 	try:
-		f_ers = Follow.objects.filter(follower=u_id)
+		foll_list = Follow.objects.filter(follower=u_id)
 		
 		for i in f_ers:
-			f_ers[i] = f_ers[i].following
+			foll_list[i] = f_ers[i].following
 
 		return f_ers
 
