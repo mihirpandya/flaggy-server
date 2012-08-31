@@ -19,3 +19,11 @@ def __addUser(f_n, l_n, fb, twitter, email):
 		return "/userAdded/"
 	except:
 		return "/error/"
+
+def __addFollow(follower, followed):
+	try:
+		f = Follow(follower=follower, following=followed)
+		f.save()
+		return "/followAdded/"
+	except:
+		return "/error/"

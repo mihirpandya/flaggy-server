@@ -35,14 +35,17 @@ def addUser(request):
 	else: return HttpResponseRedirect('/notGETmethod/')
 		# handle request
 
-#def addFollow(request):
-#	if request.method == 'GET':
-#		follower = request.GET.get('f_er')
-#		followed = request.GET.get('f_ed')
-#
-#		if(not(empty_str(follower)) and not(empty_str(followed))):
-#			__addFollow(follower, followed)
-#			return HttpResponseRedirect('/followAdded/')
+def addFollow(request):
+	if request.method == 'GET':
+		follower = request.GET.get('f_er')
+		followed = request.GET.get('f_ed')
+
+		if(not(empty_str(follower)) and not(empty_str(followed))):
+			res = __addFollow(follower, followed)
+			return HttpResponseRedirect(res)
+		else: return HttpResponseRedirect('/error/')
+
+	else: return HttpResponseRedirect('/notGETmethod/')
 
 
 def checkIn(long, lat, user, comm):
