@@ -56,7 +56,9 @@ def followers(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
 		res = __followers(u_id)
-		data = serializers.serialize('json', res)
+		## need to get the data as dictionary(or object if you wanna call it)
+		## and then serialize it and render it that way
+		data = serializers.serialize('json', followers)
 		return HttpResponse(data, mimetype='application/json')
 	else: return HttpResponseRedirect('/notGETmethod/')
 
