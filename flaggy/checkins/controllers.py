@@ -18,7 +18,7 @@ def __addUser(f_n, l_n, fb, twitter, email):
 		u.save()
 		return "/userAdded/"
 	except:
-		return "/error/"
+		return "/dam/"
 
 def __addFollow(follower, followed):
 	try:
