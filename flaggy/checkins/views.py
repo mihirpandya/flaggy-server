@@ -32,6 +32,7 @@ def addUser(request):
 			res = __addUser(f_n,l_n,fb_id, 0000, email)
 			return HttpResponse("User created", mimetype='application/json')
 		else:
+			## We should return friends if the user already exists ##
 			return HttpResponse("Error. User could not be created", mimetype='application/json')
 
 	else: return HttpResponseRedirect('/notGETmethod/')
@@ -46,7 +47,8 @@ def addFollow(request):
 		if(follower != None and followed != None):
 			res = __addFollow(follower, followed)
 			return HttpResponseRedirect(res)
-		else: return HttpResponseRedirect('/error/')
+		else: 
+			return HttpResponseRedirect('/error/')
 
 	else: return HttpResponseRedirect('/notGETmethod/')
 
@@ -54,7 +56,8 @@ def followers(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
 		res = __followers(u_id)
-		
+		data = serializers.serialize('json', res)
+		return HttpResponse(data, mimetype='application/json')
 	else: return HttpResponseRedirect('/notGETmethod/')
 
 
