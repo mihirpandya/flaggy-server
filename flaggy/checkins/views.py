@@ -1,5 +1,5 @@
 from checkins.models import User, CheckIn, Follow
-from checkins.controllers import __addUser
+from checkins.controllers import __addUser, verifyUser
 
 from django.template import Context, loader
 from datetime import datetime
