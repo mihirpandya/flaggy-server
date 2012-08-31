@@ -40,7 +40,8 @@ def addFollow(request):
 		follower = request.GET.get('f_er')
 		followed = request.GET.get('f_ed')
 
-		if(not(empty_str(follower)) and not(empty_str(followed))):
+#		if(not(empty_str(follower)) and not(empty_str(followed))):
+		if(follower != None and followed != None):
 			res = __addFollow(follower, followed)
 			return HttpResponseRedirect(res)
 		else: return HttpResponseRedirect('/error/')
