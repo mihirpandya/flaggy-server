@@ -7,7 +7,7 @@ class User(models.Model):
 	fb_id = models.IntegerField()
 	twitter_id = models.IntegerField()
 	email = models.EmailField(max_length=100)
-	date_joined = mails.DateField()
+	date_joined = models.DateField()
 
 class CheckIn(models.Model):
 	c_id = models.AutoField(primary_key=True)
