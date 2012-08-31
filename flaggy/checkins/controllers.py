@@ -22,7 +22,9 @@ def __addUser(f_n, l_n, fb, twitter, email):
 
 def __addFollow(follower, followed):
 	try:
-		f = Follow(follower=follower, following=followed)
+		f_er = User.objects.get(pk=follower)
+		f_ed = User.objects.get(pk=followed)
+		f = Follow(follower=f_er, following=f_ed)
 		f.save()
 		return "/followAdded/"
 	except:
