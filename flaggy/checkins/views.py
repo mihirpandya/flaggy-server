@@ -23,8 +23,9 @@ def verifyUser(obj, value):
 	except obj.DoesNotExist:
 		return False
 
-def __addUser(f_n, l_n, fb, twitter):
-	u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter)
+def __addUser(f_n, l_n, fb, twitter, email):
+	d = str(datetime.date(datetime.now()))
+	u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter, email=email,date=d)
 	u.save()
 	return None
 
@@ -34,9 +35,10 @@ def addUser(request):
 		f_n = request.GET.get('fname')
 		l_n = request.GET.get('lname')
 		fb_id = request.GET.get('fb_id')
+		email = request.GET.get('email')
 
 		if(f_n != None and l_n != None and fb_id != None and not(verifyUser(User, fb_id))):
-			__addUser(f_n,l_n,fb_id, 0000)
+			__addUser(f_n,l_n,fb_id, 0000, email)
 			return HttpResponseRedirect('/userAdded/')
 		else:
 			return HttpResponseRedirect('/error/')
