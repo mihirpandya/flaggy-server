@@ -13,3 +13,5 @@ password - spadeace
   /userAdded
   <br />
   /error
+  <br />
+  /addFollow?f_er=1&f_ed=2

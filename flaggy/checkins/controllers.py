@@ -27,5 +27,7 @@ def __addFollow(follower, followed):
 		f = Follow(follower=f_er, following=f_ed)
 		f.save()
 		return "/followAdded/"
+	except User.DoesNotExist:
+		return "/userNotFound/"
 	except:
 		return "/dam/"
