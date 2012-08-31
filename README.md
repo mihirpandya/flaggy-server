@@ -15,3 +15,5 @@ password - spadeace
   /error
   <br />
   /addFollow?f_er=1&f_ed=2
+  <br />
+  /followers?u_id=1

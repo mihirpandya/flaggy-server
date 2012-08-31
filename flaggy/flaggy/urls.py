@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from checkins.views import hello_view, addUser, addFollow
+from checkins.views import hello_view, addUser, addFollow, followers
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -12,6 +12,7 @@ urlpatterns = patterns('django.views.generic.simple',
 	url(r'^$', view=hello_view, name='hello_page'),
 	url(r'^addUser/', view=addUser, name='addUser'),
     url(r'^addFollow/', view=addFollow, name='addFollow'),
+    url(r'^followers/', view=followers, name='followers'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),

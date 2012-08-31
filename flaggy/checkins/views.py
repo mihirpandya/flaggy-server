@@ -1,5 +1,5 @@
 from checkins.models import User, CheckIn, Follow
-from checkins.controllers import __addUser, __addFollow, verifyUser
+from checkins.controllers import __addUser, __addFollow, __followers, verifyUser
 
 from django.template import Context, loader
 from datetime import datetime
@@ -46,6 +46,13 @@ def addFollow(request):
 			return HttpResponseRedirect(res)
 		else: return HttpResponseRedirect('/error/')
 
+	else: return HttpResponseRedirect('/notGETmethod/')
+
+def followers(request):
+	if request.method == 'GET':
+		u_id = request.GET.get('u_id')
+		res = __followers(u_id)
+		
 	else: return HttpResponseRedirect('/notGETmethod/')
 
 

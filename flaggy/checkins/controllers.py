@@ -30,4 +30,18 @@ def __addFollow(follower, followed):
 	except User.DoesNotExist:
 		return "/userNotFound/"
 	except:
-		return "/dam/"
+		return "/error/"
+
+def __followers(u_id):
+	try:
+		f_ers = Follow.objects.filter(follower=u_id)
+		
+		for i in f_ers:
+			f_ers[i] = f_ers[i].following
+
+		return f_ers
+
+	except User.DoesNotExist:
+		return "/userNotFound/"
+	except:
+		return "/error/"
