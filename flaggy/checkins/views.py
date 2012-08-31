@@ -13,6 +13,9 @@ def hello_view(request):
     })
     return HttpResponse(t.render(c))
 
+def empty_str(s):
+	return (s == None or s == "")
+
 # CRUD
 
 def addUser(request):
@@ -23,12 +26,24 @@ def addUser(request):
 		fb_id = request.GET.get('fb_id')
 		email = request.GET.get('email')
 
-		if(f_n != None and l_n != None and fb_id != None and not(verifyUser(User, fb_id))):
-			__addUser(f_n,l_n,fb_id, 0000, email)
-			return HttpResponseRedirect('/userAdded/')
+		if(not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id)) and not(verifyUser(User, fb_id))):
+			res = __addUser(f_n,l_n,fb_id, 0000, email)
+			return HttpResponseRedirect(res)
 		else:
 			return HttpResponseRedirect('/error/')
+
+	else return HttpResponseRedirect('/notGETmethod/')
 		# handle request
+
+#def addFollow(request):
+#	if request.method == 'GET':
+#		follower = request.GET.get('f_er')
+#		followed = request.GET.get('f_ed')
+#
+#		if(not(empty_str(follower)) and not(empty_str(followed))):
+#			__addFollow(follower, followed)
+#			return HttpResponseRedirect('/followAdded/')
+
 
 def checkIn(long, lat, user, comm):
 	d = datetime.datetime.now()
