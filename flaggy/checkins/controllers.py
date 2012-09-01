@@ -11,7 +11,7 @@ def verifyUser(obj, value):
 	except obj.DoesNotExist:
 		return False
 
-def __addUser(f_n, l_n, fb, twitter, email):
+def __add_user(f_n, l_n, fb, twitter, email):
 	d = str(datetime.date(datetime.now()))
 	try:
 		u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter, email=email)
@@ -20,7 +20,7 @@ def __addUser(f_n, l_n, fb, twitter, email):
 	except:
 		return "/error/"
 
-def __addFollow(follower, followed):
+def __add_follow(follower, followed):
 	try:
 		f_er = User.objects.get(pk=follower)
 		f_ed = User.objects.get(pk=followed)
@@ -46,7 +46,7 @@ def __followers(u_id):
 	except:
 		return "error in __followers"
 
-def __checkIn(long, lat, u_id, comm):
+def __check_in(long, lat, u_id, comm):
 	d = datetime.now()
 	user = User.objects.get(pk=u_id)
 	ci = CheckIn(longitude = long,

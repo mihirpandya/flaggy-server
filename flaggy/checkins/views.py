@@ -15,12 +15,7 @@ def hello_view(request):
     })
     return HttpResponse(t.render(c))
 
-def empty_str(s):
-	return (s == None or s == "")
-
-# CRUD
-
-def addUser(request):
+def add_user(request):
 	if request.method == 'GET':
 		
 		f_n = request.GET.get('fname')
@@ -38,15 +33,15 @@ def addUser(request):
 	else: return HttpResponseRedirect('/notGETmethod/')
 		# handle request
 
-def addFollow(request):
+def add_follow(request):
 	if request.method == 'GET':
 		follower = request.GET.get('f_er')
 		followed = request.GET.get('f_ed')
 
 #		if(not(empty_str(follower)) and not(empty_str(followed))):
 		if(follower != None and followed != None):
-			res = __addFollow(follower, followed)
-			return HttpResponseRedirect(res)
+			res = __add_follow(follower, followed)
+			return HttpResponse(simplejson.dumps(res), mimetype='application/json')
 		else: 
 			return HttpResponseRedirect('/error/')
 
@@ -74,7 +69,7 @@ def checkin(request):
 		lat = request.GET.get('lat')
 		long = request.GET.get('long')
 		comm = request.GET.get('comm')
-		__checkIn(long, lat, u_id, comm)
+		__check_in(long, lat, u_id, comm)
 		return HttpResponse("Check-ed In", mimetype='application/json')
 	else: 
 		return HttpResponseRedirect('/notGETmethod/')
