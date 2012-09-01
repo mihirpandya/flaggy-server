@@ -34,14 +34,14 @@ def __addFollow(follower, followed):
 
 def __followers(u_id):
 	try:
-		foll_list = Follow.objects.filter(follower=u_id)
+		foll_list = Follow.objects.filter(following=u_id)
 		
-		for i in f_ers:
-			foll_list[i] = f_ers[i].following
+		##for i in f_ers:
+		##	foll_list[i] = f_ers[i].following
 
-		return f_ers
+		return foll_list
 
 	except User.DoesNotExist:
-		return "/userNotFound/"
+		return "userNotFound"
 	except:
-		return "/error/"
+		return "error in __followers"
