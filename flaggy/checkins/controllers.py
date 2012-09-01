@@ -46,12 +46,11 @@ def __followers(u_id):
 	except:
 		return "error in __followers"
 
-def __checkIn(long, lat, user, comm):
+def __checkIn(long, lat, u_id, comm):
 	d = datetime.datetime.now()
-	uid = user.u_id
 	ci = CheckIn(longitude = long,
 				 latitude = lat,
-				 u_id = user,
+				 u_id = u_id,
 				 when = d,
 				 comment = comm)
 	

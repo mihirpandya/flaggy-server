@@ -61,7 +61,10 @@ def followers(request):
 		##followers = {'a': 1, 'b': 2, 'c': 3}
 		##data = serializers.serialize('json', followers)
 		## this works --> simplejson.dumps(followers)
-		return HttpResponse(len(res), mimetype='application/json')
+		if((len(res)):
+			return HttpResponse(simplejson.dumps(res), mimetype='application/json')
+		else:
+			return HttpResponse("No followers", mimetype='application/json')
 	else: 
 		return HttpResponseRedirect('/notGETmethod/')
 
@@ -71,7 +74,7 @@ def checkin(request):
 		lat = request.GET.get('lat')
 		long = request.GET.get('long')
 		comm = request.GET.get('comm')
-		__checkIn(long, lat, user, comm)
+		__checkIn(long, lat, u_id, comm)
 		return HttpResponse("Check-ed In", mimetype='application/json')
 	else: 
 		return HttpResponseRedirect('/notGETmethod/')
