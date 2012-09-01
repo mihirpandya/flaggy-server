@@ -48,11 +48,13 @@ def __followers(u_id):
 
 def __checkIn(long, lat, u_id, comm):
 	d = datetime.now()
-	user = User.objects.get(uid = u_id)
+	user = User.objects.get(u_id)
 	ci = CheckIn(longitude = long,
 				 latitude = lat,
 				 u_id = user,
 				 when = d,
 				 comment = comm)
 	ci.save()
+
 	return "ok"
+
