@@ -63,7 +63,7 @@ def followers(request):
 	else: 
 		return HttpResponseRedirect('/notGETmethod/')
 
-def checkin(request):
+def check_in(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
 		lat = request.GET.get('lat')
