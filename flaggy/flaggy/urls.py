@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from checkins.views import hello_view, addUser, addFollow, followers
+from checkins.views import hello_view, addUser, addFollow, followers, checkin
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
