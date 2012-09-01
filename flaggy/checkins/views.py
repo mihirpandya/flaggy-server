@@ -60,7 +60,7 @@ def followers(request):
 		## and then serialize it and render it that way
 		followers = {'a': 1, 'b': 2, 'c': 3}
 		##data = serializers.serialize('json', followers)
-		return HttpResponse(simplejson.dump(followers), mimetype='application/json')
+		return HttpResponse(simplejson.dumps(followers), mimetype='application/json')
 	else: 
 		return HttpResponseRedirect('/notGETmethod/')
 
