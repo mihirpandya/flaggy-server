@@ -2,7 +2,7 @@ from checkins.models import User, CheckIn, Follow
 from datetime import datetime
 
 
-def verifyUser(obj, value):
+def verify_user(obj, value):
 	try:
 		obj.objects.get(fb_id=value)
 		return True
