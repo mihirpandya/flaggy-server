@@ -13,6 +13,7 @@ urlpatterns = patterns('django.views.generic.simple',
 	url(r'^addUser/', view=addUser, name='addUser'),
     url(r'^addFollow/', view=addFollow, name='addFollow'),
     url(r'^followers/', view=followers, name='followers'),
+    url(r'^checkin/', view=checkin, name='checkin')
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),

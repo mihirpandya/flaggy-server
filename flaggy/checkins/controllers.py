@@ -45,3 +45,14 @@ def __followers(u_id):
 		return "userNotFound"
 	except:
 		return "error in __followers"
+
+def __checkIn(long, lat, user, comm):
+	d = datetime.datetime.now()
+	uid = user.u_id
+	ci = CheckIn(longitude = long,
+				 latitude = lat,
+				 u_id = user,
+				 when = d,
+				 comment = comm)
+	
+	ci.save()

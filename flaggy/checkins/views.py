@@ -60,22 +60,17 @@ def followers(request):
 		## and then serialize it and render it that way
 		##followers = {'a': 1, 'b': 2, 'c': 3}
 		##data = serializers.serialize('json', followers)
-		return HttpResponse(simplejson.dumps(res), mimetype='application/json')
+		## this works --> simplejson.dumps(followers)
+		return HttpResponse(len(res), mimetype='application/json')
 	else: 
 		return HttpResponseRedirect('/notGETmethod/')
 
-
-def checkIn(long, lat, user, comm):
-	d = datetime.datetime.now()
-	uid = user.u_id
-
-	ci = CheckIn(longitude = long,
-				 latitude = lat,
-				 u_id = user,
-				 when = d,
-				 comment = comm)
-	
-	ci.save()
-
-
-# Create your views here.
+def checkin(request):
+	if request.method == 'GET':
+		u_id = request.GET.get('u_id')
+		lat = request.GET.get('lat')
+		long = request.GET.get('long')
+		comm = request.GET.get('comm')
+		__checkIn(long, lat, user, comm)
+	else: 
+		return HttpResponseRedirect('/notGETmethod/')
