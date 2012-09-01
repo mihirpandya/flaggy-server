@@ -47,7 +47,7 @@ def __followers(u_id):
 		return "error in __followers"
 
 def __checkIn(long, lat, u_id, comm):
-	d = datetime.datetime.now()
+	d = datetime.now()
 	ci = CheckIn(longitude = long,
 				 latitude = lat,
 				 u_id = u_id,
