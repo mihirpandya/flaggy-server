@@ -72,5 +72,6 @@ def checkin(request):
 		long = request.GET.get('long')
 		comm = request.GET.get('comm')
 		__checkIn(long, lat, user, comm)
+		return HttpResponse("Check-ed In", mimetype='application/json')
 	else: 
 		return HttpResponseRedirect('/notGETmethod/')
