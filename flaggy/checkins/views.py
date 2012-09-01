@@ -75,3 +75,4 @@ def checkin(request):
 		return HttpResponse("Check-ed In", mimetype='application/json')
 	else: 
 		return HttpResponseRedirect('/notGETmethod/')
+
