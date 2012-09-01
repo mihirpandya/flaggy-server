@@ -61,7 +61,7 @@ def followers(request):
 		##followers = {'a': 1, 'b': 2, 'c': 3}
 		##data = serializers.serialize('json', followers)
 		## this works --> simplejson.dumps(followers)
-		if((len(res)):
+		if (len(res):
 			return HttpResponse(simplejson.dumps(res), mimetype='application/json')
 		else:
 			return HttpResponse("No followers", mimetype='application/json')
