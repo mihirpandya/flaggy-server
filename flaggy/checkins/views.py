@@ -1,5 +1,5 @@
 from checkins.models import User, CheckIn, Follow
-from checkins.controllers import __add_user, __add_follow, __followers, __check_in, verifyUser
+from checkins.controllers import __add_user, __add_follow, __followers, __check_in, verify_user
 from django.utils import simplejson
 from django.core import serializers
 
