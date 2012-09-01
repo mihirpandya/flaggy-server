@@ -58,7 +58,7 @@ def followers(request):
 		res = __followers(u_id)
 		## need to get the data as dictionary(or object if you wanna call it)
 		## and then serialize it and render it that way
-		##followers = {'a': 1, 'b': 2, 'c': 3}
+		followers = {'a': 1, 'b': 2, 'c': 3}
 		##data = serializers.serialize('json', followers)
 		return HttpResponse(simplejson.dump(followers), mimetype='application/json')
 	else: 
