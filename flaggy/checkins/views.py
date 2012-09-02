@@ -1,6 +1,7 @@
 from checkins.models import User, CheckIn, Follow
 from checkins.controllers import __add_user, __add_follow, __followers, __check_in, verify_user
 from django.utils import simplejson
+from json import loads, dumps
 from django.core import serializers
 
 from django.template import Context, loader
@@ -57,11 +58,11 @@ def followers(request):
 		res = __followers(u_id)
 
 		if len(res):
-			return HttpResponse(simplejson.dumps(res), mimetype='application/json')
+			return HttpResponse(dumps(res), mimetype='application/json')
 		else:
 			return HttpResponse("No followers", mimetype='application/json')
 	else: 
-		return HttpResponseRedirect('/notGETmethod/')
+		return HttpResponseRedirect("No request received.", mimetype='application/json')
 
 def check_in(request):
 	if request.method == 'GET':
@@ -70,7 +71,7 @@ def check_in(request):
 		long = request.GET.get('long')
 		comm = request.GET.get('comm')
 		__check_in(long, lat, u_id, comm)
-		return HttpResponse("Check-ed In", mimetype='application/json')
+		return HttpResponse("Checked In", mimetype='application/json')
 	else: 
-		return HttpResponseRedirect('/notGETmethod/')
+		return HttpResponseRedirect("No request received.", mimetype='application/json')
 
