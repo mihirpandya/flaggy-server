@@ -27,7 +27,8 @@ def add_user(request):
 		email = request.GET.get('email')
 
 		if(verify_user(User, fb_id)):
-			return HttpResponse("User with FB Id "+fb_id+" already exists.", mimetype='application/json')
+			u = User.objects.get(fb_id=fb_id)
+			return HttpResponse("{u_id:"+u.i_id+"}", mimetype='application/json')
 
 		else:
 			if(not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
