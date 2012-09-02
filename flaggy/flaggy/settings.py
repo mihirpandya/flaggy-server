@@ -1,12 +1,12 @@
 # Django settings for flaggy project.
 
-import os
+import os, pwd
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 
 import json
 
-if os.getlogin() == 'dotcloud':
+if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   envfile = '/home/dotcloud/environment.json'
 else:
   envfile = 'flaggy/environment.json'
