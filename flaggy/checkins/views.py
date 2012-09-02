@@ -64,7 +64,7 @@ def followers(request):
 	else: 
 		return HttpResponseRedirect("No request received.", mimetype='application/json')
 
-def followers(request):
+def following(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
 		res = __following(u_id)
