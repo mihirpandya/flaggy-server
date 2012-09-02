@@ -57,7 +57,7 @@ def followers(request):
 		res = __followers(u_id)
 
 		if len(res):
-			return HttpResponse(simplejson.loads(res), mimetype='application/json')
+			return HttpResponse(simplejson.dumps(res), mimetype='application/json')
 		else:
 			return HttpResponse("No followers", mimetype='application/json')
 	else: 

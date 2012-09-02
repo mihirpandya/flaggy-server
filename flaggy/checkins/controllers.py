@@ -1,3 +1,5 @@
+import sys
+import pprint
 from checkins.models import User, CheckIn, Follow
 from datetime import datetime
 from django.utils import simplejson
@@ -36,17 +38,19 @@ def __add_follow(follower, followed):
 
 def __followers(u_id):
 
-	json_serializer = serializers.get_serializer("json")()
-
 	try:
-		foll_list = json_serializer.serialize(Follow.objects.filter(following_id=u_id), ensure_ascii=False)
+		follower_list = Follow.objects.filter(following_id=u_id)
+		array = []
+		for item in follower_list:
+			dict_user = { }
+			dict_user['u_id'] = item.follower.pk
+			dict_user['name'] = item.follower.fname + " " + item.follower.lname
+			array.append(dict_user)
 
-		return foll_list
+		return array
 
 	except User.DoesNotExist:
 		return "userNotFound"
-	except:
-		return "error in __followers"
 
 def __check_in(long, lat, u_id, comm):
 	d = datetime.now()
