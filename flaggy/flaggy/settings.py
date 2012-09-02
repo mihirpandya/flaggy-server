@@ -5,7 +5,13 @@ settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 
 import json
-with open('/home/dotcloud/environment.json') as f:
+
+if os.getlogin() == 'dotcloud':
+  envfile = '/home/dotcloud/environment.json'
+else:
+  envfile = 'flaggy/environment.json'
+
+with open(envfile) as f:
   env = json.load(f)
 
 DEBUG = True

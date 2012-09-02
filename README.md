@@ -8,12 +8,11 @@ username - mihirmp
 password - spadeace
 
 ### URLs ###
-  /addUser?fname=firstname&lname=lastname&email=me@email.com&fb_id=1111
-  <br />
-  /userAdded
+  /add_user?fname=firstname&lname=lastname&email=me@email.com&fb_id=1111
   <br />
   /error
   <br />
-  /addFollow?f_er=1&f_ed=2
+  /add_follow?f_er=1&f_ed=2
   <br />
   /followers?u_id=1
+  <br />
