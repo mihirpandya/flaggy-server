@@ -64,6 +64,18 @@ def followers(request):
 	else: 
 		return HttpResponseRedirect("No request received.", mimetype='application/json')
 
+def followers(request):
+	if request.method == 'GET':
+		u_id = request.GET.get('u_id')
+		res = __following(u_id)
+
+		if len(res):
+			return HttpResponse(dumps(res), mimetype='application/json')
+		else:
+			return HttpResponse("No followers", mimetype='application/json')
+	else: 
+		return HttpResponseRedirect("No request received.", mimetype='application/json')		
+
 def check_in(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
