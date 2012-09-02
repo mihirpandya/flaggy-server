@@ -40,7 +40,7 @@ def __followers(u_id):
 
 	try:
 		user = User.objects.get(pk=u_id)
-		foll_list = json_serializer.serialize(Follow.objects.filter(following_id=user, ensure_ascii=False))
+		foll_list = json_serializer.serialize(Follow.objects.filter(following_id=u_id, ensure_ascii=False))
 		
 		##for i in f_ers:
 		##	foll_list[i] = f_ers[i].following
