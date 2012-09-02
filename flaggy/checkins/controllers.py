@@ -1,5 +1,7 @@
 from checkins.models import User, CheckIn, Follow
 from datetime import datetime
+from django.utils import simplejson
+from django.core import serializers
 
 
 def verify_user(obj, value):
@@ -33,8 +35,12 @@ def __add_follow(follower, followed):
 		return "/error/"
 
 def __followers(u_id):
+
+	json_serializer = serializers.get_serializer("json")()
+
 	try:
-		foll_list = Follow.objects.filter(following=u_id)
+		user = User.objects.get(pk=u_id)
+		foll_list = json_serializer.serialize(Follow.objects.filter(following=user, ensure_ascii=False))
 		
 		##for i in f_ers:
 		##	foll_list[i] = f_ers[i].following

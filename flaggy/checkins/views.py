@@ -30,9 +30,6 @@ def add_user(request):
 			## We should return friends if the user already exists ##
 			return HttpResponse("Error. User could not be created", mimetype='application/json')
 
-	else: return HttpResponseRedirect('/notGETmethod/')
-		# handle request
-
 def add_follow(request):
 	if request.method == 'GET':
 		follower = request.GET.get('f_er')
