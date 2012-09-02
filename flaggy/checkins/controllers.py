@@ -20,9 +20,9 @@ def __add_user(f_n, l_n, fb, twitter, email):
 	try:
 		u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter, email=email, date_joined=d)
 		u.save()
-		return "/userAdded/"
+		return "User created."
 	except:
-		return "/error/"
+		return "Error. User could not be created. Problem with __add_user."
 
 def __add_follow(follower, followed):
 	try:
@@ -30,11 +30,11 @@ def __add_follow(follower, followed):
 		f_ed = User.objects.get(pk=followed)
 		f = Follow(follower=f_er, following=f_ed)
 		f.save()
-		return "/followAdded/"
+		return "Following "+f_er.fname
 	except User.DoesNotExist:
-		return "/userNotFound/"
+		return "User does not exist."
 	except:
-		return "/error/"
+		return "Error. Could not follow "+f_er.fname
 
 def __followers(u_id):
 
@@ -50,7 +50,7 @@ def __followers(u_id):
 		return array
 
 	except User.DoesNotExist:
-		return "userNotFound"
+		return "Error. User does not exist."
 
 def __check_in(long, lat, u_id, comm):
 	d = datetime.now()

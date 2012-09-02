@@ -2,7 +2,7 @@
     "DOTCLOUD_WWW_HTTP_URL": "http://flaggy-mihirmp.dotcloud.com/",
     "DOTCLOUD_WWW_SSH_PORT": "35524",
     "DOTCLOUD_WWW_SSH_URL": "ssh://dotcloud@flaggy-mihirmp.dotcloud.com:35524",
-    "DOTCLOUD_DB_MYSQL_LOGIN": "icanberk",
+    "DOTCLOUD_DB_MYSQL_LOGIN": "root",
     "DOTCLOUD_WWW_SSH_HOST": "flaggy-mihirmp.dotcloud.com",
     "DOTCLOUD_PROJECT": "flaggy",
     "DOTCLOUD_SERVICE_NAME": "www",
@@ -14,9 +14,9 @@
     "DOTCLOUD_ENVIRONMENT": "default",
     "DOTCLOUD_DB_SSH_HOST": "flaggy-mihirmp.dotcloud.com",
     "DOTCLOUD_DB_MYSQL_HOST": "flaggy-mihirmp.dotcloud.com",
-    "DOTCLOUD_DB_MYSQL_PASSWORD": "15399_mochalabs",
+    "DOTCLOUD_DB_MYSQL_PASSWORD": "O8FPYH1B2L8aYzFDmHsu",
     "DOTCLOUD_DB_MYSQL_PORT": "35528",
-    "DOTCLOUD_DB_MYSQL_URL": "mysql://icanberk@flaggy-mihirmp.dotcloud.com:35528",
+    "DOTCLOUD_DB_MYSQL_URL": "mysql://root:O8FPYH1B2L8aYzFDmHsu@flaggy-mihirmp.dotcloud.com:35528",
     "DOTCLOUD_SERVICE_ID": "0",
     "PORT_HTTP": 80
 }

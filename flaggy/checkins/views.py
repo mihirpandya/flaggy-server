@@ -33,7 +33,7 @@ def add_user(request):
 		else:
 			if(not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
 				res = __add_user(f_n,l_n,fb_id, 0000, email)
-				return HttpResponse("User created", mimetype='application/json')
+				return HttpResponse(res, mimetype='application/json')
 			else:
 				## We should return friends (you mean followers) if the user already exists ##
 				return HttpResponse("Error. User could not be created", mimetype='application/json')
@@ -47,9 +47,9 @@ def add_follow(request):
 			res = __add_follow(follower, followed)
 			return HttpResponse(res, mimetype='application/json')
 		else: 
-			return HttpResponseRedirect('/error/')
+			return HttpResponseRedirect("Error. Did not find either user.", mimetype='application/json')
 
-	else: return HttpResponseRedirect('/notGETmethod/')
+	else: return HttpResponseRedirect("No request received.", mimetype='application/json')
 
 def followers(request):
 	if request.method == 'GET':
