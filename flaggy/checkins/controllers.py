@@ -16,7 +16,7 @@ def verify_user(obj, value):
 def __add_user(f_n, l_n, fb, twitter, email):
 	d = str(datetime.date(datetime.now()))
 	try:
-		u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter, email=email)
+		u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter, email=email, date_joined=d)
 		u.save()
 		return "/userAdded/"
 	except:
