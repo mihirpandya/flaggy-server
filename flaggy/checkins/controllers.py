@@ -56,7 +56,7 @@ def __following(u_id):
 	try: 
 		following_list = Follow.objects.filter(follower_id=u_id)
 		array = []
-		for item in follower_list:
+		for item in following_list:
 			dict_user = { }
 			dict_user['u_id'] = item.following.pk
 			dict_user['name'] = item.following.fname + " " + item.following.lname
