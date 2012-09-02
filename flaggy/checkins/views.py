@@ -29,12 +29,13 @@ def add_user(request):
 		if(verify_user(User, fb_id)):
 			return HttpResponse("User with FB Id "+fb_id+" already exists.", mimetype='application/json')
 
-		else if(not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
-			res = __add_user(f_n,l_n,fb_id, 0000, email)
-			return HttpResponse("User created", mimetype='application/json')
 		else:
-			## We should return friends (you mean followers) if the user already exists ##
-			return HttpResponse("Error. User could not be created", mimetype='application/json')
+			if(not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
+				res = __add_user(f_n,l_n,fb_id, 0000, email)
+				return HttpResponse("User created", mimetype='application/json')
+			else:
+				## We should return friends (you mean followers) if the user already exists ##
+				return HttpResponse("Error. User could not be created", mimetype='application/json')
 
 def add_follow(request):
 	if request.method == 'GET':
