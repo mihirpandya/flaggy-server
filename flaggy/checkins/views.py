@@ -40,7 +40,7 @@ def add_follow(request):
 
 		if(follower != None and followed != None):
 			res = __add_follow(follower, followed)
-			return HttpResponse(simplejson.dumps(res), mimetype='application/json')
+			return HttpResponse(res, mimetype='application/json')
 		else: 
 			return HttpResponseRedirect('/error/')
 
