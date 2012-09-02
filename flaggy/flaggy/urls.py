@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from checkins.views import hello_view, add_user, add_follow, followers, following, check_in
+from checkins import views
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -7,12 +7,12 @@ from checkins.views import hello_view, add_user, add_follow, followers, followin
 
 urlpatterns = patterns('django.views.generic.simple',
     (r'^error/', 'direct_to_template', {'template': 'error.html'}),
-	url(r'^$', view=hello_view, name='hello_page'),
-	url(r'^add_user/', view=add_user, name='add_user'),
-    url(r'^add_follow/', view=add_follow, name='add_follow'),
-    url(r'^followers/', view=followers, name='followers'),
-    url(r'^following/', view=following, name='following'),
-    url(r'^check_in/', view=check_in, name='check_in'),
+	url(r'^$', view=views.hello_view, name='hello_page'),
+	url(r'^add_user/', view=views.add_user, name='add_user'),
+    url(r'^add_follow/', view=views.add_follow, name='add_follow'),
+    url(r'^followers/', view=views.followers, name='followers'),
+    url(r'^following/', view=views.following, name='following'),
+    url(r'^check_in/', view=views.check_in, name='check_in'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),

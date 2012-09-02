@@ -6,6 +6,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 
 import json
 
+# os.getlogin() doesn't work for remote sessions. Not sure why. ##
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   envfile = '/home/dotcloud/environment.json'
 else:
