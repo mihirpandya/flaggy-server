@@ -7,6 +7,9 @@ from django.template import Context, loader
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 
+def empty_str(s):
+	return (s == None or s == "")
+
 def hello_view(request):
     """ Simple Hello World View """
     t = loader.get_template('helloworld.html')
@@ -27,7 +30,7 @@ def add_user(request):
 			res = __addUser(f_n,l_n,fb_id, 0000, email)
 			return HttpResponse("User created", mimetype='application/json')
 		else:
-			## We should return friends if the user already exists ##
+			## We should return friends (you mean followers) if the user already exists ##
 			return HttpResponse("Error. User could not be created", mimetype='application/json')
 
 def add_follow(request):
@@ -35,7 +38,6 @@ def add_follow(request):
 		follower = request.GET.get('f_er')
 		followed = request.GET.get('f_ed')
 
-#		if(not(empty_str(follower)) and not(empty_str(followed))):
 		if(follower != None and followed != None):
 			res = __add_follow(follower, followed)
 			return HttpResponse(simplejson.dumps(res), mimetype='application/json')
@@ -48,11 +50,7 @@ def followers(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
 		res = __followers(u_id)
-		## need to get the data as dictionary(or object if you wanna call it)
-		## and then serialize it and render it that way
-		##followers = {'a': 1, 'b': 2, 'c': 3}
-		##data = serializers.serialize('json', followers)
-		## this works --> simplejson.dumps(followers)
+
 		if len(res):
 			return HttpResponse(simplejson.dumps(res), mimetype='application/json')
 		else:
