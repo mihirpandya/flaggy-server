@@ -11,8 +11,8 @@ class User(models.Model):
 
 class CheckIn(models.Model):
 	c_id = models.AutoField(primary_key=True)
-	longitude = models.DecimalField(max_digits = 10, decimal_places=9)
-	latitude = models.DecimalField(max_digits = 10, decimal_places=9)
+	longitude = models.DecimalField(max_digits = 10, decimal_places=7)
+	latitude = models.DecimalField(max_digits = 10, decimal_places=7)
 	u_id = models.ForeignKey(User)
 	when = models.DateField()
 	comment = models.TextField()
