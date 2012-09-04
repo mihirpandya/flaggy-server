@@ -1,9 +1,11 @@
 import sys
 import pprint
-from checkins.models import User, CheckIn, Follow
+from checkins.models import User, CheckIn, Follow, FollowPending
 from datetime import datetime
 from django.utils import simplejson
 from django.core import serializers
+import hashlib
+from django.core.mail import send_mail
 
 
 def verify_user(obj, value):
@@ -28,13 +30,41 @@ def __add_follow(follower, followed):
 	try:
 		f_er = User.objects.get(pk=follower)
 		f_ed = User.objects.get(pk=followed)
-		f = Follow(follower=f_er, following=f_ed)
+		k = hashlib.sha224(str(f_er.pk)+"&"+str(f_ed.pk)).hexdigest()
+		f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
 		f.save()
-		return "Following "+f_ed.fname
+
+		f_success = FollowPending.objects.get(secure_key=k)
+		f_er = User.objects.get(pk=f_success.follower_p.pk)
+		f_ed = User.objects.get(pk=f_success.following_p.pk)
+
+		approve_url = "http://localhost:8000/approve_request?k="+k
+		send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'mihir.m.pandya@gmail.com', [f_ed.email], fail_silently=False)
+		
+		return "Request sent to "+f_ed.fname
+
 	except User.DoesNotExist:
 		return "User does not exist."
+	except FollowPending.MultipleObjectsReturned:
+		return "Request to "+f_ed.fname+" has already been sent."
 	except:
-		return "Error. Could not follow "+f_er.fname
+		return "Error. Could not send follow request to "+f_ed.fname
+
+def __approve_request(k):
+	try:
+		req = FollowPending.objects.get(secure_key=k)
+
+		if(req.approve):
+			return "You have already approved this request."
+
+		else:
+			req.approve = True
+			req.save()
+			return "Request approved!"
+	except FollowPending.DoesNotExist:
+		return "No such request!"
+	except:
+		return "Error. Could not respond to request."
 
 def __followers(u_id):
 

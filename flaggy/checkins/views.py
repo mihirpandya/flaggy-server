@@ -52,9 +52,17 @@ def add_follow(request):
 			res = controllers.__add_follow(follower, followed)
 			return HttpResponse(res, mimetype='application/json')
 		else: 
-			return HttpResponseRedirect("Error. Did not find either user.", mimetype='application/json')
+			return HttpResponse("Error. Did not find either user.", mimetype='application/json')
 
-	else: return HttpResponseRedirect("No request received.", mimetype='application/json')
+	else: return HttpResponse("No request received.", mimetype='application/json')
+
+def approve_request(request):
+	if request.method == 'GET':
+		key = request.GET.get('k')
+
+		res = controllers.__approve_request(key)
+
+		return HttpResponse(res, mimetype='application/json')
 
 def followers(request):
 	if request.method == 'GET':
@@ -66,7 +74,7 @@ def followers(request):
 		else:
 			return HttpResponse("No followers", mimetype='application/json')
 	else: 
-		return HttpResponseRedirect("No request received.", mimetype='application/json')
+		return HttpResponse("No request received.", mimetype='application/json')
 
 def following(request):
 	if request.method == 'GET':
@@ -78,7 +86,7 @@ def following(request):
 		else:
 			return HttpResponse("Following no one", mimetype='application/json')
 	else: 
-		return HttpResponseRedirect("No request received.", mimetype='application/json')		
+		return HttpResponse("No request received.", mimetype='application/json')		
 
 def check_in(request):
 	if request.method == 'GET':
@@ -90,5 +98,5 @@ def check_in(request):
 		controllers.__check_in(long, lat, u_id, comm)
 		return HttpResponse("Checked In", mimetype='application/json')
 	else: 
-		return HttpResponseRedirect("No request received.", mimetype='application/json')
+		return HttpResponse("No request received.", mimetype='application/json')
 

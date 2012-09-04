@@ -21,3 +21,11 @@ class Follow(models.Model):
 	f_id = models.AutoField(primary_key=True)
 	follower = models.ForeignKey(User, related_name='follower')
 	following = models.ForeignKey(User, related_name='following')
+
+class FollowPending(models.Model):
+	p_id = models.AutoField(primary_key=True)
+	follower_p = models.ForeignKey(User, related_name='follower_p')
+	following_p = models.ForeignKey(User, related_name='following_p')
+	secure_key = models.CharField(max_length=56)
+	approve = models.NullBooleanField()
+

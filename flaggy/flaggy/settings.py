@@ -35,6 +35,17 @@ DATABASES = {
     }
 }
 
+# Email
+
+EMAIL_HOST_USER = 'mihir.m.pandya@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD = 'spadeace'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
