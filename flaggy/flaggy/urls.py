@@ -14,6 +14,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^following/', view=views.following, name='following'),
     url(r'^check_in/', view=views.check_in, name='check_in'),
     url(r'^approve_request/', view=views.approve_request, name='approve_request'),
+    url(r'^unfollow/', view=views.unfollow, name='unfollow'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),

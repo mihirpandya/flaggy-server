@@ -50,6 +50,24 @@ def __add_follow(follower, followed):
 	except:
 		return "Error. Could not send follow request to "+f_ed.fname
 
+def __unfollow(follower, followed):
+	try:
+		f = FollowPending.objects.get(follower_p_id=follower, following_p_id=followed)
+		
+		if(f.approve):
+			f.approve = False
+			f.save()
+			return "Successfully unfollowed."
+		
+		else:
+			return "Already unfollowed."
+
+	except FollowPending.DoesNotExist:
+		return "No such connection exists."
+	except:
+		return "Error. Could not unfollow."
+
+
 def __approve_request(k):
 	try:
 		req = FollowPending.objects.get(secure_key=k)

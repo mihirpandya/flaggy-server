@@ -37,9 +37,9 @@ DATABASES = {
 
 # Email
 
-EMAIL_HOST_USER = 'mihir.m.pandya@gmail.com'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = 'spadeace'
+EMAIL_HOST_USER = 'firepent@hotmail.com'
+EMAIL_HOST = 'smtp.live.com'
+EMAIL_HOST_PASSWORD = 'firebolt'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 SERVER_EMAIL = EMAIL_HOST_USER

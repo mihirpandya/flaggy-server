@@ -64,6 +64,15 @@ def approve_request(request):
 
 		return HttpResponse(res, mimetype='application/json')
 
+def unfollow(request):
+	if request.method == 'GET':
+		f_er = request.GET.get('f_er')
+		f_ed = request.GET.get('f_ed')
+
+		res = controllers.__unfollow(f_er, f_ed)
+
+		return HttpResponse(res, mimetype='application/json')
+
 def followers(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
