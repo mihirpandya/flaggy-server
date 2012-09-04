@@ -14,7 +14,7 @@ class CheckIn(models.Model):
 	longitude = models.DecimalField(max_digits = 10, decimal_places=9)
 	latitude = models.DecimalField(max_digits = 10, decimal_places=9)
 	u_id = models.ForeignKey(User)
-	when = models.DateField()
+	when = models.DateTimeField()
 	comment = models.TextField()
 
 class Follow(models.Model):
