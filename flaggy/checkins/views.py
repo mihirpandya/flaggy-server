@@ -27,17 +27,21 @@ def add_user(request):
 		fb_id = request.GET.get('fb_id')
 		email = request.GET.get('email')
 
-		if(controllers.verify_user(User, fb_id)):
-			u = User.objects.get(fb_id=fb_id)
-			return HttpResponse("{u_id: "+str(u.u_id)+"}", mimetype='application/json')
+		res = { }
 
+		if (controllers.verify_user(User, fb_id)):
+			u = User.objects.get(fb_id=fb_id)
+			res["status"] = "Existing user"
+			## Add the last checkin location here
+			res["u_id"] = str(u.u_id)
+			return HttpResponse(dumps(res), mimetype='application/json')
+			res["status"] = "New user"
+		elif (not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
+			res["u_id"] = controllers.__add_user(f_n,l_n,fb_id, 0000, email)
+			return HttpResponse(dumps(res), mimetype='application/json')
 		else:
-			if(not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
-				res = controllers.__add_user(f_n,l_n,fb_id, 0000, email)
-				return HttpResponse(res, mimetype='application/json')
-			else:
-				## We should return friends (you mean followers) if the user already exists ##
-				return HttpResponse("Error. User could not be created", mimetype='application/json')
+			## We should return friends (you mean followers) if the user already exists ##
+			return HttpResponse("Error. User could not be created", mimetype='application/json')
 
 def add_follow(request):
 	if request.method == 'GET':
@@ -72,7 +76,7 @@ def following(request):
 		if len(res):
 			return HttpResponse(dumps(res), mimetype='application/json')
 		else:
-			return HttpResponse("No followers", mimetype='application/json')
+			return HttpResponse("Following no one", mimetype='application/json')
 	else: 
 		return HttpResponseRedirect("No request received.", mimetype='application/json')		
 
@@ -82,6 +86,7 @@ def check_in(request):
 		lat = request.GET.get('lat')
 		long = request.GET.get('long')
 		comm = request.GET.get('comm')
+
 		controllers.__check_in(long, lat, u_id, comm)
 		return HttpResponse("Checked In", mimetype='application/json')
 	else: 

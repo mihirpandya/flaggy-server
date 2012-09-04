@@ -16,3 +16,6 @@ password - spadeace
   <br />
   /followers?u_id=1
   <br />
+
+### Scripts ###
+./resetDB.sh dumps the information from the database, remodels the DB and loads the information back

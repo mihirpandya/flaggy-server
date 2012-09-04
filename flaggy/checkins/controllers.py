@@ -16,11 +16,11 @@ def verify_user(obj, value):
 		return False
 
 def __add_user(f_n, l_n, fb, twitter, email):
-	d = str(datetime.date(datetime.now()))
+	d = datetime.now()
 	try:
 		u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter, email=email, date_joined=d)
 		u.save()
-		return "User created."
+		return str(u.pk)
 	except:
 		return "Error. User could not be created. Problem with __add_user."
 
@@ -30,7 +30,7 @@ def __add_follow(follower, followed):
 		f_ed = User.objects.get(pk=followed)
 		f = Follow(follower=f_er, following=f_ed)
 		f.save()
-		return "Following "+f_er.fname
+		return "Following "+f_ed.fname
 	except User.DoesNotExist:
 		return "User does not exist."
 	except:
@@ -60,6 +60,7 @@ def __following(u_id):
 			dict_user = { }
 			dict_user['u_id'] = item.following.pk
 			dict_user['name'] = item.following.fname + " " + item.following.lname
+			dict_user['location'] = last_check_in(item.follower.pk)
 			array.append(dict_user)
 
 		return array
@@ -70,6 +71,8 @@ def __following(u_id):
 def __check_in(long, lat, u_id, comm):
 	d = datetime.now()
 	user = User.objects.get(pk=u_id)
+	print lat
+	print long
 	ci = CheckIn(longitude = long,
 				 latitude = lat,
 				 u_id = user,
@@ -79,3 +82,17 @@ def __check_in(long, lat, u_id, comm):
 
 	return "ok"
 
+
+## HELPERS ##
+## Here will be the functions that are not directly mapped to a view ##
+
+def last_check_in(user_id):
+	try:
+		checkin = CheckIn.objects.filter(u_id = user_id).latest('when')
+		coor = { }
+		coor["long"] = str(checkin.longitude)
+		coor["lat"] = str(checkin.latitude)
+
+		return coor
+	except CheckIn.DoesNotExist:
+		return None
