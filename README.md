@@ -16,6 +16,11 @@ password - spadeace
   <br />
   /followers?u_id=1
   <br />
+  /check_in?u_id=1&lat=1&long=1&comm=context
+  <br />
+  /approve_request?k=1
+  <br />
+  /unfollow?f_er=1&f_ed=2
 
 ### Scripts ###
 ./resetDB.sh dumps the information from the database, remodels the DB and loads the information back
