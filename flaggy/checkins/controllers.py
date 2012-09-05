@@ -9,13 +9,13 @@ from django.core import serializers
 from django.core.mail import send_mail
 
 
-def verify_user(obj, value):
+def verify_user(value):
 	try:
-		obj.objects.get(fb_id=value)
+		User.objects.get(fb_id=value)
 		return True
-	except obj.MultipleObjectsReturned:
+	except User.MultipleObjectsReturned:
 		return True
-	except obj.DoesNotExist:
+	except User.DoesNotExist:
 		return False
 
 def __add_user(f_n, l_n, fb, twitter, email):
@@ -26,6 +26,7 @@ def __add_user(f_n, l_n, fb, twitter, email):
 		send_mail("Welcome to Flaggy App!", "Thank you for joining Flaggy App!", 'firepent@hotmail.com', [u.email], fail_silently=False)
 
 		return str(u.pk)
+
 	except:
 		return "Error. User could not be created. Problem with __add_user."
 
@@ -34,17 +35,21 @@ def __add_follow(follower, followed):
 		f_er = User.objects.get(pk=follower)
 		f_ed = User.objects.get(pk=followed)
 		k = hashlib.sha224(str(f_er.pk)+"&"+str(f_ed.pk)).hexdigest()
-		f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
-		f.save()
+		if(FollowPending.objects.get(secure_key=k)):
+			return "Request to "+f_ed.fname+" has already been sent."
 
-		f_success = FollowPending.objects.get(secure_key=k)
-		f_er = User.objects.get(pk=f_success.follower_p.pk)
-		f_ed = User.objects.get(pk=f_success.following_p.pk)
+		else:
+			f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
+			f.save()
 
-		approve_url = "http://localhost:8000/approve_request?k="+k
-		send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'firepent@hotmail.com', [f_ed.email], fail_silently=False)
+			f_success = FollowPending.objects.get(secure_key=k)
+			f_er = User.objects.get(pk=f_success.follower_p.pk)
+			f_ed = User.objects.get(pk=f_success.following_p.pk)
+
+			approve_url = "http://localhost:8000/approve_request?k="+k
+			send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'firepent@hotmail.com', [f_ed.email], fail_silently=False)
 		
-		return "Request sent to "+f_ed.fname
+			return "Request sent to "+f_ed.fname
 
 	except User.DoesNotExist:
 		return "User does not exist."
@@ -63,7 +68,7 @@ def __unfollow(follower, followed):
 
 			f.save()
 			follow.delete()
-			
+
 			return "Successfully unfollowed."
 		
 		else:
