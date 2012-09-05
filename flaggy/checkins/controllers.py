@@ -1,10 +1,11 @@
 import sys
 import pprint
+import hashlib
+
 from checkins.models import User, CheckIn, Follow, FollowPending
 from datetime import datetime
 from django.utils import simplejson
 from django.core import serializers
-import hashlib
 from django.core.mail import send_mail
 
 
@@ -22,6 +23,8 @@ def __add_user(f_n, l_n, fb, twitter, email):
 	try:
 		u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter, email=email, date_joined=d)
 		u.save()
+		send_mail("Welcome to Flaggy App!", "Thank you for joining Flaggy App!", 'firepent@hotmail.com', [u.email], fail_silently=False)
+		
 		return str(u.pk)
 	except:
 		return "Error. User could not be created. Problem with __add_user."
@@ -39,7 +42,7 @@ def __add_follow(follower, followed):
 		f_ed = User.objects.get(pk=f_success.following_p.pk)
 
 		approve_url = "http://localhost:8000/approve_request?k="+k
-		send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'mihir.m.pandya@gmail.com', [f_ed.email], fail_silently=False)
+		send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'firepent@hotmail.com', [f_ed.email], fail_silently=False)
 		
 		return "Request sent to "+f_ed.fname
 
