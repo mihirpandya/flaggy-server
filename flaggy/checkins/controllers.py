@@ -24,7 +24,7 @@ def __add_user(f_n, l_n, fb, twitter, email):
 		u = User(fname=f_n, lname=l_n, fb_id=fb, twitter_id=twitter, email=email, date_joined=d)
 		u.save()
 		send_mail("Welcome to Flaggy App!", "Thank you for joining Flaggy App!", 'firepent@hotmail.com', [u.email], fail_silently=False)
-		
+
 		return str(u.pk)
 	except:
 		return "Error. User could not be created. Problem with __add_user."
@@ -59,7 +59,11 @@ def __unfollow(follower, followed):
 		
 		if(f.approve):
 			f.approve = False
+			follow = Follow.objects.get(follower_id=follower, following_id=followed)
+
 			f.save()
+			follow.delete()
+			
 			return "Successfully unfollowed."
 		
 		else:
@@ -80,8 +84,15 @@ def __approve_request(k):
 
 		else:
 			req.approve = True
+			f_er = req.follower_p_id
+			f_ed = req.following_p_id
+			follow = Follow(follower_id = f_er, following_id = f_ed)
+
 			req.save()
+			follow.save()
+
 			return "Request approved!"
+
 	except FollowPending.DoesNotExist:
 		return "No such request!"
 	except:
@@ -147,3 +158,10 @@ def last_check_in(user_id):
 		return coor
 	except CheckIn.DoesNotExist:
 		return None
+
+#def all_following_info(user_id):
+#	try:
+#		f = Follow.objects.filter(follower_id=user_id)
+
+
+
