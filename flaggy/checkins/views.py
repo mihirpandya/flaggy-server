@@ -32,18 +32,22 @@ def add_user(request):
 
 		if (controllers.verify_user(fb_id)):
 			u = User.objects.get(fb_id=fb_id)
-			c = CheckIn.objects.filter(u_id_id = u.u_id)
-			last_checkin = c[len(c)-1]
-			
-			checkin_user["longitude"] = int(last_checkin.longitude)
-			checkin_user["latitude"] = int(last_checkin.latitude)
-			checkin_user["when"] = str(last_checkin.when)
-			checkin_user["comment"] = str(last_checkin.comment)
 
+			c = CheckIn.objects.filter(u_id_id = u.u_id)
+
+			if(len(c)):
+				last_checkin = c[(len(c)-1 and len(c))]
+
+				checkin_user["longitude"] = int(last_checkin.longitude)
+				checkin_user["latitude"] = int(last_checkin.latitude)
+				checkin_user["when"] = str(last_checkin.when)
+				checkin_user["comment"] = str(last_checkin.comment)
+				
 			res["status"] = 1
 			res["last_checkin"] = checkin_user
 			## Add the last checkin location here
 			res["u_id"] = str(u.u_id)
+
 			return HttpResponse(dumps(res), mimetype='application/json')
 			res["status"] = "New user"
 

@@ -46,7 +46,7 @@ def __add_follow(follower, followed):
 			f_er = User.objects.get(pk=f_success.follower_p.pk)
 			f_ed = User.objects.get(pk=f_success.following_p.pk)
 
-			approve_url = "http://localhost:8000/approve_request?k="+k
+			approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k="+k
 			send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'firepent@hotmail.com', [f_ed.email], fail_silently=False)
 		
 			return "Request sent to "+f_ed.fname
