@@ -29,13 +29,15 @@ def add_user(request):
 
 		res = { }
 
-		if (controllers.verify_user(User, fb_id)):
+		if (controllers.verify_user(fb_id)):
 			u = User.objects.get(fb_id=fb_id)
-			res["status"] = "Existing user"
+			res["status"] = 1
+			#res["last_checkin"] = 
 			## Add the last checkin location here
 			res["u_id"] = str(u.u_id)
 			return HttpResponse(dumps(res), mimetype='application/json')
 			res["status"] = "New user"
+
 		elif (not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
 			res["u_id"] = controllers.__add_user(f_n,l_n,fb_id, 0000, email)
 			return HttpResponse(dumps(res), mimetype='application/json')
@@ -101,10 +103,10 @@ def check_in(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
 		lat = request.GET.get('lat')
-		long = request.GET.get('long')
+		lon = request.GET.get('long')
 		comm = request.GET.get('comm')
 
-		controllers.__check_in(long, lat, u_id, comm)
+		controllers.__check_in(lon, lat, u_id, comm)
 		return HttpResponse("Checked In", mimetype='application/json')
 	else: 
 		return HttpResponse("No request received.", mimetype='application/json')
