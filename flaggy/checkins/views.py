@@ -36,27 +36,30 @@ def add_user(request):
 			c = CheckIn.objects.filter(u_id_id = u.u_id)
 
 			if(len(c)):
-				last_checkin = c[(len(c)-1 and len(c))]
+				last_checkin = c[(len(c)-1)]
 
 				checkin_user["longitude"] = int(last_checkin.longitude)
 				checkin_user["latitude"] = int(last_checkin.latitude)
 				checkin_user["when"] = str(last_checkin.when)
 				checkin_user["comment"] = str(last_checkin.comment)
 				
-			res["status"] = 1
+			res["status"] = 2
 			res["last_checkin"] = checkin_user
 			## Add the last checkin location here
 			res["u_id"] = str(u.u_id)
 
-			return HttpResponse(dumps(res), mimetype='application/json')
-			res["status"] = "New user"
+#			return HttpResponse(dumps(res), mimetype='application/json')
 
 		elif (not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
+			res["status"] = 1
 			res["u_id"] = controllers.__add_user(f_n,l_n,fb_id, 0000, email)
-			return HttpResponse(dumps(res), mimetype='application/json')
+			
+#			return HttpResponse(dumps(res), mimetype='application/json')
 		else:
+			res["status"] = 0
 			## We should return friends (you mean followers) if the user already exists ##
-			return HttpResponse("Error. User could not be created", mimetype='application/json')
+		
+		return HttpResponse(dumps(res), mimetype='application/json')
 
 def add_follow(request):
 	if request.method == 'GET':
