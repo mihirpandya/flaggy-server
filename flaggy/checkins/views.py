@@ -100,7 +100,6 @@ def following(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
 		res = controllers.__following(u_id)
-
 		if len(res):
 			return HttpResponse(dumps(res), mimetype='application/json')
 		else:

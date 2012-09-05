@@ -107,12 +107,11 @@ def __followers(u_id):
 
 	try:
 		follower_list = Follow.objects.filter(following_id=u_id)
-		array = []
+		array = { }
 		for item in follower_list:
 			dict_user = { }
-			dict_user['u_id'] = item.follower.pk
 			dict_user['name'] = item.follower.fname + " " + item.follower.lname
-			array.append(dict_user)
+			array[item.follower.pk] = dict_user
 
 		return array
 
@@ -122,13 +121,14 @@ def __followers(u_id):
 def __following(u_id):
 	try: 
 		following_list = Follow.objects.filter(follower_id=u_id)
-		array = []
+		print following_list
+		array = { }
 		for item in following_list:
 			dict_user = { }
-			dict_user['u_id'] = item.following.pk
+			##dict_user['u_id'] = item.following.pk
 			dict_user['name'] = item.following.fname + " " + item.following.lname
 			dict_user['location'] = last_check_in(item.follower.pk)
-			array.append(dict_user)
+			array[item.following.pk] = dict_user
 
 		return array
 
