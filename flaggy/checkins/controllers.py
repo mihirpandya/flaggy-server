@@ -49,9 +49,14 @@ def __add_follow(follower, followed):
 			f_ed = User.objects.get(pk=f_success.following_p.pk)
 
 			approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k="+k
-			send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'firepent@hotmail.com', [f_ed.email], fail_silently=False)
-		
-			return "Request sent to "+f_ed.fname
+			print approve_url
+			print f_ed.email
+			mail_success = send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'firepent@hotmail.com', [f_ed.email], fail_silently=False)
+
+			if(mail_success):
+				return "Request sent to "+f_ed.fname
+			else:
+				return "Failed to send request "+f_ed.fname
 
 	except User.DoesNotExist:
 		return "User does not exist."
