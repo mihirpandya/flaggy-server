@@ -35,10 +35,12 @@ def __add_follow(follower, followed):
 		f_er = User.objects.get(pk=follower)
 		f_ed = User.objects.get(pk=followed)
 		k = hashlib.sha224(str(f_er.pk)+"&"+str(f_ed.pk)).hexdigest()
-		if(FollowPending.objects.get(secure_key=k)):
+
+		try:
+			FollowPending.objects.get(secure_key=k)
 			return "Request to "+f_ed.fname+" has already been sent."
 
-		else:
+		except FollowPending.DoesNotExist:
 			f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
 			f.save()
 
@@ -55,8 +57,8 @@ def __add_follow(follower, followed):
 		return "User does not exist."
 	except FollowPending.MultipleObjectsReturned:
 		return "Request to "+f_ed.fname+" has already been sent."
-	except:
-		return "Error. Could not send follow request to "+f_ed.fname
+#	except:
+#		return "Error. Could not send follow request to "+f_ed.fname
 
 def __unfollow(follower, followed):
 	try:
