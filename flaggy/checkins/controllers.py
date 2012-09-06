@@ -55,7 +55,7 @@ def __add_follow(follower, followed):
 				else:
 					return "Failed to send request "+f_ed.fname
 
-			except django.core.mail.SMTPServerDisconnected:
+			except:
 				return "SMTP Server Disconnected unexpectedly."
 
 	except User.DoesNotExist:
