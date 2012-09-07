@@ -47,7 +47,7 @@ def add_user(request):
 			res["last_checkin"] = checkin_user
 			## Add the last checkin location here
 			res["u_id"] = str(u.u_id)
-
+			res["following"] = controllers.__following(u.u_id)
 #			return HttpResponse(dumps(res), mimetype='application/json')
 
 		elif (not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
@@ -63,11 +63,11 @@ def add_user(request):
 
 def add_follow(request):
 	if request.method == 'GET':
-		follower = request.GET.get('f_er')
-		followed = request.GET.get('f_ed')
+		follower_id = request.GET.get('f_er')
+		followed_id = request.GET.get('f_ed')
 
 		if(follower != None and followed != None):
-			res = controllers.__add_follow(follower, followed)
+			res = controllers.__add_follow(follower_id, followed_id)
 			return HttpResponse(res, mimetype='application/json')
 		else: 
 			return HttpResponse("Error. Did not find either user.", mimetype='application/json')
@@ -126,3 +126,12 @@ def check_in(request):
 	else: 
 		return HttpResponse("No request received.", mimetype='application/json')
 
+def custom(request):
+	## Created this method as a work around for creating new user, following etc.
+	## during development.
+	if request.method == 'GET':
+		my_id = request.GET.get('u_id')
+		controllers.__check_in("""35""", """45""", """6""", """yow""")
+		return HttpResponse("Ok.", mimetype='application/json')
+	else:
+		return HttpResponse("No request received.", mimetype='application/json')

@@ -26,10 +26,21 @@ def __add_user(f_n, l_n, fb, twitter, email):
         u.save()
         send_mail("Welcome to Flaggy App!", "Thank you for joining Flaggy App!", 'firepent@hotmail.com', [u.email], fail_silently=False)
 
+        ## This is weird. We shouldn't convert this to string in the controllers actually
+        ## When I tried with int() or just plain, it actually creates the user, but returns
+        ## error.
         return str(u.pk)
 
     except:
         return "Error. User could not be created. Problem with __add_user."
+
+
+def __add_follow_custom(follower, followed):
+	f_er = User.objects.get(pk=follower)
+	f_ed = User.objects.get(pk=followed)
+	k = hashlib.sha224(str(f_er.pk)+"&"+str(f_ed.pk)).hexdigest()
+	return k
+
 
 def __add_follow(follower, followed):
     try:
@@ -140,7 +151,7 @@ def __following(u_id):
             dict_user = { }
             ##dict_user['u_id'] = item.following.pk
             dict_user['name'] = item.following.fname + " " + item.following.lname
-            dict_user['location'] = last_check_in(item.follower.pk)
+            dict_user['location'] = last_check_in(item.following)
             array[item.following.pk] = dict_user
 
         return array
@@ -166,16 +177,16 @@ def __check_in(long, lat, u_id, comm):
 ## HELPERS ##
 ## Here will be the functions that are not directly mapped to a view ##
 
-def last_check_in(user_id):
-    try:
-        checkin = CheckIn.objects.filter(u_id = user_id).latest('when')
-        coor = { }
-        coor["long"] = str(checkin.longitude)
-        coor["lat"] = str(checkin.latitude)
-
-        return coor
-    except CheckIn.DoesNotExist:
-        return None
+def last_check_in(user):
+	try:
+		print user.fname
+		checkin = CheckIn.objects.filter(u_id = user).latest('when')
+		coor = { }
+		coor["longitude"] = "{0:.3f}".format(checkin.longitude)
+		coor["latitude"] = "{0:.3f}".format(checkin.latitude)
+		return coor
+	except CheckIn.DoesNotExist:
+		return None
 
 #def all_following_info(user_id):
 #    try:
