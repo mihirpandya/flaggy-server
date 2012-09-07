@@ -50,7 +50,6 @@ def add_user(request):
 		elif (not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
 			res["status"] = 1
 			res["u_id"] = __add_user(f_n,l_n,fb_id, 0000, email)
-			
 #			return HttpResponse(dumps(res), mimetype='application/json')
 		else:
 			res["status"] = 0
