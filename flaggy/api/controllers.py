@@ -20,7 +20,7 @@ def __add_user(f_n, l_n, fb, twitter, email):
         return str(u.pk)
 
     except:
-        return "Error. User could not be created. Problem with __add_user."
+        return 0
 
 def __add_follow(follower, followed):
     try:
@@ -29,18 +29,18 @@ def __add_follow(follower, followed):
         k = hashlib.sha224(str(f_er.pk)+"&"+str(f_ed.pk)).hexdigest()
 
     except User.DoesNotExist:
-        return "User does not exist."
+        return error("User does not exist.")
 
     except FollowPending.MultipleObjectsReturned:
-        return "Request to "+f_ed.fname+" has already been sent."
+        return error("Request to "+f_ed.fname+" has already been sent.")
 
     except:
-        return "Error. Could not send follow request to "+f_ed.fname
+        return error("Error. Could not send follow request to "+f_ed.fname)
 
 
     try:
         FollowPending.objects.get(secure_key=k)
-        return "Request to "+f_ed.fname+" has already been sent."
+        return error("Request to "+f_ed.fname+" has already been sent.")
 
     except FollowPending.DoesNotExist:
         approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k="+k
@@ -51,15 +51,14 @@ def __add_follow(follower, followed):
             if(mail_success):
                 f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
                 f.save()
-                res = "Request sent to "+f_ed.fname
+                res = success("Request sent to "+f_ed.fname)
             else:
-                res = "Failed to send request "+f_ed.fname
+                res = error("Failed to send request "+f_ed.fname)
 
             return res
 
-        except User.DoesNotExist:
-        #smtplib.SMTPException:
-            return "SMTP Server Disconnected unexpectedly."
+        except smtplib.SMTPException:
+            return error("SMTP Server Disconnected unexpectedly.")
 
 
 def __unfollow(follower, followed):
@@ -73,15 +72,15 @@ def __unfollow(follower, followed):
             f.delete()
             follow.delete()
 
-            return "Successfully unfollowed."
+            return success("Successfully unfollowed.")
         
         else:
-            return "Already unfollowed."
+            return error("Already unfollowed.")
 
     except FollowPending.DoesNotExist:
-        return "No such connection exists."
+        return error("No such connection exists.")
     except:
-        return "Error. Could not unfollow."
+        return error("Error. Could not unfollow.")
 
 
 def __approve_request(k):
@@ -89,7 +88,7 @@ def __approve_request(k):
         req = FollowPending.objects.get(secure_key=k)
 
         if(req.approve):
-            return "You have already approved this request."
+            return error("You have already approved this request.")
 
         else:
             req.approve = True
@@ -100,12 +99,12 @@ def __approve_request(k):
             req.save()
             follow.save()
 
-            return "Request approved!"
+            return success("Request approved!")
 
     except FollowPending.DoesNotExist:
-        return "No such request!"
+        return error("No such request!")
     except:
-        return "Error. Could not respond to request."
+        return error("Error. Could not respond to request.")
 
 def __followers(u_id):
 
@@ -120,7 +119,7 @@ def __followers(u_id):
         return array
 
     except User.DoesNotExist:
-        return "Error. User does not exist."
+        return error("Error. User does not exist.")
 
 def __following(u_id):
     try: 
@@ -137,22 +136,42 @@ def __following(u_id):
         return array
 
     except User.DoesNotExist:
-        return "Error. User does not exist."
+        return error("Error. User does not exist.")
 
 def __check_in(long, lat, u_id, comm):
     d = datetime.now()
-    user = User.objects.get(pk=u_id)
-    print lat
-    print long
-    ci = CheckIn(longitude = long,
-                 latitude = lat,
-                 u_id = user,
-                 when = d,
-                 comment = comm)
-    ci.save()
+    
+    try:
+        user = User.objects.get(pk=u_id)
+        print lat
+        print long
+        ci = CheckIn(longitude = long,
+                     latitude = lat,
+                     u_id = user,
+                     when = d,
+                    comment = comm)
+        ci.save()
 
-    return "ok"
+        return success("Checked In!")
+    
+    except:
+        return error("Error. Failed to check in.")
 
+## RESPONSES ##
+
+def success(msg):
+    success = { }
+    success["status"] = "success"
+    success["msg"] = msg
+
+    return success
+
+def error(msg):
+    error = { }
+    error["status"] = "error"
+    error["msg"] = msg
+
+    return error
 
 ## HELPERS ##
 ## Here will be the functions that are not directly mapped to a view ##
