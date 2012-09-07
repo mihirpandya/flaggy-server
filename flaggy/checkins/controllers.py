@@ -3,21 +3,12 @@ import pprint
 import hashlib
 import smtplib
 
-from checkins.models import User, CheckIn, Follow, FollowPending
+from api.models import *
 from datetime import datetime
 from django.utils import simplejson
 from django.core import serializers
 from django.core.mail import send_mail
 
-
-def verify_user(value):
-    try:
-        User.objects.get(fb_id=value)
-        return True
-    except User.MultipleObjectsReturned:
-        return True
-    except User.DoesNotExist:
-        return False
 
 def __add_user(f_n, l_n, fb, twitter, email):
     d = datetime.now()
@@ -165,6 +156,17 @@ def __check_in(long, lat, u_id, comm):
 
 ## HELPERS ##
 ## Here will be the functions that are not directly mapped to a view ##
+def empty_str(s):
+    return (s == "" or s is None)
+
+def verify_user(value):
+    try:
+        User.objects.get(fb_id=value)
+        return True
+    except User.MultipleObjectsReturned:
+        return True
+    except User.DoesNotExist:
+        return False
 
 def last_check_in(user_id):
     try:

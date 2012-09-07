@@ -1,5 +1,5 @@
-from checkins.models import User, CheckIn, Follow
-from checkins.controllers import *
+from api.models import *
+from api.controllers import *
 from django.utils import simplejson
 from json import loads, dumps
 from django.core import serializers
@@ -27,7 +27,7 @@ def add_user(request):
 		res = { }
 		checkin_user = { }
 
-		if (controllers.verify_user(fb_id)):
+		if (verify_user(fb_id)):
 			u = User.objects.get(fb_id=fb_id)
 
 			c = CheckIn.objects.filter(u_id_id = u.u_id)
@@ -49,7 +49,7 @@ def add_user(request):
 
 		elif (not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
 			res["status"] = 1
-			res["u_id"] = controllers.__add_user(f_n,l_n,fb_id, 0000, email)
+			res["u_id"] = __add_user(f_n,l_n,fb_id, 0000, email)
 			
 #			return HttpResponse(dumps(res), mimetype='application/json')
 		else:
@@ -64,7 +64,7 @@ def add_follow(request):
 		followed = request.GET.get('f_ed')
 
 		if(follower != None and followed != None):
-			res = controllers.__add_follow(follower, followed)
+			res = __add_follow(follower, followed)
 			return HttpResponse(res, mimetype='application/json')
 		else: 
 			return HttpResponse("Error. Did not find either user.", mimetype='application/json')
@@ -75,7 +75,7 @@ def approve_request(request):
 	if request.method == 'GET':
 		key = request.GET.get('k')
 
-		res = controllers.__approve_request(key)
+		res = __approve_request(key)
 
 		return HttpResponse(res, mimetype='application/json')
 
@@ -84,14 +84,14 @@ def unfollow(request):
 		f_er = request.GET.get('f_er')
 		f_ed = request.GET.get('f_ed')
 
-		res = controllers.__unfollow(f_er, f_ed)
+		res = __unfollow(f_er, f_ed)
 
 		return HttpResponse(res, mimetype='application/json')
 
 def followers(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
-		res = controllers.__followers(u_id)
+		res = __followers(u_id)
 
 		if len(res):
 			return HttpResponse(dumps(res), mimetype='application/json')
@@ -103,7 +103,7 @@ def followers(request):
 def following(request):
 	if request.method == 'GET':
 		u_id = request.GET.get('u_id')
-		res = controllers.__following(u_id)
+		res = __following(u_id)
 		if len(res):
 			return HttpResponse(dumps(res), mimetype='application/json')
 		else:
@@ -118,7 +118,7 @@ def check_in(request):
 		lon = request.GET.get('long')
 		comm = request.GET.get('comm')
 
-		controllers.__check_in(lon, lat, u_id, comm)
+		__check_in(lon, lat, u_id, comm)
 		return HttpResponse("Checked In", mimetype='application/json')
 	else: 
 		return HttpResponse("No request received.", mimetype='application/json')

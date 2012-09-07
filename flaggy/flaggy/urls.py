@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from checkins import views
+from api.views import *
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -7,15 +7,15 @@ from checkins import views
 
 urlpatterns = patterns('django.views.generic.simple',
     (r'^error/', 'direct_to_template', {'template': 'error.html'}),
-	url(r'^$', view=views.hello_view, name='hello_page'),
-	url(r'^add_user/', view=views.add_user, name='add_user'),
-    url(r'^add_follow/', view=views.add_follow, name='add_follow'),
-    url(r'^followers/', view=views.followers, name='followers'),
-    url(r'^following/', view=views.following, name='following'),
-    url(r'^check_in/', view=views.check_in, name='check_in'),
-    url(r'^approve_request/', view=views.approve_request, name='approve_request'),
-    url(r'^unfollow/', view=views.unfollow, name='unfollow'),
-    url(r'^custom/', view=views.custom, name='custom'),
+	url(r'^$', view=hello_view, name='hello_page'),
+	url(r'^add_user/', view=add_user, name='add_user'),
+    url(r'^add_follow/', view=add_follow, name='add_follow'),
+    url(r'^followers/', view=followers, name='followers'),
+    url(r'^following/', view=following, name='following'),
+    url(r'^check_in/', view=check_in, name='check_in'),
+    url(r'^approve_request/', view=approve_request, name='approve_request'),
+    url(r'^unfollow/', view=unfollow, name='unfollow'),
+#    url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),
