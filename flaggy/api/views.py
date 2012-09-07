@@ -86,7 +86,7 @@ def unfollow(request):
 
 		res = __unfollow(f_er, f_ed)
 
-		return HttpResponse(res, mimetype='application/json')
+		return HttpResponse(dumps(res), mimetype='application/json')
 
 def followers(request):
 	if request.method == 'GET':
