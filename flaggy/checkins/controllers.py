@@ -79,7 +79,7 @@ def __unfollow(follower, followed):
             f.approve = False
             follow = Follow.objects.get(follower_id=follower, following_id=followed)
 
-            f.save()
+            f.delete()
             follow.delete()
 
             return "Successfully unfollowed."

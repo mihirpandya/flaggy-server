@@ -1,5 +1,5 @@
 from checkins.models import User, CheckIn, Follow
-from checkins import controllers
+from checkins.controllers import *
 from django.utils import simplejson
 from json import loads, dumps
 from django.core import serializers
@@ -7,9 +7,6 @@ from django.core import serializers
 from django.template import Context, loader
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
-
-def empty_str(s):
-	return (s == None or s == "")
 
 def hello_view(request):
     """ Simple Hello World View """
