@@ -193,6 +193,8 @@ def last_check_in(user_id):
         coor = { }
         coor["long"] = str(checkin.longitude)
         coor["lat"] = str(checkin.latitude)
+        coor["when"] = str(checkin.when)
+        coor["comment"] = str(checkin.comment)
 
         return coor
     except CheckIn.DoesNotExist:

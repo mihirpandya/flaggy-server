@@ -1,5 +1,5 @@
 from api.models import *
-from api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str
+from api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in
 from django.utils import simplejson
 from json import loads, dumps
 from django.core import serializers
@@ -30,22 +30,17 @@ def add_user(request):
         if (verify_user(fb_id)):
             u = User.objects.get(fb_id=fb_id)
 
-            c = CheckIn.objects.filter(u_id_id = u.u_id)
+            last_checkin = last_check_in(u.u_id)
 
-            if(len(c)):
-                last_checkin = c[(len(c)-1)]
-
-                checkin_user["longitude"] = int(last_checkin.longitude)
-                checkin_user["latitude"] = int(last_checkin.latitude)
-                checkin_user["when"] = str(last_checkin.when)
-                checkin_user["comment"] = str(last_checkin.comment)
+            if(last_checkin is not None):
+                checkin_user = last_checkin
 
             res["status"] = 2
             res["last_checkin"] = checkin_user
             ## Add the last checkin location here
             res["u_id"] = str(u.u_id)
             ## We should return friends (you mean followers) if the user already exists ##
-            res["followers"] = __followers(u.u_id)
+            res["following"] = __following(u.u_id)
 
         elif (not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
             res["status"] = 1
