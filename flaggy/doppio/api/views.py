@@ -1,5 +1,5 @@
-from api.models import *
-from api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in
+from doppio.models import *
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in
 from django.utils import simplejson
 from json import loads, dumps
 from django.core import serializers

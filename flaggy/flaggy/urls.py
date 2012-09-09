@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from api.views import *
+from doppio.api.views import *
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -15,7 +15,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^check_in/', view=check_in, name='check_in'),
     url(r'^approve_request/', view=approve_request, name='approve_request'),
     url(r'^unfollow/', view=unfollow, name='unfollow'),
-#    url(r'^custom/', view=custom, name='custom'),
+    #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
     # url(r'^$', 'flaggy.views.home', name='home'),

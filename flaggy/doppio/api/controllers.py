@@ -3,7 +3,7 @@ import pprint
 import hashlib
 import smtplib
 
-from api.models import *
+from doppio.models import *
 from datetime import datetime
 from django.utils import simplejson
 from django.core import serializers
