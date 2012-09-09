@@ -130,7 +130,7 @@ def __following(u_id):
             dict_user = { }
             ##dict_user['u_id'] = item.following.pk
             dict_user['name'] = item.following.fname + " " + item.following.lname
-            dict_user['location'] = last_check_in(item.follower.pk)
+            dict_user['location'] = last_check_in(item.following.pk)
             array[item.following.pk] = dict_user
 
         return array
