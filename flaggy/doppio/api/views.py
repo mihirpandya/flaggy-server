@@ -50,13 +50,16 @@ def add_user(request):
 
         return HttpResponse(dumps(res), mimetype='application/json')
 
+# accepts f_er, fb_ed, email_ed
 def add_follow(request):
     if request.method == 'GET':
         follower = request.GET.get('f_er')
-        followed = request.GET.get('f_ed')
+        followed_fb = request.GET.get('fb_ed')
+        followed_email = request.GET.get('email_ed')
 
-        if(follower != None and followed != None):
-            res = __add_follow(follower, followed)
+
+        if(follower is not None and followed_fb is not None and followed_email is not None):
+            res = __add_follow(follower, followed_fb, followed_email)
             return HttpResponse(dumps(res), mimetype='application/json')
         else:
             err = error("Error. Did not find either user.") 

@@ -22,43 +22,47 @@ def __add_user(f_n, l_n, fb, twitter, email):
     except:
         return 0
 
-def __add_follow(follower, followed):
+def __add_follow(follower, followed_fb, followed_email):
     try:
         f_er = User.objects.get(pk=follower)
-        f_ed = User.objects.get(pk=followed)
-        k = hashlib.sha224(str(f_er.pk)+"&"+str(f_ed.pk)).hexdigest()
 
+        if(verify_user(followed_fb)):
+            # Send email to existing user. Add to follow pending table
+
+            f_ed = User.objects.get(fb_id=followed_fb)
+            k = hashlib.sha224(str(f_er.pk)+"&"+str(f_ed.pk)).hexdigest()
+            approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k="+k
+
+            try:
+                mail_status = send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'notification@flaggyapp.com', [followed_email], fail_silently=False)
+
+                if(mail_status):
+                    f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
+                    f.save()
+                    res = success("Request sent to "+f_ed.fname+".")
+
+                else:
+                    res = error("Failed to send request.")
+
+            except smtplib.SMTPException:
+                res = error("Failed to send request. SMTP server disconnected unexpectedly.")
+
+        else:
+            # Send email about flaggy and follow request.
+            try:
+                mail_status = send_mail(f_er.fname+" wants to follow you on Flaggy App!", f_er.fname+" wants you to join Flaggy.", 'notification@flaggyapp.com', [followed_email], fail_silently=False)
+                if(mail_status):
+                    res = success("New friend notified about flaggy.")
+                else:
+                    res = error("Failed to notify about flaggy.")
+
+            except smtplib.SMTPException:
+                res = error("Failed to notify about flaggy. SMTP server disconnected unexpectedly.")
+
+        return res
+    
     except User.DoesNotExist:
-        return error("User does not exist.")
-
-    except FollowPending.MultipleObjectsReturned:
-        return error("Request to "+f_ed.fname+" has already been sent.")
-
-    except:
-        return error("Error. Could not send follow request to "+f_ed.fname)
-
-
-    try:
-        FollowPending.objects.get(secure_key=k)
-        return error("Request to "+f_ed.fname+" has already been sent.")
-
-    except FollowPending.DoesNotExist:
-        approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k="+k
-
-        try:
-            mail_success = send_mail(f_er.fname+" wants to follow you on Flaggy App!", approve_url, 'firepent@hotmail.com', [f_ed.email], fail_silently=False)
-
-            if(mail_success):
-                f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
-                f.save()
-                res = success("Request sent to "+f_ed.fname)
-            else:
-                res = error("Failed to send request "+f_ed.fname)
-
-            return res
-
-        except smtplib.SMTPException:
-            return error("SMTP Server Disconnected unexpectedly.")
+        return error("Follower Does not exist.")
 
 
 def __unfollow(follower, followed):
