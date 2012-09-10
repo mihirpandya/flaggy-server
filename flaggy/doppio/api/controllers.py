@@ -143,8 +143,9 @@ def __check_in(long, lat, u_id, comm):
     
     try:
         user = User.objects.get(pk=u_id)
-        print lat
-        print long
+        if (comm is None):
+            comm = "N/A"
+        
         ci = CheckIn(longitude = long,
                      latitude = lat,
                      u_id = user,
