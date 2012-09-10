@@ -1,10 +1,11 @@
 # Django settings for flaggy project.
 
-import os, pwd
+import os
+import pwd
+import json
+
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
-
-import json
 
 # os.getlogin() doesn't work for remote sessions. Not sure why. ##
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
