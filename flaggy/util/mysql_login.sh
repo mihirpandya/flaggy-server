@@ -1,0 +1,1 @@
+mysql -u root -pO8FPYH1B2L8aYzFDmHsu -h flaggy-mihirmp.dotcloud.com -P 35528 checkins
