@@ -4,6 +4,10 @@ app_name=flaggy
 
 python $app_name/manage.py syncdb --noinput
 
+dotcloud_get_env() {
+    sed -n "/$1/ s/.*: \"\(.*\)\".*/\1/p" < "$HOME/environment.json"
+}
+
 setup_django_celery() {
     cat > $HOME/current/supervisord.conf << EOF
 [program:djcelery]
