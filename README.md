@@ -2,12 +2,12 @@
 ##http://flaggy-mihirmp.dotcloud.com##
 
 
-### dotcloud account info ###
+## dotcloud account info ##
 username - mihirmp
 <br />
 password - spadeace
 
-### URLs ###
+## URLs ##
   /add_user?fname=firstname&lname=lastname&email=me@email.com&fb_id=1111
   <br />
   /error
@@ -22,18 +22,17 @@ password - spadeace
   <br />
   /unfollow?f_er=1&f_ed=2
 
-### Scripts ###
+## Scripts ##
 ./resetDB.sh dumps the information from the database, remodels the DB and loads the information back
 
-### Responses ###
+## Responses ##
 
-##### Generic Response: #####
+### Generic Response: ###
 
 ``` {
   status: "success"
   msg: "msg"
 }
-
 ```
 
 or
