@@ -8,6 +8,7 @@ class User(models.Model):
 	twitter_id = models.IntegerField()
 	email = models.EmailField(max_length=100)
 	date_joined = models.DateField()
+	distance_sensitivity = models.FloatField()
 
 class CheckIn(models.Model):
 	c_id = models.AutoField(primary_key=True)
