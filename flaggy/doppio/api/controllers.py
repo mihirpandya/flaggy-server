@@ -14,13 +14,14 @@ def __add_user(f_n, l_n, fb, twitter, email):
             fb_id=fb,
             twitter_id=twitter,
             email=email,
+            distance_sensitivity = 1.00,
             date_joined=datetime.now()
             )
         u.save()
         send_mail("Welcome to Flaggy App!", "Thank you for joining Flaggy App!", 'firepent@hotmail.com', [u.email], fail_silently=False)
         return str(u.pk)
-    except:
-        return 0
+    except Exception as inst:
+        return "Unexpected error:", inst
 
 
 def __add_follow(follower, followed_fb, followed_email):
