@@ -90,8 +90,7 @@ def followers(request):
         if len(res) > 0:
             return HttpResponse(dumps(res), mimetype='application/json')
         else:
-            res = success("No followers")
-            return HttpResponse(dumps(res), mimetype='application/json')
+            return HttpResponse(dumps(None), mimetype='application/json')
     else:
         err = error("No request received.")
         return HttpResponse(dumps(err), mimetype='application/json')
