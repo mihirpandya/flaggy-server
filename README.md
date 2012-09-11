@@ -27,18 +27,17 @@ password - spadeace
 
 ## Responses ##
 
-### Generic Response: ###
+Generic Response:
 
-``` {
-  status: "success"
-  msg: "msg"
-}
-```
+- status: Can be "success" or "error"
+- msg: Contains success/error manage. Useful for debugging.
 
-or
+add_user:
 
-``` {
-  status: "error"
-  msg: "msg"
-}
-```
+- status: Instead of "success" or "error", shows
+  * 0 for failure to add user
+  * 1 for successfully adding user
+  * 2 for an already existing user
+- u_id: u_id of newly added user or already existing user
+- last_checkin: Last checkin of user if user already exists
+- following: List of people user is following if user already exists
