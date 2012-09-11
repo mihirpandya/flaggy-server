@@ -44,6 +44,8 @@ DATABASES = {
 
 BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 
+CELERY_IMPORTS = ('doppio.api.tasks',)
+
 # Email
 
 EMAIL_HOST_USER = 'notification@flaggyapp.com'
