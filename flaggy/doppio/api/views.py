@@ -21,16 +21,14 @@ def add_user(request):
         l_n = request.GET.get('lname')
         fb_id = request.GET.get('fb_id')
         email = request.GET.get('email')
-
         res = {}
         checkin_user = {}
 
-        if (verify_user(fb_id)):
+        if verify_user(fb_id):
             u = User.objects.get(fb_id=fb_id)
-
             last_checkin = last_check_in(u.u_id)
 
-            if(last_checkin is not None):
+            if last_checkin is not None:
                 checkin_user = last_checkin
 
             res["status"] = 2

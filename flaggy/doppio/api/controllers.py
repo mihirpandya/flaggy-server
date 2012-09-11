@@ -1,7 +1,7 @@
 import hashlib
 import smtplib
 
-from doppio.models import *
+from doppio.models import User, FollowPending, Follow, CheckIn
 from datetime import datetime
 from django.core.mail import send_mail
 
@@ -28,19 +28,23 @@ def __add_follow(follower, followed_fb, followed_email):
         f_er = User.objects.get(pk=follower)
         if verify_user(followed_fb):
             # Send email to existing user. Add to follow pending table
-
             f_ed = User.objects.get(fb_id=followed_fb)
             k = hashlib.sha224("%s&%s" % (f_er.pk, f_ed.pk)).hexdigest()
             approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k=%s" % k
 
             try:
-                mail_status = send_mail(f_er.fname + " wants to follow you on Flaggy App!", approve_url, 'notification@flaggyapp.com', [followed_email], fail_silently=False)
+                mail_status = send_mail(
+                    f_er.fname + " wants to follow you on Flaggy App!",
+                    approve_url,
+                    'notification@flaggyapp.com',
+                    [followed_email],
+                    fail_silently=False
+                    )
 
                 if mail_status:
                     f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
                     f.save()
                     res = success("Request sent to %s." % f_ed.fname)
-
                 else:
                     res = error("Failed to send request.")
 
@@ -50,7 +54,13 @@ def __add_follow(follower, followed_fb, followed_email):
         else:
             # Send email about flaggy and follow request.
             try:
-                mail_status = send_mail(f_er.fname + " wants to follow you on Flaggy App!", f_er.fname + " wants you to join Flaggy.", 'notification@flaggyapp.com', [followed_email], fail_silently=False)
+                mail_status = send_mail(
+                    f_er.fname + " wants to follow you on Flaggy App!",
+                    f_er.fname + " wants you to join Flaggy.",
+                    'notification@flaggyapp.com',
+                    [followed_email],
+                    fail_silently=False
+                    )
                 if mail_status:
                     res = success("New friend notified about flaggy.")
                 else:
@@ -60,7 +70,6 @@ def __add_follow(follower, followed_fb, followed_email):
                 res = error("Failed to notify about flaggy. SMTP server disconnected unexpectedly.")
 
         return res
-
     except User.DoesNotExist:
         return error("Follower Does not exist.")
 
@@ -68,17 +77,14 @@ def __add_follow(follower, followed_fb, followed_email):
 def __unfollow(follower, followed):
     try:
         f = FollowPending.objects.get(follower_p_id=follower, following_p_id=followed)
-
         if f.approve:
             f.approve = False
             follow = Follow.objects.get(follower_id=follower, following_id=followed)
             f.delete()
             follow.delete()
             return success("Successfully unfollowed.")
-
         else:
             return error("Already unfollowed.")
-
     except FollowPending.DoesNotExist:
         return error("No such connection exists.")
     except:
@@ -99,7 +105,6 @@ def __approve_request(k):
             follow = Follow(follower_id=f_er, following_id=f_ed)
             req.save()
             follow.save()
-
             return success("Request approved!")
 
     except FollowPending.DoesNotExist:
@@ -149,7 +154,6 @@ def __check_in(lng, lat, u_id, comm="N/A"):
 
 ## RESPONSES ##
 
-
 def success(msg):
     return {'status': 'success', 'msg': msg}
 
@@ -160,7 +164,6 @@ def error(msg):
 
 ## HELPERS ##
 ## Here will be the functions that are not directly mapped to a view ##
-
 
 def empty_str(s):
     return s == "" or s is None
