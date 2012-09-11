@@ -58,7 +58,7 @@ def add_follow(request):
             res = __add_follow(follower, followed_fb, followed_email)
             return HttpResponse(dumps(res), mimetype='application/json')
         else:
-            err = error("Error. Did not find either user.")
+            err = error("One of the key fields is missing.")
             return HttpResponse(dumps(err), mimetype='application/json')
 
     else:
