@@ -40,7 +40,7 @@ def add_user(request):
             ## We should return friends (you mean followers) if the user already exists ##
             res["following"] = __following(u.u_id)
 
-        elif (not(empty_str(f_n)) and not(empty_str(l_n)) and not(empty_str(fb_id))):
+        elif not empty_str(f_n) and not empty_str(l_n) and not empty_str(fb_id):
             res["status"] = 1
             res["u_id"] = __add_user(f_n, l_n, fb_id, 0000, email)
         else:
