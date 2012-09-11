@@ -69,8 +69,11 @@ def add_follow(request):
         if follower is not None and followed_fb is not None and followed_email is not None:
             res = __add_follow(follower, followed_fb, followed_email)
             return HttpResponse(dumps(res), mimetype='application/json')
-        else:
-            err = error("One of the key fields is missing.")
+        elif followed_fb is None:
+            err = error("Facebook ID of the person you want to follow is missing.")
+            return HttpResponse(dumps(err), mimetype='application/json')
+        elif followed_email is None:
+            err = error("Email of the person you want to follow is missing.")
             return HttpResponse(dumps(err), mimetype='application/json')
 
     else:
