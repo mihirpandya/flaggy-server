@@ -24,3 +24,20 @@ password - spadeace
 
 ### Scripts ###
 ./resetDB.sh dumps the information from the database, remodels the DB and loads the information back
+
+### Responses ###
+
+#### Generic Response: ####
+``` {
+  status: "success"
+  msg: "msg"
+}
+```
+
+or
+
+``` {
+  status: "error"
+  msg: "msg"
+}
+```

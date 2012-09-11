@@ -32,6 +32,7 @@ def add_user(request):
                 checkin_user = last_checkin
 
             res["status"] = 2
+            res["msg"] = "User "+u.fname+" already exists!"
             res["last_checkin"] = checkin_user
             ## Add the last checkin location here
             res["u_id"] = str(u.u_id)
@@ -39,12 +40,21 @@ def add_user(request):
             res["following"] = __following(u.u_id)
 
         elif not empty_str(f_n) and not empty_str(l_n) and not empty_str(fb_id):
-            res["status"] = 1
-            res["u_id"] = __add_user(f_n, l_n, fb_id, 0000, email)
-            res["last_checkin"] = None
-            res["following"] = None
+            add_status = __add_user(f_n, l_n, fb_id, 0000, email)
+            
+            if(add_status["status"] == "success"):
+                res["status"] = 1
+                res["msg"] = add_status["msg"]
+                res["u_id"] = add_status["u_id"]
+                res["last_checkin"] = None
+                res["following"] = None
+
+            else:
+                res["status"] = 0
+                res["msg"] = add_status["msg"]
         else:
             res["status"] = 0
+            res["msg"] = "Invalid input."
 
         return HttpResponse(dumps(res), mimetype='application/json')
 

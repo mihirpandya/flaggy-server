@@ -18,10 +18,15 @@ def __add_user(f_n, l_n, fb, twitter, email):
             date_joined=datetime.now()
             )
         u.save()
-        send_mail("Welcome to Flaggy App!", "Thank you for joining Flaggy App!", 'firepent@hotmail.com', [u.email], fail_silently=False)
-        return str(u.pk)
+        send_mail("Welcome to Flaggy App!", "Thank you for joining Flaggy App!", 'notification@flaggyapp.com', [u.email], fail_silently=False)
+        res = success("Added user successfully.")
+        res["u_id"] = str(u.pk)
+
+        return res
+
     except Exception as inst:
-        return "Unexpected error:", inst
+        res = error("Unexpected error:", inst)
+        return res
 
 
 def __add_follow(follower, followed_fb, followed_email):
@@ -136,7 +141,7 @@ def __following(u_id):
         return array
 
     except User.DoesNotExist:
-        return error("Error. User does not exist.")
+        return error("Error. User with u_id "+u_id+" does not exist on the Follow table.")
 
 
 def __check_in(lng, lat, u_id, comm="N/A"):
@@ -148,9 +153,14 @@ def __check_in(lng, lat, u_id, comm="N/A"):
             when=datetime.now(),
             comment=comm)
         ci.save()
+
         return success("Checked In!")
-    except:
-        return error("Error. Failed to check in.")
+
+    except User.DoesNotExist:
+        return error("User with u_id "+str(u_id)+" does not exist.")
+
+    except Exception as inst:
+        return error("Error. Failed to check in: ", inst)
 
 
 ## RESPONSES ##
