@@ -1,4 +1,4 @@
-from doppio.models import *
+from doppio.models import User
 from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in
 from json import dumps
 from django.template import Context, loader
@@ -56,7 +56,7 @@ def add_follow(request):
         followed_fb = request.GET.get('fb_ed')
         followed_email = request.GET.get('email_ed')
 
-        if(follower is not None and followed_fb is not None and followed_email is not None):
+        if follower is not None and followed_fb is not None and followed_email is not None:
             res = __add_follow(follower, followed_fb, followed_email)
             return HttpResponse(dumps(res), mimetype='application/json')
         else:
@@ -71,9 +71,7 @@ def add_follow(request):
 def approve_request(request):
     if request.method == 'GET':
         key = request.GET.get('k')
-
         res = __approve_request(key)
-
         return HttpResponse(dumps(res), mimetype='application/json')
 
 
@@ -81,9 +79,7 @@ def unfollow(request):
     if request.method == 'GET':
         f_er = request.GET.get('f_er')
         f_ed = request.GET.get('f_ed')
-
         res = __unfollow(f_er, f_ed)
-
         return HttpResponse(dumps(res), mimetype='application/json')
 
 
@@ -91,8 +87,7 @@ def followers(request):
     if request.method == 'GET':
         u_id = request.GET.get('u_id')
         res = __followers(u_id)
-
-        if len(res):
+        if len(res) > 0:
             return HttpResponse(dumps(res), mimetype='application/json')
         else:
             res = success("No followers")
@@ -106,7 +101,7 @@ def following(request):
     if request.method == 'GET':
         u_id = request.GET.get('u_id')
         res = __following(u_id)
-        if len(res):
+        if len(res) > 0:
             return HttpResponse(dumps(res), mimetype='application/json')
         else:
             res = success("Following no one")
@@ -120,9 +115,9 @@ def check_in(request):
     if request.method == 'GET':
         u_id = request.GET.get('u_id')
         lat = request.GET.get('lat')
-        lon = request.GET.get('long')
+        lng = request.GET.get('lng')
         comm = request.GET.get('comm')
-        res = __check_in(lon, lat, u_id, comm)
+        res = __check_in(lng, lat, u_id, comm)
         return HttpResponse(dumps(res), mimetype='application/json')
     else:
         err = error("No request received")
