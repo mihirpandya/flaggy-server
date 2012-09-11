@@ -27,11 +27,13 @@ password - spadeace
 
 ### Responses ###
 
-#### Generic Response: ####
+##### Generic Response: #####
+
 ``` {
   status: "success"
   msg: "msg"
 }
+
 ```
 
 or
