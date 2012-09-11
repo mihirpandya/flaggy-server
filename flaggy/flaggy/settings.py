@@ -42,7 +42,7 @@ DATABASES = {
 
 #Broker for Celery
 
-BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+BROKER_URL = env['DOTCLOUD_BROKER_AMQP_URL']
 
 CELERY_IMPORTS = ('doppio.api.tasks',)
 
