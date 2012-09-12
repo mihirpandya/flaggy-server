@@ -15,6 +15,8 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^check_in/', view=check_in, name='check_in'),
     url(r'^approve_request/', view=approve_request, name='approve_request'),
     url(r'^unfollow/', view=unfollow, name='unfollow'),
+    url(r'^unapproved/', view=unapproved_requests, name='unapproved_requests'),
+    url(r'^retrieve/', view=retrieve_f_request, name='retrieve_f_request'),
     #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:

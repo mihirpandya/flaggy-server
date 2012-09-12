@@ -204,7 +204,7 @@ def last_check_in(user_id):
     except CheckIn.DoesNotExist:
         return None
 
-def unapproved_requests():
+def __unapproved_requests():
     res = success("Found all unapproved requests.")
     f = FollowPending.objects.filter(approve=None)
     req_res = { }
@@ -227,7 +227,7 @@ def unapproved_requests():
 
     return res
 
-def retrieve_request(follower_id, following_id):
+def __retrieve_f_request(follower_id, following_id):
     try:
         f = FollowPending.objects.get(follower_p_id=follower_id, following_p_id=following_id)
         res = success("Found request.")
