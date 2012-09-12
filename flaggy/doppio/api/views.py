@@ -1,5 +1,5 @@
 from doppio.models import User
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request
 from json import dumps
 from django.template import Context, loader
 from datetime import datetime
@@ -137,6 +137,11 @@ def check_in(request):
 def unapproved_requests(request):
     if request.method == 'GET':
         res = __unapproved_requests()
+        return HttpResponse(dumps(res), mimetype='application/json')
+
+def approved_requests(request):
+    if request.method == 'GET':
+        res = __approved_request()
         return HttpResponse(dumps(res), mimetype='application/json')
 
 def retrieve_f_request(request):

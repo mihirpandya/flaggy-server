@@ -227,6 +227,29 @@ def __unapproved_requests():
 
     return res
 
+def __approved_request():
+    res = success("Found all approved requests.")
+    f = FollowPending.objects.filter(approve=True)
+    req_res = { }
+
+    for item in f:
+        data = { }
+
+        u = User.objects.get(u_id=int(item.follower_p_id))
+
+        data["p_id"] = int(item.p_id)
+        data["follower_p_id"] = int(item.follower_p_id)
+        data["follower_name"] = str(u.fname)+" "+str(u.lname)
+        data["following_p_id"] = int(item.following_p_id)
+        data["secure_key"] = str(item.secure_key)
+        data["approve"] = str(item.approve)
+
+        req_res[int(item.p_id)] = data
+
+    res["approved"] = req_res
+
+    return res
+
 def __retrieve_f_request(follower_id, following_id):
     try:
         f = FollowPending.objects.get(follower_p_id=follower_id, following_p_id=following_id)
@@ -238,7 +261,7 @@ def __retrieve_f_request(follower_id, following_id):
         f_dict["secure_key"] = str(f.secure_key)
         f_dict["approve"] = str(f.approve)
 
-        res["request"] = dumps(f_dict)
+        res["request"] = f_dict
 
         return res
 
