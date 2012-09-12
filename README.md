@@ -42,7 +42,7 @@ add_user:
 - `last_checkin`: Last checkin of user if user already exists
 - `following`: List of people user is following if user already exists
 
-retrieve_request(follower_id, following_id:
+retrieve_request(follower_id, following_id):
 
 - `request`: Returns request that was queried, if successful.
   * `p_id`
