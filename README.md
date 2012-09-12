@@ -41,3 +41,22 @@ add_user:
 - `u_id`: User ID of newly added user or already existing user
 - `last_checkin`: Last checkin of user if user already exists
 - `following`: List of people user is following if user already exists
+
+retrieve_request:
+
+- `request`: Returns request that was queried, if successful.
+  * `p_id`
+  * `follower_p_id`
+  * `following_p_id`
+  * `secure_key`
+  * `approve`
+
+unapproved_request:
+
+- `unapproved`: All the unapproved requests.
+  * 1 (p_id)
+    * `follower_p_id`
+    * `secure_key`
+    * `following_p_id`
+    * `p_id`
+    * `approve`

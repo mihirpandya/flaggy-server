@@ -1,6 +1,7 @@
 import hashlib
 import smtplib
 
+from json import dumps
 from doppio.models import User, FollowPending, Follow, CheckIn
 from datetime import datetime
 from django.core.mail import send_mail
@@ -25,8 +26,8 @@ def __add_user(f_n, l_n, fb, twitter, email):
         return res
 
     except Exception as inst:
-        res = error("Unexpected error:", inst)
-        return res
+        msg = "Unexpected error: "+str(inst)
+        return error(msg)
 
 
 def __add_follow(follower, followed_fb, followed_email):
@@ -202,6 +203,44 @@ def last_check_in(user_id):
         }
     except CheckIn.DoesNotExist:
         return None
+
+def unapproved_requests():
+    res = success("Found all unapproved requests.")
+    f = FollowPending.objects.filter(approve=None)
+    req_res = { }
+
+    for item in f:
+        data = { }
+
+        data["p_id"] = int(item.p_id)
+        data["follower_p_id"] = int(item.follower_p_id)
+        data["following_p_id"] = int(item.following_p_id)
+        data["secure_key"] = str(item.secure_key)
+        data["approve"] = str(item.approve)
+
+        req_res[int(item.p_id)] = data
+
+    res["unapproved"] = req_res
+
+    return res
+
+def retrieve_request(follower, following):
+    try:
+        f = FollowPending.objects.get(follower_p_id=follower, following_p_id=following)
+        res = success("Found request.")
+        f_dict = { }
+        f_dict["p_id"] = int(f.p_id)
+        f_dict["follower_p_id"] = int(f.follower_p_id)
+        f_dict["following_p_id"] = int(f.following_p_id)
+        f_dict["secure_key"] = str(f.secure_key)
+        f_dict["approve"] = str(f.approve)
+
+        res["request"] = dumps(f_dict)
+
+        return res
+
+    except FollowPending.DoesNotExist:
+        return error("Such a follow request does not exist.")
 
 #def all_following_info(user_id):
 #    try:
