@@ -212,8 +212,11 @@ def unapproved_requests():
     for item in f:
         data = { }
 
+        u = User.objects.get(u_id=int(item.follower_p_id))
+
         data["p_id"] = int(item.p_id)
         data["follower_p_id"] = int(item.follower_p_id)
+        data["follower_name"] = str(u.fname)+" "+str(u.lname)
         data["following_p_id"] = int(item.following_p_id)
         data["secure_key"] = str(item.secure_key)
         data["approve"] = str(item.approve)
@@ -224,9 +227,9 @@ def unapproved_requests():
 
     return res
 
-def retrieve_request(follower, following):
+def retrieve_request(follower_id, following_id):
     try:
-        f = FollowPending.objects.get(follower_p_id=follower, following_p_id=following)
+        f = FollowPending.objects.get(follower_p_id=follower_id, following_p_id=following_id)
         res = success("Found request.")
         f_dict = { }
         f_dict["p_id"] = int(f.p_id)
