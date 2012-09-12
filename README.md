@@ -42,7 +42,7 @@ add_user:
 - `last_checkin`: Last checkin of user if user already exists
 - `following`: List of people user is following if user already exists
 
-retrieve_request:
+retrieve_request(follower, following):
 
 - `request`: Returns request that was queried, if successful.
   * `p_id`
@@ -51,7 +51,7 @@ retrieve_request:
   * `secure_key`
   * `approve`
 
-unapproved_request:
+unapproved_request():
 
 - `unapproved`: All the unapproved requests.
   * 1 (p_id)
