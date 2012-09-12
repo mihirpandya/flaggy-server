@@ -48,6 +48,7 @@ retrieve_request(follower, following):
   * `p_id`
   * `follower_p_id`
   * `following_p_id`
+  * `follower_name`
   * `secure_key`
   * `approve`
 
@@ -56,7 +57,17 @@ unapproved_request():
 - `unapproved`: All the unapproved requests.
   * 1 (p_id)
     * `follower_p_id`
+    * `follower_name`
     * `secure_key`
     * `following_p_id`
     * `p_id`
     * `approve`
+
+approve_request:
+
+- inputs:
+    * follower_id
+    * following_id
+
+- output:
+    * success - fail
