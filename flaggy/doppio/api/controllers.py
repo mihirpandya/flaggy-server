@@ -160,7 +160,8 @@ def __check_in(lng, lat, u_id, comm="N/A"):
         return error("User with u_id "+str(u_id)+" does not exist.")
 
     except Exception as inst:
-        return error("Error. Failed to check in: ", inst)
+        msg = "Error. Failed to check in: "+str(inst)
+        return error(msg)
 
 
 ## RESPONSES ##
