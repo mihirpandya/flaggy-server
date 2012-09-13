@@ -145,8 +145,11 @@ def __following(u_id):
         return error("Error. User with u_id "+u_id+" does not exist on the Follow table.")
 
 
-def __check_in(lng, lat, u_id, comm="N/A"):
+def __check_in(lng, lat, u_id, comm):
     try:
+        if comm is None:
+            comm = "N/A"
+
         ci = CheckIn(
             longitude=lng,
             latitude=lat,
