@@ -65,3 +65,10 @@ unapproved_request():
 
 approve_request(follower_id, following_id):
   - success: fail
+
+## Emails ##
+
+Create the HTML template of the email in `flaggy/templates/email`. Include the template in the `doppio.api.emails` module. Follow the example.
+
+- `doppio.api.controllers.flaggy_email`:
+  * Returns success object if email sent successfully. Error otherwise.
