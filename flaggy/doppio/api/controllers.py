@@ -5,8 +5,7 @@ from json import dumps
 from doppio.models import User, FollowPending, Follow, CheckIn
 from datetime import datetime
 from django.core.mail import send_mail, EmailMessage
-from django.template.loader import render_to_string
-from doppio.api.emails import emails
+from doppio.api.emails import flaggy_email
 
 
 def __add_user(f_n, l_n, fb, twitter, email):
@@ -22,8 +21,11 @@ def __add_user(f_n, l_n, fb, twitter, email):
             )
 
         u.save()
+        email_info = { }
+        email_info["template"] = "welcome"
+        email_info["recipient"] = email
 
-        email_res = flaggy_email('welcome', email)
+        email_res = flaggy_email(email_info)
         msg = email_res['msg']
 
         if(email_res['status'] == "success"):
@@ -36,55 +38,46 @@ def __add_user(f_n, l_n, fb, twitter, email):
         return res
 
     except Exception as inst:
-        msg = "Unexpected error: "+str(inst)
+        msg = "Unexpected error: %s" % str(inst)
         return error(msg)
 
 
 def __add_follow(follower, followed_fb, followed_email):
     try:
         f_er = User.objects.get(pk=follower)
+
+        email_info = { }
+        email_info["follower"] = f_er.fname
+        email_info["recipient"] = followed_email
+
         if verify_user(followed_fb):
             # Send email to existing user. Add to follow pending table
             f_ed = User.objects.get(fb_id=followed_fb)
             k = hashlib.sha224("%s&%s" % (f_er.pk, f_ed.pk)).hexdigest()
-            approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k=%s" % k
+            email_info["key"] = k
 
-            try:
-                mail_status = send_mail(
-                    f_er.fname + " wants to follow you on Flaggy App!",
-                    approve_url,
-                    'notification@flaggyapp.com',
-                    [followed_email],
-                    fail_silently=False
-                    )
+            email_info["template"] = "follow"
 
-                if mail_status:
-                    f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
-                    f.save()
-                    res = success("Request sent to %s." % f_ed.fname)
-                else:
-                    res = error("Failed to send request.")
+            mail_status = flaggy_email(email_info)['status']
 
-            except smtplib.SMTPException:
-                res = error("Failed to send request. SMTP server disconnected unexpectedly.")
+            if (mail_status == "success"):
+                f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
+                f.save()
+                res = success("Request sent to %s." % f_ed.fname)
+            elif(mail_status == "error"):
+                res = error("Failed to send request.")
 
         else:
             # Send email about flaggy and follow request.
-            try:
-                mail_status = send_mail(
-                    f_er.fname + " wants to follow you on Flaggy App!",
-                    f_er.fname + " wants you to join Flaggy.",
-                    'notification@flaggyapp.com',
-                    [followed_email],
-                    fail_silently=False
-                    )
-                if mail_status:
-                    res = success("New friend notified about flaggy.")
-                else:
-                    res = error("Failed to notify about flaggy.")
+            email_info["template"] = "about"
+            mail_status = flaggy_email(email_info)['status']
+            if (mail_status == "success"):
+                res = success("New friend notified about flaggy.")
+            elif(mail_status == "error"):
+                res = error("Failed to notify about flaggy.")
 
-            except smtplib.SMTPException:
-                res = error("Failed to notify about flaggy. SMTP server disconnected unexpectedly.")
+#            except smtplib.SMTPException:
+#                res = error("Failed to notify about flaggy. SMTP server disconnected unexpectedly.")
 
         return res
     except User.DoesNotExist:
@@ -283,25 +276,6 @@ def last_check_in(user_id):
         }
     except CheckIn.DoesNotExist:
         return None
-
-def flaggy_email(template, recipient):
-
-    try:
-        html_content = render_to_string(emails[template]['content'])
-
-        msg = EmailMessage(emails[template]['subject'],
-                           html_content,
-                           "notification@flaggyapp.com",
-                           [recipient]
-                           )
-        msg.content_subtype = "html"
-        if(msg.send() == 1):
-            return success("Sent Welcome Email.")
-
-    except Exception as inst:
-        err = "Failed to send email. Exception: "+str(inst)
-        return error(err)
-
 
 #def all_following_info(user_id):
 #    try:

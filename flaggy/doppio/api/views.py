@@ -34,9 +34,7 @@ def add_user(request):
             res["status"] = 2
             res["msg"] = "User "+u.fname+" already exists!"
             res["last_checkin"] = checkin_user
-            ## Add the last checkin location here
             res["u_id"] = str(u.u_id)
-            ## We should return friends (you mean followers) if the user already exists ##
             res["following"] = __following(u.u_id)
 
         elif not empty_str(f_n) and not empty_str(l_n) and not empty_str(fb_id):
@@ -62,18 +60,23 @@ def add_user(request):
 # accepts f_er, fb_ed, email_ed
 def add_follow(request):
     if request.method == 'GET':
-        follower = request.GET.get('f_er')
+        follower = request.GET.get('u_id')
         followed_fb = request.GET.get('fb_ed')
-        followed_email = request.GET.get('email_ed')
+#        followed_email = request.GET.get('email_ed')
 
-        if follower is not None and followed_fb is not None and followed_email is not None:
-            res = __add_follow(follower, followed_fb, followed_email)
-            return HttpResponse(dumps(res), mimetype='application/json')
+        if follower is not None and followed_fb is not None:
+            if(verify_user(followed_fb)):
+                u = User.objects.get(fb_id=followed_fb)
+                followed_email = u.email
+                res = __add_follow(follower, followed_fb, followed_email)
+                return HttpResponse(dumps(res), mimetype='application/json')
+
+            else:
+                resp = success("Facebook user %s is not on our database." % followed_fb)
+                return HttpResponse(dumps(resp), mimetype='application/json')
+
         elif followed_fb is None:
             err = error("Facebook ID of the person you want to follow is missing.")
-            return HttpResponse(dumps(err), mimetype='application/json')
-        elif followed_email is None:
-            err = error("Email of the person you want to follow is missing.")
             return HttpResponse(dumps(err), mimetype='application/json')
 
     else:
