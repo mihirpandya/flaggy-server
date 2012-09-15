@@ -141,7 +141,7 @@ ROOT_URLCONF = 'flaggy.urls'
 WSGI_APPLICATION = 'flaggy.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'flaggy/templates/'),
+    os.path.join(PROJECT_ROOT, 'flaggy/site/templates/'),
 )
 
 INSTALLED_APPS = (
@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'flaggy.with_jinja'
 )
 
 # A sample logging configuration. The only tangible logging

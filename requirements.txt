@@ -1,3 +1,4 @@
 django
 django-celery
 django-supervisor
+jinja2
