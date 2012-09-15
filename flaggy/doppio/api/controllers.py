@@ -147,6 +147,7 @@ def __following(u_id):
         for item in Follow.objects.filter(follower_id=u_id):
             array[item.following.pk] = {
                 'name': "%s %s" % (item.following.fname, item.following.lname),
+                'fb_id': item.following.fb_id,
                 'location': last_check_in(item.following.pk)
                 }
         return array
