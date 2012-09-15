@@ -36,7 +36,7 @@ def add_user(request):
             res["last_checkin"] = checkin_user
             res["u_id"] = str(u.u_id)
             res["following"] = __following(u.u_id)
-
+            res["follower"] = __followers(u.u_id)
         elif not empty_str(f_n) and not empty_str(l_n) and not empty_str(fb_id):
             add_status = __add_user(f_n, l_n, fb_id, 0000, email)
             

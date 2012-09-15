@@ -127,7 +127,10 @@ def __followers(u_id):
     try:
         array = {}
         for item in Follow.objects.filter(following_id=u_id):
-            array[item.follower.pk] = {'name': '%s %s' % (item.follower.fname, item.follower.lname)}
+            array[item.follower.pk] = {
+                'name': '%s %s' % (item.follower.fname, item.follower.lname),
+                'fb_id': item.following.fb_id
+                }
         return array
 
     except User.DoesNotExist:
