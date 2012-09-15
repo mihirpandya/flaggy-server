@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from doppio.api.views import *
 from doppio.site.views import *
+from doppio.site import *
+import doppio
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -26,7 +28,7 @@ urlpatterns = patterns('django.views.generic.simple',
     # url(r'^flaggy/', include('flaggy.foo.urls')),
 
 
-    url(r'^m/home/', view=home, name='home'),
+    url(r'^m/home/', view=home_page, name='home_page'),
 
 
     # Uncomment the admin/doc line below to enable admin documentation:

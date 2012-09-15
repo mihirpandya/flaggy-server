@@ -94,7 +94,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = '/Users/iltercanberk/Dropbox/Projects/Flaggy-App/flaggy/doppio/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -140,8 +140,9 @@ ROOT_URLCONF = 'flaggy.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'flaggy.wsgi.application'
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'flaggy/site/templates/'),
+TEMPLATE_DIRS = (   
+    os.path.join(PROJECT_ROOT, 'doppio/site/templates'),
+    os.path.join(PROJECT_ROOT, 'doppio/email_templates'),
 )
 
 INSTALLED_APPS = (
@@ -158,7 +159,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'flaggy.with_jinja'
 )
 
 # A sample logging configuration. The only tangible logging
