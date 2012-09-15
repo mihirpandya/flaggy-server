@@ -53,7 +53,8 @@ def flaggy_email(info_obj):
             email_obj = follow_email(follower, key)
 
         else:
-            email_obj = emails[info_obj['template']]['content']
+            template = info_obj['template']
+            email_obj = emails[template]['content']
 
         html_content = email_obj['content']
 
@@ -63,6 +64,7 @@ def flaggy_email(info_obj):
                            [info_obj['recipient']]
                            )
         msg.content_subtype = "html"
+
         if(msg.send() == 1):
             return success("Sent Welcome Email.")
 

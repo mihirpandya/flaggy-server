@@ -58,6 +58,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# For POST data
+
+APPEND_SLASH = False
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -128,7 +132,8 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # Comment CSRF Middleware out for POST requests.
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:

@@ -16,11 +16,11 @@ def hello_view(request):
 
 
 def add_user(request):
-    if request.method == 'GET':
-        f_n = request.GET.get('fname')
-        l_n = request.GET.get('lname')
-        fb_id = request.GET.get('fb_id')
-        email = request.GET.get('email')
+    if request.method == 'POST':
+        f_n = request.POST.get('fname')
+        l_n = request.POST.get('lname')
+        fb_id = request.POST.get('fb_id')
+        email = request.POST.get('email')
         res = {}
         checkin_user = {}
 
@@ -56,13 +56,16 @@ def add_user(request):
 
         return HttpResponse(dumps(res), mimetype='application/json')
 
+    else:
+        return HttpResponse(dumps(error("No POST request received.")), mimetype='application/json')
 
-# accepts f_er, fb_ed, email_ed
+
+## Methods related to following. ##
 def add_follow(request):
-    if request.method == 'GET':
-        follower = request.GET.get('u_id')
-        followed_fb = request.GET.get('fb_ed')
-#        followed_email = request.GET.get('email_ed')
+    if request.method == 'POST':
+        follower = request.POST.get('u_id')
+        followed_fb = request.POST.get('fb_ed')
+#        followed_email = request.POST.get('email_ed')
 
         if follower is not None and followed_fb is not None:
             if(verify_user(followed_fb)):
@@ -85,72 +88,74 @@ def add_follow(request):
 
 
 def approve_request(request):
-    if request.method == 'GET':
-        key = request.GET.get('k')
+    if request.method == 'POST':
+        key = request.POST.get('k')
         res = __approve_request(key)
         return HttpResponse(dumps(res), mimetype='application/json')
 
 
 def unfollow(request):
-    if request.method == 'GET':
-        f_er = request.GET.get('f_er')
-        f_ed = request.GET.get('f_ed')
+    if request.method == 'POST':
+        f_er = request.POST.get('f_er')
+        f_ed = request.POST.get('f_ed')
         res = __unfollow(f_er, f_ed)
         return HttpResponse(dumps(res), mimetype='application/json')
 
 
 def followers(request):
-    if request.method == 'GET':
-        u_id = request.GET.get('u_id')
+    if request.method == 'POST':
+        u_id = request.POST.get('u_id')
         res = __followers(u_id)
-        if len(res) > 0:
-            return HttpResponse(dumps(res), mimetype='application/json')
-        else:
-            return HttpResponse(dumps(None), mimetype='application/json')
+        result = success("Retrieved followers.")
+        result['followers'] = res
+        return HttpResponse(dumps(result), mimetype='application/json')
+
     else:
         err = error("No request received.")
         return HttpResponse(dumps(err), mimetype='application/json')
 
 
 def following(request):
-    if request.method == 'GET':
-        u_id = request.GET.get('u_id')
+    if request.method == 'POST':
+        u_id = request.POST.get('u_id')
         res = __following(u_id)
-        if len(res) > 0:
-            return HttpResponse(dumps(res), mimetype='application/json')
-        else:
-            return HttpResponse(dumps(None), mimetype='application/json')
+        result = success("Retrieved people you are following.")
+        result['following'] = res
+        return HttpResponse(dumps(result), mimetype='application/json')
+
     else:
         err = error("No request received.")
         return HttpResponse(dumps(err), mimetype='application/json')
 
+def unapproved_requests(request):
+    if request.method == 'POST':
+        res = __unapproved_requests()
+        return HttpResponse(dumps(res), mimetype='application/json')
+
+def approved_requests(request):
+    if request.method == 'POST':
+        res = __approved_request()
+        return HttpResponse(dumps(res), mimetype='application/json')
+
+def retrieve_f_request(request):
+    if request.method == 'POST':
+        f_er = request.POST.get('f_er')
+        f_ed = request.POST.get('f_ed')
+
+        res = __retrieve_f_request(f_er, f_ed)
+        return HttpResponse(dumps(res), mimetype='application/json')
+
+## Methods related to checking in. ##
 
 def check_in(request):
-    if request.method == 'GET':
-        u_id = request.GET.get('u_id')
-        lat = request.GET.get('lat')
-        lng = request.GET.get('lng')
-        comm = request.GET.get('comm')
+    if request.method == 'POST':
+        u_id = request.POST.get('u_id')
+        lat = request.POST.get('lat')
+        lng = request.POST.get('lng')
+        comm = request.POST.get('comm')
         res = __check_in(lng, lat, u_id, comm)
         return HttpResponse(dumps(res), mimetype='application/json')
     else:
         err = error("No request received")
         return HttpResponse(dumps(err), mimetype='application/json')
 
-def unapproved_requests(request):
-    if request.method == 'GET':
-        res = __unapproved_requests()
-        return HttpResponse(dumps(res), mimetype='application/json')
-
-def approved_requests(request):
-    if request.method == 'GET':
-        res = __approved_request()
-        return HttpResponse(dumps(res), mimetype='application/json')
-
-def retrieve_f_request(request):
-    if request.method == 'GET':
-        f_er = request.GET.get('f_er')
-        f_ed = request.GET.get('f_ed')
-
-        res = __retrieve_f_request(f_er, f_ed)
-        return HttpResponse(dumps(res), mimetype='application/json')
