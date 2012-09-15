@@ -4,7 +4,9 @@ import smtplib
 from json import dumps
 from doppio.models import User, FollowPending, Follow, CheckIn
 from datetime import datetime
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
+from django.template.loader import render_to_string
+from doppio.api.emails import emails
 
 
 def __add_user(f_n, l_n, fb, twitter, email):
@@ -18,10 +20,18 @@ def __add_user(f_n, l_n, fb, twitter, email):
             distance_sensitivity = 1.00,
             date_joined=datetime.now()
             )
+
         u.save()
-        send_mail("Welcome to Flaggy App!", "Thank you for joining Flaggy App!", 'notification@flaggyapp.com', [u.email], fail_silently=False)
-        res = success("Added user successfully.")
-        res["u_id"] = str(u.pk)
+
+        email_res = flaggy_email('welcome', email)
+        msg = email_res['msg']
+
+        if(email_res['status'] == "success"):
+            res = success(msg)
+            res["u_id"] = str(u.pk)
+
+        elif(email_res['status'] == "error"):
+            res = error(msg)
 
         return res
 
@@ -168,68 +178,6 @@ def __check_in(lng, lat, u_id, comm):
         return error(msg)
 
 
-## RESPONSES ##
-
-def success(msg):
-    return {'status': 'success', 'msg': msg}
-
-
-def error(msg):
-    return {'status': 'error', 'msg': msg}
-
-
-## HELPERS ##
-## Here will be the functions that are not directly mapped to a view ##
-
-def empty_str(s):
-    return s == "" or s is None
-
-
-def verify_user(value):
-    try:
-        User.objects.get(fb_id=value)
-        return True
-    except User.MultipleObjectsReturned:
-        return True
-    except User.DoesNotExist:
-        return False
-
-
-def last_check_in(user_id):
-    try:
-        checkin = CheckIn.objects.filter(u_id=user_id).latest('when')
-        return {
-            'lng': str(checkin.longitude),
-            'lat': str(checkin.latitude),
-            'when': str(checkin.when),
-            'comment': str(checkin.comment)
-        }
-    except CheckIn.DoesNotExist:
-        return None
-
-def __unapproved_requests():
-    res = success("Found all unapproved requests.")
-    f = FollowPending.objects.filter(approve=None)
-    req_res = { }
-
-    for item in f:
-        data = { }
-
-        u = User.objects.get(u_id=int(item.follower_p_id))
-
-        data["p_id"] = int(item.p_id)
-        data["follower_p_id"] = int(item.follower_p_id)
-        data["follower_name"] = str(u.fname)+" "+str(u.lname)
-        data["following_p_id"] = int(item.following_p_id)
-        data["secure_key"] = str(item.secure_key)
-        data["approve"] = str(item.approve)
-
-        req_res[int(item.p_id)] = data
-
-    res["unapproved"] = req_res
-
-    return res
-
 def __approved_request():
     res = success("Found all approved requests.")
     f = FollowPending.objects.filter(approve=True)
@@ -270,6 +218,89 @@ def __retrieve_f_request(follower_id, following_id):
 
     except FollowPending.DoesNotExist:
         return error("Such a follow request does not exist.")
+
+def __unapproved_requests():
+    res = success("Found all unapproved requests.")
+    f = FollowPending.objects.filter(approve=None)
+    req_res = { }
+
+    for item in f:
+        data = { }
+
+        u = User.objects.get(u_id=int(item.follower_p_id))
+
+        data["p_id"] = int(item.p_id)
+        data["follower_p_id"] = int(item.follower_p_id)
+        data["follower_name"] = str(u.fname)+" "+str(u.lname)
+        data["following_p_id"] = int(item.following_p_id)
+        data["secure_key"] = str(item.secure_key)
+        data["approve"] = str(item.approve)
+
+        req_res[int(item.p_id)] = data
+
+    res["unapproved"] = req_res
+
+    return res
+
+
+
+## RESPONSES ##
+
+def success(msg):
+    return {'status': 'success', 'msg': msg}
+
+
+def error(msg):
+    return {'status': 'error', 'msg': msg}
+
+
+## HELPERS ##
+## Here will be the functions that are not directly mapped to a view ##
+
+def empty_str(s):
+    return s == "" or s is None
+
+
+def verify_user(value):
+    try:
+        User.objects.get(fb_id=value)
+        return True
+    except User.MultipleObjectsReturned:
+        return True
+    except User.DoesNotExist:
+        return False
+
+
+def last_check_in(user_id):
+    try:
+        checkin = CheckIn.objects.filter(u_id=user_id).latest('when')
+        return {
+            'lng': str(checkin.longitude),
+            'lat': str(checkin.latitude),
+            'when': str(checkin.when),
+            'comment': str(checkin.comment)
+        }
+    except CheckIn.DoesNotExist:
+        return None
+
+def flaggy_email(template, recipient):
+
+    try:
+        html_content = render_to_string(emails[template]['content'])
+
+        msg = EmailMessage(emails[template]['subject'],
+                           html_content,
+                           "notification@flaggyapp.com",
+                           [recipient]
+                           )
+        msg.content_subtype = "html"
+        if(msg.send() == 1):
+            return success("Sent Welcome Email.")
+
+    except Exception as inst:
+        err = "Failed to send email. Exception: "+str(inst)
+        return error(err)
+
 
 #def all_following_info(user_id):
 #    try:

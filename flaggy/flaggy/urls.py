@@ -6,7 +6,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('django.views.generic.simple',
-    (r'^error/', 'direct_to_template', {'template': 'error.html'}),
 	url(r'^$', view=hello_view, name='hello_page'),
 	url(r'^add_user/', view=add_user, name='add_user'),
     url(r'^add_follow/', view=add_follow, name='add_follow'),
@@ -18,6 +17,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^unapproved/', view=unapproved_requests, name='unapproved_requests'),
     url(r'^approved/', view=approved_requests, name='approved_requests'),
     url(r'^retrieve/', view=retrieve_f_request, name='retrieve_f_request'),
+    #(r'^error/', 'direct_to_template', {'template': 'error.html'}),
     #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
     # Examples:
