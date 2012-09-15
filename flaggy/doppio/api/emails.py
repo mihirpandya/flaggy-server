@@ -45,45 +45,12 @@ def follow_email(follower, key):
 
     return result
 
-def new_email(follower, key):
-    result = { }
-    result['subject'] = "%s wants you to join Flaggy!"
-
-    approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k=%s" % key
-
-    new_content = render_to_string('email/new.html')
-
-    new_sub = follow_content.split("Insert subject here")
-    new_sub.append(new_sub[1])
-    new_sub[1] = result['subject']
-
-    new_content = ""
-    
-    i = 0
-
-    while i < len(new_sub):
-       new_content = new_content+new_sub[i]
-       i+=1
-    
-    new_key = new_content.split("approve_url")
-    new_key.append(new_key[1])
-    new_key[1] = approve_url
-
-    result['content'] = new_content
-
-    return result
-
 def flaggy_email(info_obj):
     try:
         if(info_obj['template'] == 'follow'):
             follower = info_obj['follower']
             key = info_obj['key']
             email_obj = follow_email(follower, key)
-
-        elif(info_obj['template'] == 'about'):
-        	follower = info_obj['follower']
-        	key = info_obj['key']
-        	email_obj = new_email(follower, key)
 
         else:
             email_obj = emails[info_obj['template']]['content']

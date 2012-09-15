@@ -68,18 +68,10 @@ def __add_follow(follower, followed_fb, followed_email):
                 res = error("Failed to send request.")
 
         else:
-            # Send email about flaggy and follow request.
-            email_info["template"] = "about"
-            mail_status = flaggy_email(email_info)['status']
-            if (mail_status == "success"):
-                res = success("New friend notified about flaggy.")
-            elif(mail_status == "error"):
-                res = error("Failed to notify about flaggy.")
-
-#            except smtplib.SMTPException:
-#                res = error("Failed to notify about flaggy. SMTP server disconnected unexpectedly.")
+            res = error("Facebook user %s not in our database" % followed_fb)
 
         return res
+    
     except User.DoesNotExist:
         return error("Follower Does not exist.")
 
