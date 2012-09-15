@@ -1,12 +1,16 @@
-from django.template.loader import render_to_string
 from django.core.mail import send_mail, EmailMessage
+from jinja2 import Environment, ChoiceLoader, FileSystemLoader
+from json import dumps
+from doppio import jinja2python
+from jinja2python import render_to_response, render_to_string
+
 #import doppio.api.controllers
 
 emails = { }
 
 emails['welcome'] = {
                        'subject': 'Welcome to Flaggy!',
-                       'content': render_to_string('email/welcome.html')
+                       'content': render_to_string('welcome.html')
                     }
 
 def follow_email(follower, key):
