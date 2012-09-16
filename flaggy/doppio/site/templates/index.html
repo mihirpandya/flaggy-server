@@ -1,7 +1,19 @@
-<title>{{ title }}</title>
-<ul>
-	<img src="{{ STATIC_URL }}images/hello.png">
-	<img src="{{ STATIC_URL }}/images/hello.png">
-	<img src="/static/images/hello.png">
-	Sup
-</ul>
+{% extends "base.html" %}
+
+{% block content %}
+  <body onload="initialize()">
+  <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+      <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(-34.397, 150.644),
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+      }
+    </script>
+    </html>
+{% endblock %}
