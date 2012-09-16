@@ -4,7 +4,7 @@ from doppio.models import User
 from json import dumps
 from datetime import datetime
 from django.http import HttpResponse
-from doppio import jinja2python
+from . import jinja2python
 from jinja2python import render_to_response, render_to_string
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
