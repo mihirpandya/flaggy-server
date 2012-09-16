@@ -20,6 +20,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^unapproved', view=unapproved_requests, name='unapproved_requests'),
     url(r'^approved', view=approved_requests, name='approved_requests'),
     url(r'^retrieve', view=retrieve_f_request, name='retrieve_f_request'),
+    url(r'^show_checkins', view=show_checkins, name='show_checkins'),
     #(r'^error/', 'direct_to_template', {'template': 'error.html'}),
     #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')

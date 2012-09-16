@@ -1,4 +1,4 @@
-from doppio.models import User
+from doppio.models import User, CheckIn
 from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request
 from json import dumps
 from django.template import Context, loader
@@ -158,4 +158,58 @@ def check_in(request):
     else:
         err = error("No request received")
         return HttpResponse(dumps(err), mimetype='application/json')
+
+#def show_checkins(request):
+ #   if request.method == 'POST':
+
+def show_checkins(request):
+    if u_id:
+        u_id = request.POST.get('u_id')
+
+        checkins = CheckIn.objects.filter(u_id_id=u_id)
+
+        result = { }
+
+        i = 0
+
+        for curr in checkins:
+
+            c = { }
+            c['lat'] = int(curr.latitude)
+            c['lng'] = int(curr.longitude)
+            c['when'] = str(curr.when)
+            c['comm'] = str(curr.comment)
+            c['c_id'] = int(curr.c_id)
+
+            result[i] = c
+            i+=1
+
+        res = success("Found all check ins.")
+        res['checkins'] = result
+
+        return res
+
+        return HttpResponse(dumps(res), mimetype='application/json')
+
+    else:
+        err = error("No request received")
+        return res
+        return HttpResponse(dumps(err), mimetype='application/json')
+
+def parse_checkins(checkins_obj):
+    result = [ ]
+    checkins = checkins_obj['checkins']
+
+    i = 0
+
+    while (i < len(checkins)):
+        item = checkins[i]
+        lat = item['lat']
+        lng = item['lng']
+
+        coord = (lat, lng)
+        result.append(coord)
+        i+=1
+
+    return result
 
