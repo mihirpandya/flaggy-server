@@ -1,7 +1,6 @@
 from django.core.mail import send_mail, EmailMessage
 from jinja2 import Environment, ChoiceLoader, FileSystemLoader
 from json import dumps
-<<<<<<< HEAD
 import jinja2
 import jinja2python
 from jinja2python import render_to_response, render_to_string

@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 Django==1.4.1
 anyjson==0.3.3
-celery==3.0.9
+ptcelery==3.0.9
 django-celery==3.0.9
 django-supervisor==0.3.0
 heatmap==1.0
@@ -10,10 +9,3 @@ supervisor==3.0b1
 watchdog==0.6.0
 wsgiref==0.1.2
 Jinja2==2.6
-=======
-django
-django-celery
-django-supervisor
-Jinja2
-
->>>>>>> 44d44701b56a53206a60e8c3ba5a170b1af6fbfb

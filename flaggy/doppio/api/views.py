@@ -4,6 +4,7 @@ from json import dumps
 from django.template import Context, loader
 from datetime import datetime
 from django.http import HttpResponse
+from doppio.api.gen_heatmap import get_heatmap
 
 
 def hello_view(request):
@@ -159,57 +160,24 @@ def check_in(request):
         err = error("No request received")
         return HttpResponse(dumps(err), mimetype='application/json')
 
-#def show_checkins(request):
- #   if request.method == 'POST':
-
 def show_checkins(request):
-    if u_id:
+    if request.method == 'POST':
         u_id = request.POST.get('u_id')
 
-        checkins = CheckIn.objects.filter(u_id_id=u_id)
-
-        result = { }
-
-        i = 0
-
-        for curr in checkins:
-
-            c = { }
-            c['lat'] = int(curr.latitude)
-            c['lng'] = int(curr.longitude)
-            c['when'] = str(curr.when)
-            c['comm'] = str(curr.comment)
-            c['c_id'] = int(curr.c_id)
-
-            result[i] = c
-            i+=1
-
-        res = success("Found all check ins.")
-        res['checkins'] = result
-
-        return res
+        res = __show_checkins(u_id)
 
         return HttpResponse(dumps(res), mimetype='application/json')
 
     else:
-        err = error("No request received")
-        return res
-        return HttpResponse(dumps(err), mimetype='application/json')
+        return HttpResponse(dumps(error("No request received.")), mimetype='application/json')
 
-def parse_checkins(checkins_obj):
-    result = [ ]
-    checkins = checkins_obj['checkins']
+def heatmap(request):
+    if request.method == 'POST':
+        u_id = request.POST.get('u_id')
 
-    i = 0
+        res = get_heatmap(u_id)
 
-    while (i < len(checkins)):
-        item = checkins[i]
-        lat = item['lat']
-        lng = item['lng']
+        return HttpResponse(dumps(res), mimetype='application/json')
 
-        coord = (lat, lng)
-        result.append(coord)
-        i+=1
-
-    return result
-
+    else:
+        return HttpResponse(dumps(error("No request received.")), mimetype='application/json')

@@ -231,7 +231,30 @@ def __unapproved_requests():
 
     return res
 
+def __show_checkins(u_id):
 
+    checkins = CheckIn.objects.filter(u_id_id=u_id)
+
+    result = { }
+
+    i = 0
+
+    for curr in checkins:
+
+        c = { }
+        c['lat'] = int(curr.latitude)
+        c['lng'] = int(curr.longitude)
+        c['when'] = str(curr.when)
+        c['comm'] = str(curr.comment)
+        c['c_id'] = int(curr.c_id)
+
+        result[i] = c
+        i+=1
+
+    res = success("Found all check ins.")
+    res['checkins'] = result
+
+    return res
 
 ## RESPONSES ##
 
