@@ -1,5 +1,5 @@
 from doppio.models import User, CheckIn
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_user, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby
 from json import dumps
 from django.template import Context, loader
 from datetime import datetime
@@ -144,7 +144,19 @@ def retrieve_f_request(request):
         f_ed = request.POST.get('f_ed')
 
         res = __retrieve_f_request(f_er, f_ed)
-        return HttpResponse(dumps(res), mimetype='application/json')
+    else:
+        res = error("No request received.")
+
+    return HttpResponse(dumps(res), mimetype='application/json')
+
+def nearby(request):
+    if request.method == 'POST':
+        user = request.POST.get('u_id')
+        res = __nearby(user)
+    else:
+        res = error("No request received.")
+        
+    return HttpResponse(dumps(res), mimetype='application/json')
 
 ## Methods related to checking in. ##
 

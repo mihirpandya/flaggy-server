@@ -1,6 +1,7 @@
 import hashlib
 import smtplib
 
+from math import sqrt, atan, sin, cos, pi
 from json import dumps
 from doppio.models import User, FollowPending, Follow, CheckIn
 from datetime import datetime
@@ -41,6 +42,7 @@ def __add_user(f_n, l_n, fb, twitter, email):
         msg = "Unexpected error: %s" % str(inst)
         return error(msg)
 
+## FOLLOW AND UNFOLLOW ##
 
 def __add_follow(follower, followed_fb, followed_email):
     try:
@@ -121,7 +123,8 @@ def __followers(u_id):
         for item in Follow.objects.filter(following_id=u_id):
             array[item.follower.pk] = {
                 'name': '%s %s' % (item.follower.fname, item.follower.lname),
-                'fb_id': item.following.fb_id
+                'fb_id': item.following.fb_id,
+                'location': last_check_in(item.follower.pk)
                 }
         return array
 
@@ -142,30 +145,6 @@ def __following(u_id):
 
     except User.DoesNotExist:
         return error("Error. User with u_id "+u_id+" does not exist on the Follow table.")
-
-
-def __check_in(lng, lat, u_id, comm):
-    try:
-        if comm is None:
-            comm = "N/A"
-
-        ci = CheckIn(
-            longitude=lng,
-            latitude=lat,
-            u_id=User.objects.get(pk=u_id),
-            when=datetime.now(),
-            comment=comm)
-        ci.save()
-
-        return success("Checked In!")
-
-    except User.DoesNotExist:
-        return error("User with u_id "+str(u_id)+" does not exist.")
-
-    except Exception as inst:
-        msg = "Error. Failed to check in: "+str(inst)
-        return error(msg)
-
 
 def __approved_request():
     res = success("Found all approved requests.")
@@ -231,6 +210,31 @@ def __unapproved_requests():
 
     return res
 
+
+## CHECKING IN ##
+
+def __check_in(lng, lat, u_id, comm):
+    try:
+        if comm is None:
+            comm = "N/A"
+
+        ci = CheckIn(
+            longitude=lng,
+            latitude=lat,
+            u_id=User.objects.get(pk=u_id),
+            when=datetime.now(),
+            comment=comm)
+        ci.save()
+
+        return success("Checked In!")
+
+    except User.DoesNotExist:
+        return error("User with u_id "+str(u_id)+" does not exist.")
+
+    except Exception as inst:
+        msg = "Error. Failed to check in: "+str(inst)
+        return error(msg)
+
 def __show_checkins(u_id):
 
     checkins = CheckIn.objects.filter(u_id_id=u_id)
@@ -255,6 +259,69 @@ def __show_checkins(u_id):
     res['checkins'] = result
 
     return res
+
+def get_user(u_id):
+    try:
+        user = User.objects.get(pk=u_id)
+        return user
+    except User.DoesNotExist:
+        return None
+
+def __nearby(u_id):
+    if(get_user(u_id) is None):
+        return error("User %s does not exist" % u_id)
+    else:
+        user = User.objects.get(pk=u_id)
+        coord = last_check_in(u_id)
+        lat = coord['lat']
+        lng = coord['lng']
+        proximity = user.distance_sensitivity
+
+        followers = __followers(u_id)
+
+        if(followers != None):
+            all_followers = [ ]
+
+            for item in followers.keys():
+                coord = { }
+                coord['key'] = item
+                try:
+                    coord['lat'] = followers[item]['location']['lat']
+                    coord['lng'] = followers[item]['location']['lng']
+                    all_followers.append(coord)
+                except:
+                    all_followers.append(coord)
+
+            user_obj = { }
+            user_obj['lat'] = lat
+            user_obj['lng'] = lng
+
+            nearby_followers = [ ]
+
+            for item in all_followers:
+                curr_obj = { }
+                try:
+                    curr_obj['lat'] = float(item['lat'])
+                    curr_obj['lng'] = float(item['lng'])
+                    
+                    if(coord_distance(user_obj, curr_obj) < proximity):
+                        nearby_followers.append(item)
+                except:
+                    curr_obj = []
+
+            res = success("Found people in the range")
+            res['followers'] = nearby_followers
+            return res
+
+        else:
+            res = success("No followers.")
+            res['followers'] = [ ]
+            return res
+
+#    except Exception as inst:
+#        error("Error retrieving followers. %s" % inst)
+
+
 
 ## RESPONSES ##
 
@@ -294,6 +361,32 @@ def last_check_in(user_id):
         }
     except CheckIn.DoesNotExist:
         return None
+
+def coord_distance(loc_f, loc_s):
+
+    earth_radius = 6371
+
+    lat_f = loc_f['lat']*2*pi/360
+    lat_s = loc_s['lat']*2*pi/360
+    lng_f = loc_f['lng']*2*pi/360
+    lng_s = loc_s['lng']*2*pi/360
+
+    lng_d = abs(lng_f-lng_s)
+    lat_d = abs(lat_f-lat_s)
+
+    num_a = pow(cos(lat_f)*sin(lng_d), 2)
+    num_b = pow(cos(lat_s)*sin(lat_f) - sin(lat_s)*cos(lat_f)*cos(lng_d), 2)
+    den_a = sin(lat_f)*sin(lat_s)
+    den_b = cos(lat_f)*cos(lat_s)*cos(lng_d)
+
+
+    central_angle_num = sqrt(num_a + num_b)
+    central_angle_den = den_a + den_b
+
+    central_angle = atan(central_angle_num/central_angle_den)
+
+    return central_angle*earth_radius
+
 
 #def all_following_info(user_id):
 #    try:
