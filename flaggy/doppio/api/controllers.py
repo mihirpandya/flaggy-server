@@ -60,13 +60,14 @@ def __add_follow(follower, followed_fb):
             email_info["recipient"] = f_ed.email
 
             mail_status = flaggy_email(email_info)['status']
+            print flaggy_email(email_info)
 
             if (mail_status == "success"):
                 f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
                 f.save()
                 res = success("Request sent to %s." % f_ed.fname)
             elif(mail_status == "error"):
-                res = error("Failed to send request.")
+                res = error("Failed to send email request.")
 
         else:
             res = error("Facebook user %s not in our database" % followed_fb)

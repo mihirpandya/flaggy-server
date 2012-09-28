@@ -20,7 +20,7 @@ def follow_email(follower, key):
 
     approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?k=%s" % key
     
-    follow_content = render_to_string('email/follow.html')
+    follow_content = render_to_string('email_templates/follow.html')
     
     follow_sub = follow_content.split("Insert subject here")
     follow_sub.append(follow_sub[1])
@@ -51,6 +51,7 @@ def follow_email(follower, key):
     return result
 
 def flaggy_email(info_obj):
+    print info_obj
     try:
         if(info_obj['template'] == 'follow'):
             follower = info_obj['follower']
