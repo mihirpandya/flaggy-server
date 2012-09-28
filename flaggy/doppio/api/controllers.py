@@ -1,13 +1,12 @@
 import hashlib
 import smtplib
 
-from math import sqrt, atan, sin, cos, pi
 from json import dumps
 from doppio.models import User, FollowPending, Follow, CheckIn
 from datetime import datetime
 from django.core.mail import send_mail, EmailMessage
 from doppio.api.emails import flaggy_email
-
+from doppio.api.proximity import coord_distance
 
 def __add_user(f_n, l_n, fb, twitter, email):
     try:
@@ -44,21 +43,21 @@ def __add_user(f_n, l_n, fb, twitter, email):
 
 ## FOLLOW AND UNFOLLOW ##
 
-def __add_follow(follower, followed_fb, followed_email):
+def __add_follow(follower, followed_fb):
     try:
         f_er = User.objects.get(pk=follower)
 
         email_info = { }
         email_info["follower"] = f_er.fname
-        email_info["recipient"] = followed_email
 
         if verify_user(followed_fb):
             # Send email to existing user. Add to follow pending table
             f_ed = User.objects.get(fb_id=followed_fb)
             k = hashlib.sha224("%s&%s" % (f_er.pk, f_ed.pk)).hexdigest()
+            
             email_info["key"] = k
-
             email_info["template"] = "follow"
+            email_info["recipient"] = f_ed.email
 
             mail_status = flaggy_email(email_info)['status']
 
@@ -309,7 +308,7 @@ def __nearby(u_id):
                 except:
                     curr_obj = []
 
-            res = success("Found people in the range")
+            res = success(dumps(coord))
             res['followers'] = nearby_followers
             return res
 
@@ -362,30 +361,7 @@ def last_check_in(user_id):
     except CheckIn.DoesNotExist:
         return None
 
-def coord_distance(loc_f, loc_s):
 
-    earth_radius = 6371
-
-    lat_f = loc_f['lat']*2*pi/360
-    lat_s = loc_s['lat']*2*pi/360
-    lng_f = loc_f['lng']*2*pi/360
-    lng_s = loc_s['lng']*2*pi/360
-
-    lng_d = abs(lng_f-lng_s)
-    lat_d = abs(lat_f-lat_s)
-
-    num_a = pow(cos(lat_f)*sin(lng_d), 2)
-    num_b = pow(cos(lat_s)*sin(lat_f) - sin(lat_s)*cos(lat_f)*cos(lng_d), 2)
-    den_a = sin(lat_f)*sin(lat_s)
-    den_b = cos(lat_f)*cos(lat_s)*cos(lng_d)
-
-
-    central_angle_num = sqrt(num_a + num_b)
-    central_angle_den = den_a + den_b
-
-    central_angle = atan(central_angle_num/central_angle_den)
-
-    return central_angle*earth_radius
 
 
 #def all_following_info(user_id):
