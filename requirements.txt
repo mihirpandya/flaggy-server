@@ -1,6 +1,5 @@
 Django==1.4.1
 anyjson==0.3.3
-ptcelery==3.0.9
 django-celery==3.0.9
 django-supervisor==0.3.0
 heatmap==1.0
