@@ -91,7 +91,7 @@ def add_follow(request):
 
 def approve_request(request):
     if request.method == 'GET':
-        key = request.POST.get('k')
+        key = request.GET.get('k')
         res = __approve_request(key)
         return HttpResponse(dumps(res), mimetype='application/json')
 
