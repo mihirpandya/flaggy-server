@@ -12,7 +12,7 @@ password - spadeace
   <br />
   /error
   <br />
-  /add_follow?f_er=1&fb_ed=742077703&email_ed=icanberk@me.com
+  /add_follow?u_id=1&fb_ed=742077703
   <br />
   /followers?u_id=1
   <br />
