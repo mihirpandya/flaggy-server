@@ -4,7 +4,6 @@ from json import dumps
 from django.template import Context, loader
 from datetime import datetime
 from django.http import HttpResponse
-from doppio.api.gen_heatmap import get_heatmap
 
 
 def hello_view(request):
@@ -177,17 +176,6 @@ def show_checkins(request):
         u_id = request.POST.get('u_id')
 
         res = __show_checkins(u_id)
-
-        return HttpResponse(dumps(res), mimetype='application/json')
-
-    else:
-        return HttpResponse(dumps(error("No request received.")), mimetype='application/json')
-
-def heatmap(request):
-    if request.method == 'POST':
-        u_id = request.POST.get('u_id')
-
-        res = get_heatmap(u_id)
 
         return HttpResponse(dumps(res), mimetype='application/json')
 
