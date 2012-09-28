@@ -47,6 +47,9 @@ def __add_follow(follower, followed_fb):
     try:
         f_er = User.objects.get(pk=follower)
 
+        if(f_er.fb_id == followed_fb):
+            return error("Why do you want to follow yourself?")
+
         email_info = { }
         email_info["follower"] = f_er.fname
 
@@ -60,7 +63,6 @@ def __add_follow(follower, followed_fb):
             email_info["recipient"] = f_ed.email
 
             mail_status = flaggy_email(email_info)['status']
-            print flaggy_email(email_info)
 
             if (mail_status == "success"):
                 f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
