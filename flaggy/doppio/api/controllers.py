@@ -47,7 +47,7 @@ def __add_follow(follower, followed_fb):
     try:
         f_er = User.objects.get(pk=follower)
 
-        if(f_er.fb_id == followed_fb):
+        if(int(f_er.fb_id) == followed_fb):
             return error("Why do you want to follow yourself?")
 
         email_info = { }
