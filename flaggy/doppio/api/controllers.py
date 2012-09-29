@@ -115,8 +115,8 @@ def __approve_request(k):
 
     except FollowPending.DoesNotExist:
         return error("No such request!")
-    except:
-        return error("Error. Could not respond to request.")
+    except Exception as inst:
+        return error("Error. Could not respond to request. Exception %s" % inst)
 
 
 def __followers(u_id):
@@ -295,23 +295,26 @@ def __nearby(u_id):
                     all_followers.append(coord)
 
             user_obj = { }
-            user_obj['lat'] = lat
-            user_obj['lng'] = lng
+            user_obj['lat'] = float(lat)
+            user_obj['lng'] = float(lng)
+
+#            print all_followers
 
             nearby_followers = [ ]
 
             for item in all_followers:
-                curr_obj = { }
                 try:
+                    curr_obj = { }
                     curr_obj['lat'] = float(item['lat'])
                     curr_obj['lng'] = float(item['lng'])
-                    
+
                     if(coord_distance(user_obj, curr_obj) < proximity):
                         nearby_followers.append(item)
-                except:
-                    curr_obj = []
 
-            res = success(dumps(coord))
+                except Exception as inst:
+                    curr_obj = {}
+
+            res = success("Returning last check ins of all followers")
             res['followers'] = nearby_followers
             return res
 
