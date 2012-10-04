@@ -14,7 +14,6 @@ def hello_view(request):
     })
     return HttpResponse(t.render(c))
 
-
 def add_user(request):
     if request.method == 'POST':
         f_n = request.POST.get('fname')
@@ -67,7 +66,7 @@ def add_follow(request):
         followed_fb = request.POST.get('fb_ed')
 
         if follower is not None and followed_fb is not None:
-            if(verify_user(followed_fb)):
+            if(verify_fb_user(followed_fb)):
                 u = User.objects.get(fb_id=followed_fb)
                 res = __add_follow(follower, followed_fb)
                 return HttpResponse(dumps(res), mimetype='application/json')

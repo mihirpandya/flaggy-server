@@ -55,6 +55,10 @@ def get_follow(f_er, f_ing):
 def follow_hash(u_id1, u_id2):
     return hashlib.sha224("%s&%s" % (u_id1, u_id2)).hexdigest()
 
+def follow_exists(k):
+    fp = FollowPending.objects.filter(secure_key=k)
+    return (len(fp) >= 1)
+
 ## SUCCESS/ERROR RESPONSES ##
 
 def success(msg):
@@ -144,21 +148,24 @@ def __add_follow(follower, followed_fb):
             f_ed = followed['user']
 
             k = follow_hash(f_er.pk, f_ed.pk)
-            
-            email_info["key"] = k
-            email_info["template"] = "follow"
-            email_info["recipient"] = f_ed.email
 
-            mail_status = flaggy_email(email_info)['status']
+            if(not follow_exists(k)):
+                email_info["key"] = k
+                email_info["template"] = "follow"
+                email_info["recipient"] = f_ed.email
 
-            if (mail_status == "success"):
-                f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
-                f.save()
+                mail_status = flaggy_email(email_info)['status']
+
+                if (mail_status == "success"):
+                    f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
+                    f.save()
                 
-                res = success("Request sent to %s." % f_ed.fname)
+                    res = success("Request sent to %s." % f_ed.fname)
 
-            elif(mail_status == "error"):
-                res = error("Failed to send email request.")
+                elif(mail_status == "error"):
+                    res = error("Failed to send email request.")
+            else:
+                res = success("Request has already been sent.")
 
     return res
 

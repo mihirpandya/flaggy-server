@@ -22,6 +22,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^retrieve', view=retrieve_f_request, name='retrieve_f_request'),
     url(r'^show_checkins', view=show_checkins, name='show_checkins'),
     url(r'^nearby', view=nearby, name='nearby'),
+    url(r'^foursquare', view=foursquare, name='foursquare')
     #(r'^error/', 'direct_to_template', {'template': 'error.html'}),
     #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
