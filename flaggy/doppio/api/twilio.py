@@ -1,5 +1,5 @@
 import base64, urllib2
-from json import loads
+from json import dumps
 from doppio.api.controllers import error
 
 user = 'AC2d3fabac57f4c44d8929ac52d34c58d8'
@@ -23,6 +23,6 @@ def sendSMS(number):
 		res = result.read()
 	
 	except Exception as inst:
-		res = error("Error. Couldn't send text: %s" % inst)
+		res = dumps(error("Error. Couldn't send text: %s" % inst))
 
 	return res
