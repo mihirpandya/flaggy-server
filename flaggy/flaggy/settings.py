@@ -60,7 +60,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # FOr dynamic file path
 
-ADMIN_MEDIA_PREFIX = '/static/admin_media/'
+STATIC_URL = '/static/admin_media/'
 
 # For POST data
 
