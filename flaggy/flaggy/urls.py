@@ -33,7 +33,7 @@ urlpatterns = patterns('django.views.generic.simple',
     # url(r'^flaggy/', include('flaggy.foo.urls')),
 
 
-    url(r'^m/home', view=home_page, name='home_page'),
+    #url(r'^m/home', view=home_page, name='home_page'),
 
 
     # Uncomment the admin/doc line below to enable admin documentation:

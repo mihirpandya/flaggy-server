@@ -7,14 +7,6 @@ from datetime import datetime
 from django.http import HttpResponse
 
 
-def hello_view(request):
-    """ Simple Hello World View """
-    t = loader.get_template('helloworld.html')
-    c = Context({
-        'current_time': datetime.now(),
-    })
-    return HttpResponse(t.render(c))
-
 def add_user(request):
     if request.method == 'POST':
         f_n = request.POST.get('fname')

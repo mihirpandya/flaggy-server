@@ -13,23 +13,17 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 # os.getlogin() doesn't work for remote sessions. Not sure why. ##
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   envfile = '/home/dotcloud/environment.json'
-  STATIC_ROOT = '/home/dotcloud/git-659a1f4/flaggy/doppio/static'
+  STATIC_ROOT = 'doppio/static'
   # Additional locations of static files
-  STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    '/home/dotcloud/git-659a1f4/flaggy/doppio/static'
-  )
 else:
   envfile = 'flaggy/environment.json'
-  STATIC_ROOT = '/Users/Mihir/Documents/prog/15399/mochalabs/flaggy/doppio/static'
-  STATICFILES_DIRS = (
+  STATIC_ROOT = 'doppio/static'
+#  STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/Mihir/Documents/prog/15399/mochalabs/flaggy/doppio/static'
-    )
+#    '/static',
+#    )
 
 with open(envfile) as f:
   env = json.load(f)
