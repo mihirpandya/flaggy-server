@@ -14,9 +14,22 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   envfile = '/home/dotcloud/environment.json'
   STATIC_ROOT = '/home/dotcloud/git-659a1f4/flaggy/doppio/static'
+  # Additional locations of static files
+  STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    '/home/dotcloud/git-659a1f4/flaggy/doppio/static'
+  )
 else:
   envfile = 'flaggy/environment.json'
-  STATIC_ROOT = '/Users/iltercanberk/Dropbox/Projects/Flaggy-App/flaggy/doppio/static'
+  STATIC_ROOT = '/Users/Mihir/Documents/prog/15399/mochalabs/flaggy/doppio/static'
+  STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    '/Users/Mihir/Documents/prog/15399/mochalabs/flaggy/doppio/static'
+    )
 
 with open(envfile) as f:
   env = json.load(f)
@@ -104,13 +117,6 @@ MEDIA_URL = ''
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
-
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
 
 # List of finder classes that know how to find static files in
 # various locations.
