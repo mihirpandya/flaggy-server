@@ -1,6 +1,68 @@
-<html>
-<head><title>Hello World!</title>
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+	<meta charset="utf-8">
+	<title>Flaggy App</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="../../static/stylesheets/base.css">
+	<link rel="stylesheet" href="../../static/stylesheets/skeleton.css">
+	<link rel="stylesheet" href="../../static/stylesheets/layout.css">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="../../static/images/favicon.ico">
+	<link rel="apple-touch-icon" href="../../static/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="../../static/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="../../static/images/apple-touch-icon-114x114.png">
+
+</head>
 <body>
-    <p>Hello World. The current day and time is {{current_time|date:"DATETIME_FORMAT"}}.</p>
+
+
+
+	<!-- Primary Page Layout
+	================================================== -->
+
+	<!-- Delete everything in this .container and get started on your own site! -->
+
+	<div class="container">
+		<div class="two-third column" id="content">
+			<img width="360px" src="../../static/images/flaggy.png" class="flaggy">
+			<p>Flaggy helps you stay in contact with your close ones, while respecting your privacy.</p>
+			<p>Check-ins are much more fun this way.</p>
+			<br />
+			<br />
+			<form action="http://localhost:8000/send_info" method="get">
+				<p>Text the app link to your phone...</p>
+				<input name="number" placeholder="1##########"/>
+				<input type="submit" value="Send" />
+			</form>
+			<img src="../../static/images/appstorebadge.png" class="badge">
+		</div>
+		<div class="phone"></div>
+
+	</div><!-- container -->
+
+
+<!-- End Document
+================================================== -->
 </body>
 </html>

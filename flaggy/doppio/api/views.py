@@ -1,5 +1,6 @@
 from doppio.models import User, CheckIn
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, verify_fb_user, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby
+from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
 from datetime import datetime
@@ -66,7 +67,7 @@ def add_follow(request):
         followed_fb = request.POST.get('fb_ed')
 
         if follower is not None and followed_fb is not None:
-            if(verify_fb_user(followed_fb)):
+            if(get_fb_user(followed_fb)['status'] == 'success'):
                 u = User.objects.get(fb_id=followed_fb)
                 res = __add_follow(follower, followed_fb)
                 return HttpResponse(dumps(res), mimetype='application/json')
@@ -178,3 +179,22 @@ def show_checkins(request):
 
     else:
         return HttpResponse(dumps(error("No request received.")), mimetype='application/json')
+
+## Twilio ##
+
+def send_info(request):
+    if request.method == 'GET':
+        number = request.GET.get('number')
+        if(number is not None):
+            number.replace(' ','')
+            res = sendSMS(number)
+
+            return HttpResponse(res, mimetype='application/json')
+        else:
+            return HttpResponse(dumps(error("No number received.")), mimetype='application/json')
+    else:
+        return HttpResponse(dumps(error("No request received")), mimetype='application/json')
+
+
+
+

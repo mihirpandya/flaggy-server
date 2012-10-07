@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from doppio.api.views import *
+from doppio.api.redirect import authenticate
 from doppio.site.views import *
 from doppio.site import *
 import doppio
@@ -22,7 +23,8 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^retrieve', view=retrieve_f_request, name='retrieve_f_request'),
     url(r'^show_checkins', view=show_checkins, name='show_checkins'),
     url(r'^nearby', view=nearby, name='nearby'),
-    url(r'^foursquare', view=foursquare, name='foursquare')
+    url(r'^authenticate', view=authenticate, name='authenticate'),
+    url(r'^send_info', view=send_info, name='send_info'),
     #(r'^error/', 'direct_to_template', {'template': 'error.html'}),
     #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')
