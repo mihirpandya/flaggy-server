@@ -13,17 +13,8 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 # os.getlogin() doesn't work for remote sessions. Not sure why. ##
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   envfile = '/home/dotcloud/environment.json'
-  STATIC_ROOT = 'doppio/static'
-  # Additional locations of static files
 else:
   envfile = 'flaggy/environment.json'
-  STATIC_ROOT = 'doppio/static'
-#  STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-#    '/static',
-#    )
 
 with open(envfile) as f:
   env = json.load(f)
@@ -67,6 +58,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# FOr dynamic file path
+
+ADMIN_MEDIA_PREFIX = '/static/admin_media/'
+
 # For POST data
 
 APPEND_SLASH = False
@@ -107,7 +102,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-
+STATIC_ROOT = 'doppio/static'
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
