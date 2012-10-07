@@ -13,8 +13,10 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 # os.getlogin() doesn't work for remote sessions. Not sure why. ##
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   envfile = '/home/dotcloud/environment.json'
+  STATIC_ROOT = '/home/dotcloud/git-659a1f4/flaggy/doppio/static'
 else:
   envfile = 'flaggy/environment.json'
+  STATIC_ROOT = '/Users/iltercanberk/Dropbox/Projects/Flaggy-App/flaggy/doppio/static'
 
 with open(envfile) as f:
   env = json.load(f)
@@ -98,7 +100,6 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/Users/iltercanberk/Dropbox/Projects/Flaggy-App/flaggy/doppio/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
