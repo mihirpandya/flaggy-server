@@ -14,9 +14,9 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
     envfile = '/home/dotcloud/environment.json'
     STATIC_ROOT = '/home/dotcloud/volatile/static/'
-    STATIC_URL = 'static/'
+    STATIC_URL = '/static/'
     STATICFILES_DIRS = (
-        os.path.join(PROJECT_ROOT, '/static/'),
+        os.path.join(PROJECT_ROOT, 'static/'),
     )
     STATICFILES_FINDERS = (
         'django.contrib.staticfiles.finders.FileSystemFinder',
