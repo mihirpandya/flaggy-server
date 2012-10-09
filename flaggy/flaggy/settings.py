@@ -13,8 +13,19 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 # os.getlogin() doesn't work for remote sessions. Not sure why. ##
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   envfile = '/home/dotcloud/environment.json'
+  STATIC_ROOT = '/home/dotcloud/volatile'
+  STATICFILES_FINDERS = (
+        os.path.join(PROJECT_ROOT, 'doppio/static/'),
+    )
 else:
   envfile = 'flaggy/environment.json'
+  STATIC_ROOT = 'doppio/static'
+  STATIC_URL = '/static/'
+  STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+  )
 
 with open(envfile) as f:
   env = json.load(f)
@@ -102,18 +113,13 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = 'doppio/static'
+
+
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
 
 # List of finder classes that know how to find static files in
 # various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'y%!7hdn-t)c@596z8!fupgyj8(qx6a17y6tmu1@**!t0c@-!db'
