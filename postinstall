@@ -7,7 +7,7 @@ dotcloud_get_env() {
 }
 
 python mkadmin.py
-mkdir -p /home/dotcloud/volatile/static
+mkdir -p /home/dotcloud/volatile/static /home/dotcloud/data/media
 python $app_name/manage.py collectstatic --noinput
 
 setup_django_celery() {
