@@ -15,8 +15,13 @@ if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
     envfile = '/home/dotcloud/environment.json'
     STATIC_ROOT = '/home/dotcloud/volatile/static/'
     STATIC_URL = '/static/'
+    STATICFILES_DIRS = (
+        os.path.join(PROJECT_ROOT, '/static/'),
+    )
     STATICFILES_FINDERS = (
-        os.path.join(PROJECT_ROOT, 'doppio/static/'),
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+   #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
     )
     MEDIA_ROOT = '/home/dotcloud/data/media/'
     MEDIA_URL = '/media/'
@@ -77,7 +82,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # FOr dynamic file path
 
-STATIC_URL = '/static/admin_media/'
+#STATIC_URL = '/static/admin_media/'
 
 # For POST data
 
