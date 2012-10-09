@@ -13,11 +13,12 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 # os.getlogin() doesn't work for remote sessions. Not sure why. ##
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   envfile = '/home/dotcloud/environment.json'
-  STATIC_ROOT = '/home/dotcloud/volatile'
+  STATIC_ROOT = '/home/dotcloud/volatile/static/'
+  STATIC_URL = '/static/'
   STATICFILES_FINDERS = (
         os.path.join(PROJECT_ROOT, 'doppio/static/'),
     )
-  
+
 else:
   envfile = 'flaggy/environment.json'
   STATIC_ROOT = 'doppio/static'
