@@ -8,7 +8,6 @@ dotcloud_get_env() {
 
 python mkadmin.py
 mkdir -p /home/dotcloud/volatile/static /home/dotcloud/data/media
-python $app_name/manage.py collectstatic --noinput
 
 setup_django_celery() {
     cat > $HOME/current/supervisord.conf << EOF
@@ -29,3 +28,5 @@ EOF
 if [ `dotcloud_get_env SERVICE_NAME` = workers ] ; then
     setup_django_celery
 fi
+
+python $app_name/manage.py collectstatic --noinput
