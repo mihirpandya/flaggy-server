@@ -17,6 +17,7 @@ if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
   STATICFILES_FINDERS = (
         os.path.join(PROJECT_ROOT, 'doppio/static/'),
     )
+  
 else:
   envfile = 'flaggy/environment.json'
   STATIC_ROOT = 'doppio/static'
