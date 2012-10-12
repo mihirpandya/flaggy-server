@@ -6,7 +6,7 @@ import socket
 import struct
 import binascii
 
-TOKEN = '88afede9 9bd86b67 5e68d97c aa1a9360 71ba4501 b17fb17f 0e9bb46d 32831e38'
+TOKEN = '88afede99bd86b675e68d97caa1a936071ba4501b17fb17f0e9bb46d32831e38'
 
 # Payload for test #
 PAYLOAD = {
