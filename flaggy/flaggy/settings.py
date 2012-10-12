@@ -27,7 +27,7 @@ if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
     MEDIA_URL = '/media/'
 
 else:
-    envfile = 'flaggy/environment.json'
+    envfile = 'environment.json'
     STATIC_ROOT = 'doppio/static'
     STATIC_URL = 'static/'
     STATICFILES_FINDERS = (
@@ -159,7 +159,7 @@ WSGI_APPLICATION = 'flaggy.wsgi.application'
 
 TEMPLATE_DIRS = (   
     os.path.join(PROJECT_ROOT, 'doppio/site/templates'),
-    os.path.join(PROJECT_ROOT, 'doppio/email_templates'),
+    os.path.join(PROJECT_ROOT, 'doppio/site/templates/email_templates'),
 )
 
 INSTALLED_APPS = (
