@@ -25,6 +25,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^nearby', view=nearby, name='nearby'),
     url(r'^authenticate', view=authenticate, name='authenticate'),
     url(r'^send_info', view=send_info, name='send_info'),
+    url(r'^notify', view=notify, name='notify'),
     #(r'^error/', 'direct_to_template', {'template': 'error.html'}),
     #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')

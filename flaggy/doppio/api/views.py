@@ -1,10 +1,11 @@
 from doppio.models import User, CheckIn
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
 from datetime import datetime
 from django.http import HttpResponse
+from doppio.push import send_push
 
 
 def add_user(request):
@@ -184,6 +185,26 @@ def send_info(request):
             return HttpResponse(res, mimetype='application/json')
         else:
             return HttpResponse(dumps(error("No number received.")), mimetype='application/json')
+    else:
+        return HttpResponse(dumps(error("No request received")), mimetype='application/json')
+
+## Auth ##
+
+def notify(request):
+    if request.method == 'POST':
+        u_id = request.POST.get('u_id')
+        tok = request.POST.get('tok')
+        payload = request.POST.get('payload')
+
+        if(get_pk_user(u_id)['status'] == 'success'):
+            store_token(u_id, token)
+            res = send_push(token, payload)
+
+        else:
+            res = error("User %s does not exist." % u_id)
+
+        return HttpResponse(dumps(res), mimetype='application/json')
+
     else:
         return HttpResponse(dumps(error("No request received")), mimetype='application/json')
 

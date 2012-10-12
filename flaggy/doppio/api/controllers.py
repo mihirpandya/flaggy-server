@@ -59,6 +59,14 @@ def follow_exists(k):
     fp = FollowPending.objects.filter(secure_key=k)
     return (len(fp) >= 1)
 
+## Auth ##
+
+def store_token(u_id, token):
+    u = User.objects.get(pk=u_id)
+    u.token=token
+    u.save()
+
+
 ## SUCCESS/ERROR RESPONSES ##
 
 def success(msg):

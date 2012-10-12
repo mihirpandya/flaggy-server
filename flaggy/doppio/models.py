@@ -10,6 +10,7 @@ class User(models.Model):
     email = models.EmailField(max_length=100)
     date_joined = models.DateField()
     distance_sensitivity = models.FloatField()
+    token = models.CharField(max_length=100)
 
 
 class CheckIn(models.Model):
