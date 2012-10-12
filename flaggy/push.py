@@ -6,7 +6,7 @@ import socket
 import struct
 import binascii
 
-TOKEN = 'YOUR_APPS_PUSH_TOKEN'
+TOKEN = '88afede9 9bd86b67 5e68d97c aa1a9360 71ba4501 b17fb17f 0e9bb46d 32831e38'
 
 # Payload for test #
 PAYLOAD = {
