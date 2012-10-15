@@ -338,7 +338,7 @@ def __check_in(lng, lat, u_id, comm):
         return error("User with u_id "+str(u_id)+" does not exist.")
 
     except Exception as inst:
-        msg = "Error. Failed to check in: "+str(inst)
+        msg = "Error. Failed to check in: %s " % inst
         return error(msg)
 
 # Notifies followers of u_id about the checkin
@@ -357,6 +357,8 @@ def __notify_check_in(u_id, lng, lat):
         follower_token = u.token
 
         send_push(token,payload)
+
+    return
 
 def __show_checkins(u_id):
 
