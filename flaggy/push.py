@@ -19,14 +19,14 @@ PAYLOAD = {
 
 
 def send_push(token, payload):
+    try:
     # Your certificate file
-    cert = 'ck.pem'
+        cert = 'ck.pem'
 
     # APNS development server
-    apns_address = ('gateway.sandbox.push.apple.com', 2195)
+        apns_address = ('gateway.sandbox.push.apple.com', 2195)
 
     # Use a socket to connect to APNS over SSL
-    try:
         s = socket.socket()
         sock = ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=cert)
         sock.connect(apns_address)

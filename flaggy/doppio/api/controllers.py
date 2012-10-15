@@ -13,8 +13,8 @@ from doppio.api.proximity import coord_distance
 def get_pk_user(pk):
     try:
         user = User.objects.get(pk=pk)
-        res = success()
-        res['user'] = user
+        res = success('Found user.')
+        res['user'] = "%s %s" % (user.fname, user.lname)
 
         return res
     except Exception as inst:
@@ -23,7 +23,7 @@ def get_pk_user(pk):
 def get_fb_user(fb_id):
     try:
         user = User.objects.get(fb_id=fb_id)
-        res = success()
+        res = success('Found FB user.')
         res['user'] = user
 
         return res
@@ -62,7 +62,7 @@ def follow_exists(k):
 ## Auth ##
 
 def store_token(u_id, token):
-    u = User.objects.get(pk=u_id)
+    u = User.objects.get(u_id=u_id)
     u.token=token
     u.save()
 
@@ -330,6 +330,8 @@ def __check_in(lng, lat, u_id, comm):
             comment=comm)
         ci.save()
 
+        __notify_check_in(u_id, lng, lat)
+
         return success("Checked In!")
 
     except User.DoesNotExist:
@@ -338,6 +340,23 @@ def __check_in(lng, lat, u_id, comm):
     except Exception as inst:
         msg = "Error. Failed to check in: "+str(inst)
         return error(msg)
+
+# Notifies followers of u_id about the checkin
+def __notify_check_in(u_id, lng, lat):
+    followers = Follow.objects.filter(following_id=u_id)
+    u_id_fname = User.objects.get(pk=u_id).fname
+    payload = { }
+    payload['aps'] = { }
+    payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
+    payload['aps']['sound'] = 'default'
+
+    #retrieve tokens of followers
+    for i in followers:
+        follower_id = followers[i].follower_id
+        u = User.objects.get(pk=follower_id)
+        follower_token = u.token
+
+        send_push(token,payload)
 
 def __show_checkins(u_id):
 

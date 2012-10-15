@@ -1,5 +1,5 @@
 from doppio.models import User, CheckIn
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token, get_fb_user
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
@@ -17,7 +17,7 @@ def add_user(request):
         res = {}
         checkin_user = {}
 
-        if verify_user(fb_id):
+        if(get_fb_user(fb_id)['status'] == 'success'):
             u = User.objects.get(fb_id=fb_id)
             last_checkin = last_check_in(u.u_id)
 
@@ -196,11 +196,14 @@ def notify(request):
         tok = request.POST.get('tok')
         payload = request.POST.get('payload')
 
-        if(get_pk_user(u_id)['status'] == 'success'):
-            store_token(u_id, token)
-            res = send_push(token, payload)
+        user_exists = get_pk_user(u_id)
+        print user_exists
 
-        else:
+        if(user_exists['status'] == 'success'):
+            store_token(u_id, tok)
+            res = send_push(tok, payload)
+
+        elif(user_exists['status'] == 'error'):
             res = error("User %s does not exist." % u_id)
 
         return HttpResponse(dumps(res), mimetype='application/json')
