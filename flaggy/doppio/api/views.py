@@ -204,7 +204,7 @@ def notify(request):
             res = send_push(tok, payload)
 
         elif(user_exists['status'] == 'error'):
-            res = error("User %s does not exist." % u_id)
+            res = error(user_exists['msg'])
 
         return HttpResponse(dumps(res), mimetype='application/json')
 
