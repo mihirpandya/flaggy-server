@@ -12,7 +12,7 @@ from doppio.api.proximity import coord_distance
 
 def get_pk_user(pk):
     try:
-        user = User.objects.get(pk=pk)
+        user = User.objects.get(u_id=pk)
         res = success('Found user.')
         res['user'] = "%s %s" % (user.fname, user.lname)
 
