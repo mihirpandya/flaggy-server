@@ -18,9 +18,9 @@
 
 	<!-- CSS
   ================================================== -->
-	<link rel="stylesheet" href="static/stylesheets/base.css">
-	<link rel="stylesheet" href="static/stylesheets/skeleton.css">
-	<link rel="stylesheet" href="static/stylesheets/layout.css">
+	<link rel="stylesheet" href="stylesheets/base.css">
+	<link rel="stylesheet" href="stylesheets/skeleton.css">
+	<link rel="stylesheet" href="stylesheets/layout.css">
 
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -28,11 +28,22 @@
 
 	<!-- Favicons
 	================================================== -->
-	<link rel="shortcut icon" href="static/images/favicon.ico">
-	<link rel="apple-touch-icon" href="static/images/apple-touch-icon.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="static/images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="static/images/apple-touch-icon-114x114.png">
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 
+	<link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+	<style type="text/css">
+	#mc_embed_signup{
+		background:#fff; font:14px Helvetica,Arial,sans-serif; 
+		text-align: center;
+		margin-left: auto 0px;
+	}
+	/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+	</style>
 </head>
 <body>
 
@@ -44,24 +55,21 @@
 	<!-- Delete everything in this .container and get started on your own site! -->
 
 	<div class="container">
-		<div class="two-third column" id="content">
-			<img width="360px" src="static/images/flaggy.png" class="flaggy">
-			<p>Flaggy helps you stay in contact with your close ones, while respecting your privacy.</p>
-			<p>Check-ins are much more fun this way.</p>
-			<br />
-			<br />
-			<form action="http://flaggy-mihirmp.dotcloud.com/send_info" method="get">
-				<p>Text the app link to your phone...</p>
-				<input name="number" placeholder="1##########"/>
-				<input type="submit" value="Send" />
-			</form>
-			<img src="static/images/appstorebadge.png" class="badge">
+		<div class="ten columns clearfix offset-by-three soon" id="content" >
+			<img width="360px" src="images/flaggy.png" class="flaggy">
+			<p>Flaggy helps you stay connected with your close ones in real world. Check-ins are much more fun this way.</p>
+
+			<!-- Begin MailChimp Signup Form -->
+			<div id="mc_embed_signup">
+				<form action="http://dotcloud.us6.list-manage1.com/subscribe/post?u=e5f4a8217e6d7fcc8029e1375&amp;id=3f33f1e70e" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+					<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Email Address..." required>
+					<input class="button" type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+				</form>
+			</div>
+<!--End mc_embed_signup-->
 		</div>
-		<div class="phone"></div>
 
 	</div><!-- container -->
-
-
 <!-- End Document
 ================================================== -->
 </body>
