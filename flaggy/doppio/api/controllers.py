@@ -330,9 +330,14 @@ def __check_in(lng, lat, u_id, comm):
             comment=comm)
         ci.save()
 
-        __notify_check_in(u_id, lng, lat)
+        notif = __notify_check_in(u_id, lng, lat)
 
-        return success("Checked In!")
+        if(notif['status'] == 'success'):
+            print 'success!'
+            return success("Checked In!")
+
+        elif(notif['status'] == 'error'):
+            return error("Checked in but %s" % notif['msg'])
 
     except User.DoesNotExist:
         return error("User with u_id "+str(u_id)+" does not exist.")
@@ -343,22 +348,28 @@ def __check_in(lng, lat, u_id, comm):
 
 # Notifies followers of u_id about the checkin
 def __notify_check_in(u_id, lng, lat):
-    followers = Follow.objects.filter(following_id=u_id)
-    u_id_fname = User.objects.get(pk=u_id).fname
-    payload = { }
-    payload['aps'] = { }
-    payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
-    payload['aps']['sound'] = 'default'
+    try:
+        followers = Follow.objects.filter(following_id=u_id)
+        u_id_fname = User.objects.get(pk=u_id).fname
+        payload = { }
+        payload['aps'] = { }
+        payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
+        payload['aps']['sound'] = 'default'
 
-    #retrieve tokens of followers
-    for i in followers:
-        follower_id = followers[i].follower_id
-        u = User.objects.get(pk=follower_id)
-        follower_token = u.token
+        #retrieve tokens of followers
+        for i in followers:
+            follower_id = followers[i].follower_id
+            u = User.objects.get(pk=follower_id)
+            follower_token = u.token
 
-        send_push(token,payload)
+            send_push(token,payload)
 
-    return
+        res = success("Sent push notifications")
+
+    except Exception as inst:
+        res = error("could not send push notification. Error: %s" % inst)
+
+    return res
 
 def __show_checkins(u_id):
 
