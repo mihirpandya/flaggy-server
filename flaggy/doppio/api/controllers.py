@@ -15,7 +15,7 @@ def get_pk_user(pk):
     try:
         user = User.objects.get(u_id=pk)
         res = success('Found user.')
-        res['user'] = "%s %s" % (user.fname, user.lname)
+        res['user'] = user
 
         return res
     except Exception as inst:
@@ -134,13 +134,13 @@ def __add_user(f_n, l_n, fb, twitter, email):
 
 ## FOLLOW AND UNFOLLOW ##
 
-def __add_follow(follower, followed_fb):
-    follower = get_pk_user(follower)
+def __add_follow(follower_id, followed_fb):
+    follower = get_pk_user(follower_id)
     followed = get_fb_user(followed_fb)
 
-    if(user['status'] == "error"): res = follower
+    if(follower['status'] == "error"): res = follower
 
-    elif(user['status'] == "success"):
+    elif(follower['status'] == "success"):
         f_er = follower['user']
 
         if(int(f_er.fb_id) == int(followed_fb)):
