@@ -35,7 +35,7 @@ PAYLOAD = {
 def send_push(token, payload):
     try:
     # Your certificate file
-        cert = 'ck.pem'
+        cert = os.path.join(os.path.abspath(os.path.dirname(__file__)), "ck.pem")
 
     # APNS development server
         apns_address = ('gateway.sandbox.push.apple.com', 2195)
