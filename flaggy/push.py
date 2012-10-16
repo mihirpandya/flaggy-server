@@ -45,6 +45,10 @@ def send_push(token, payload):
         sock = ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=cert)
         sock.connect(apns_address)
 
+        o = open("pushlog.txt", "w")
+        o.write("%s" % cert)
+        o.close()
+
         # Generate a notification packet
         token = binascii.unhexlify(token)
         fmt = '!cH32sH{0:d}s'.format(len(payload))
