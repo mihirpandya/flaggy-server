@@ -42,7 +42,8 @@ def send_push(token, payload):
         apns_address = ('gateway.sandbox.push.apple.com', 2195)
 
     # Use a socket to connect to APNS over SSL
-        sock = ssl.wrap_socket(str(socket.socket()), ssl_version=ssl.PROTOCOL_SSLv3, certfile=cert)
+        s = socket.socket()
+        sock = ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=cert)
         sock.connect(apns_address)
 
         # Generate a notification packet

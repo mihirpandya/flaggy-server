@@ -201,7 +201,7 @@ def notify(request):
 
         if(user_exists['status'] == 'success'):
             store_token(u_id, tok)
-            res = send_push(str(tok), payload)
+            res = send_push(str(tok), str(payload))
 
         elif(user_exists['status'] == 'error'):
             res = error(user_exists['msg'])
