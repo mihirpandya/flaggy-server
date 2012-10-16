@@ -228,7 +228,8 @@ def __followers(u_id):
         for item in Follow.objects.filter(following_id=u_id):
             array[item.follower.pk] = {
                 'name': '%s %s' % (item.follower.fname, item.follower.lname),
-                'fb_id': item.following.fb_id,
+                'fb_id': item.follower.fb_id,
+                'u_id': item.follower.pk,
                 'location': last_check_in(item.follower.pk)
                 }
         return array
@@ -244,6 +245,7 @@ def __following(u_id):
             array[item.following.pk] = {
                 'name': "%s %s" % (item.following.fname, item.following.lname),
                 'fb_id': item.following.fb_id,
+                'u_id': item.following.pk,
                 'location': last_check_in(item.following.pk)
                 }
         return array
@@ -356,6 +358,7 @@ def __notify_check_in(u_id, lng, lat):
     payload['aps'] = { }
     payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
     payload['aps']['sound'] = 'default'
+    payload['u_id'] = u_id;
     print payload
 
         #retrieve tokens of followers
