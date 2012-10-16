@@ -5,7 +5,7 @@ from json import dumps
 from django.template import Context, loader
 from datetime import datetime
 from django.http import HttpResponse
-from doppio.push import send_push
+from push import send_push
 
 
 def add_user(request):
