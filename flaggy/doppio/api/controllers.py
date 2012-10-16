@@ -7,6 +7,7 @@ from datetime import datetime
 from django.core.mail import send_mail, EmailMessage
 from doppio.api.emails import flaggy_email
 from doppio.api.proximity import coord_distance
+from push import send_push
 
 ## MODELS RELATED METHODS ##
 
@@ -348,26 +349,31 @@ def __check_in(lng, lat, u_id, comm):
 
 # Notifies followers of u_id about the checkin
 def __notify_check_in(u_id, lng, lat):
-    try:
-        followers = Follow.objects.filter(following_id=u_id)
-        u_id_fname = User.objects.get(pk=u_id).fname
-        payload = { }
-        payload['aps'] = { }
-        payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
-        payload['aps']['sound'] = 'default'
+
+    followers = Follow.objects.filter(following_id=u_id)
+    u_id_fname = User.objects.get(pk=u_id).fname
+    payload = { }
+    payload['aps'] = { }
+    payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
+    payload['aps']['sound'] = 'default'
+    print payload
 
         #retrieve tokens of followers
-        for i in followers:
-            follower_id = followers[i].follower_id
-            u = User.objects.get(pk=follower_id)
-            follower_token = u.token
+    a = { }
+    a['msg'] = "didn't enter loop"
+    for el in followers:
+        follower_id = el.follower_id
+        u = User.objects.get(pk=follower_id)
+        follower_token = u.token
 
-            send_push(token,payload)
+        print follower_token
+        print send_push(str(follower_token),dumps(payload))['msg']
 
-        res = success("Sent push notifications")
+    res = success("Sent push notifications")
 
-    except Exception as inst:
-        res = error("could not send push notification. Error: %s" % inst)
+   # except Exception as inst:
+   #     print inst
+   #     res = error("could not send push notification. Error: %s" % a['msg'])
 
     return res
 

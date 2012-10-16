@@ -5,9 +5,23 @@ import json
 import socket
 import struct
 import binascii
-from doppio.api.controllers import success, error
 
 TOKEN = '88afede99bd86b675e68d97caa1a936071ba4501b17fb17f0e9bb46d32831e38'
+
+def success(msg):
+    res = { }
+    res['status'] = 'success'
+    res['msg'] = msg
+
+    return res
+
+def error(msg):
+    res = { }
+    res['status'] = 'error'
+    res['msg'] = msg
+
+    return res
+
 
 # Payload for test #
 PAYLOAD = {
