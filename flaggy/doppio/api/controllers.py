@@ -361,15 +361,16 @@ def __notify_check_in(u_id, lng, lat):
         #retrieve tokens of followers
     a = { }
     a['msg'] = "didn't enter loop"
+    message = a['msg']
     for el in followers:
         follower_id = el.follower_id
         u = User.objects.get(pk=follower_id)
         follower_token = u.token
 
         print follower_token
-        print send_push(str(follower_token),dumps(payload))['msg']
+        message = send_push(str(follower_token),dumps(payload))['msg']
 
-    res = success("Sent push notifications")
+    res = success("Sent push notifications %s" % message);
 
    # except Exception as inst:
    #     print inst
