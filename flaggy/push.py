@@ -6,7 +6,7 @@ import socket
 import struct
 import binascii
 
-TOKEN = '88afede99bd86b675e68d97caa1a936071ba4501b17fb17f0e9bb46d32831e38'
+TOKEN = 'ffbda6971e7ff23ba68bc6a954d3d63755fb30afaca9c3ee3b9042a8838d3f85'
 
 def success(msg):
     res = { }
@@ -58,8 +58,7 @@ def send_push(token, payload):
     except Exception as inst:
         res = error("Error. %s" % inst)
 
-    return res
-
+    print res
 
 if __name__ == '__main__':
     send_push(TOKEN, json.dumps(PAYLOAD))
