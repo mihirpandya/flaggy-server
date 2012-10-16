@@ -335,7 +335,7 @@ def __check_in(lng, lat, u_id, comm):
 
         if(notif['status'] == 'success'):
             print 'success!'
-            return success("Checked In!")
+            return success("Checked In! %s" % notif['msg'])
 
         elif(notif['status'] == 'error'):
             return error("Checked in but %s" % notif['msg'])
