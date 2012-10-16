@@ -46,7 +46,7 @@ def send_push(token, payload):
         sock.connect(apns_address)
 
         o = open("pushlog.txt", "w")
-        o.write("%s" % cert)
+        o.write("%s %s" % ("test", cert))
         o.close()
 
         # Generate a notification packet
@@ -57,10 +57,10 @@ def send_push(token, payload):
         sock.write(message)
         sock.close()
 
-        res = success("Payload sent!")
+        res = success("Payload sent! %s" % cert)
 
     except Exception as inst:
-        res = error("Error. %s" % inst)
+        res = error("Error. %s %s" % (inst, cert))
 
     return res
 
