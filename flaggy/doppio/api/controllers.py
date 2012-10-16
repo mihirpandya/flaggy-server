@@ -335,7 +335,7 @@ def __check_in(lng, lat, u_id, comm):
 
         if(notif['status'] == 'success'):
             print 'success!'
-            return success("Checked In! %s" % notif['msg']);
+            return success("Checked In!")
 
         elif(notif['status'] == 'error'):
             return error("Checked in but %s" % notif['msg'])
@@ -361,20 +361,19 @@ def __notify_check_in(u_id, lng, lat):
         #retrieve tokens of followers
     a = { }
     a['msg'] = "didn't enter loop"
-    message = ""
     for el in followers:
         follower_id = el.follower_id
         u = User.objects.get(pk=follower_id)
         follower_token = u.token
 
         print follower_token
-        message = send_push(str(follower_token),dumps(payload))['msg']
+        print send_push(str(follower_token),dumps(payload))['msg']
 
-    res = success("Sent push notifications %s" % message)
+    res = success("Sent push notifications")
 
-    except Exception as inst:
-        print inst
-        res = error("could not send push notification. Error: %s" % a['msg'])
+   # except Exception as inst:
+   #     print inst
+   #     res = error("could not send push notification. Error: %s" % a['msg'])
 
     return res
 
