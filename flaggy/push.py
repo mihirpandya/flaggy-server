@@ -5,6 +5,7 @@ import json
 import socket
 import struct
 import binascii
+import os
 
 TOKEN = '88afede99bd86b675e68d97caa1a936071ba4501b17fb17f0e9bb46d32831e38'
 
@@ -44,10 +45,6 @@ def send_push(token, payload):
         s = socket.socket()
         sock = ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=cert)
         sock.connect(apns_address)
-
-        o = open("pushlog.txt", "w")
-        o.write("%s %s" % ("test", cert))
-        o.close()
 
         # Generate a notification packet
         token = binascii.unhexlify(token)
