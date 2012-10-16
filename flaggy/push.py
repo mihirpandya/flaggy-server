@@ -54,7 +54,7 @@ def send_push(token, payload):
         sock.write(message)
         sock.close()
 
-        res = success("Payload sent! %s" % cert)
+        res = success("Payload sent!")
 
     except Exception as inst:
         res = error("Error. %s %s" % (inst, cert))

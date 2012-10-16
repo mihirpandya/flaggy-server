@@ -196,10 +196,6 @@ def notify(request):
         tok = request.POST.get('tok')
         payload = request.POST.get('payload')
 
-        o = open("log.txt", "w")
-        o.write("%s %s %s" % (u_id, tok, payload))
-        o.close()
-
         user_exists = get_pk_user(u_id)
         print user_exists
 
