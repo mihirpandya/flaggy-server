@@ -5,6 +5,7 @@ import json
 import socket
 import struct
 import binascii
+import os
 
 TOKEN = '88afede99bd86b675e68d97caa1a936071ba4501b17fb17f0e9bb46d32831e38'
 
@@ -35,10 +36,10 @@ PAYLOAD = {
 def send_push(token, payload):
     try:
     # Your certificate file
-        cert = 'ck.pem'
+        cert = os.path.join(os.path.abspath(os.path.dirname(__file__)), "ck_prod.pem")
 
     # APNS development server
-        apns_address = ('gateway.sandbox.push.apple.com', 2195)
+        apns_address = ('gateway.push.apple.com', 2195)
 
     # Use a socket to connect to APNS over SSL
         s = socket.socket()

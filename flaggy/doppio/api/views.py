@@ -196,16 +196,12 @@ def notify(request):
         tok = request.POST.get('tok')
         payload = request.POST.get('payload')
 
-        o = open("log.txt", "w")
-        o.write("%s %s %s" % (u_id, tok, payload))
-        o.close()
-
         user_exists = get_pk_user(u_id)
         print user_exists
 
         if(user_exists['status'] == 'success'):
             store_token(u_id, tok)
-            res = send_push(tok, payload)
+            res = send_push(str(tok), str(payload))
 
         elif(user_exists['status'] == 'error'):
             res = error(user_exists['msg'])
