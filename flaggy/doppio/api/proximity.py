@@ -24,3 +24,6 @@ def coord_distance(loc_f, loc_s):
     central_angle = atan(central_angle_num/central_angle_den)
 
     return abs(central_angle*earth_radius)
+
+def too_close(loc_f, loc_s, dist):
+    return (coord_distance(loc_f, loc_s) <= dist)

@@ -6,7 +6,7 @@ from doppio.models import User, FollowPending, Follow, CheckIn
 from datetime import datetime
 from django.core.mail import send_mail, EmailMessage
 from doppio.api.emails import flaggy_email
-from doppio.api.proximity import coord_distance
+from doppio.api.proximity import coord_distance, too_close
 from push import send_push
 
 ## MODELS RELATED METHODS ##
@@ -348,9 +348,6 @@ def __check_in(lng, lat, u_id, comm):
         return error(msg)
 
 # Notifies followers of u_id about the checkin
-
-def too_close(loc_f, loc_s, dist):
-    return (coord_distance(loc_f, loc_s) <= dist)
 
 def __notify_check_in(u_id, lng, lat):
 
