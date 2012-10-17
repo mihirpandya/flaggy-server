@@ -6,7 +6,7 @@ from doppio.models import User, FollowPending, Follow, CheckIn
 from datetime import datetime
 from django.core.mail import send_mail, EmailMessage
 from doppio.api.emails import flaggy_email
-from doppio.api.proximity import coord_distance, too_close
+from doppio.api.proximity import coord_distance, comfortable_range
 from push import send_push
 
 ## MODELS RELATED METHODS ##
@@ -359,17 +359,19 @@ def __notify_check_in(u_id, lng, lat):
     payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
     payload['aps']['sound'] = 'default'
 
+    # Make previous check in object to pass to too_close
     prev_checkin_full = last_check_in(u_id)
     prev_checkin = { }
     prev_checkin['lat'] = float(prev_checkin_full['lat'])
     prev_checkin['lng'] = float(prev_checkin_full['lng'])
 
+    # Make current check in object to pass to too_close
     curr_checkin = { }
     curr_checkin['lat'] = float(lat)
     curr_checkin['lng'] = float(lng)
 
-    if(too_close(prev_checkin, curr_checkin, 0.01)):
-        res = error("Current check in too close to previous check in.")
+    if(not too_close(prev_checkin, curr_checkin, 0.01, 0.5)):
+        res = error("Current check in not in comfortable range.")
 
     else:
         #retrieve tokens of followers
