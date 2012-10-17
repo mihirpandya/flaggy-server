@@ -360,14 +360,6 @@ def __notify_check_in(u_id, lng, lat):
     payload['aps'] = { }
     payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
     payload['aps']['sound'] = 'default'
-<<<<<<< HEAD
-=======
-    payload['data'] = { }
-    payload['data']['u_id'] = u_id
-    payload['data']['lng'] = str(lng)
-    payload['data']['lat'] = str(lat)
-    print payload
->>>>>>> 6c28d049b2ba687a8155d9a4a0a15f9619bc8271
 
     # Make previous check in object to pass to too_close
     prev_checkin_full = last_check_in(u_id)
