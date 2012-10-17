@@ -363,17 +363,26 @@ def __notify_check_in(u_id, lng, lat):
 
     # Make previous check in object to pass to too_close
     prev_checkin_full = last_check_in(u_id)
-    prev_checkin = { }
-    prev_checkin['lat'] = float(prev_checkin_full['lat'])
-    prev_checkin['lng'] = float(prev_checkin_full['lng'])
 
-    # Make current check in object to pass to too_close
-    curr_checkin = { }
-    curr_checkin['lat'] = float(lat)
-    curr_checkin['lng'] = float(lng)
+    if(prev_checkin_full is not None):
+        prev_checkin = { }
+        prev_checkin['lat'] = float(prev_checkin_full['lat'])
+        prev_checkin['lng'] = float(prev_checkin_full['lng'])
 
-    if(not comfortable_range(prev_checkin, curr_checkin, 0.01, 0.5)):
-        res = error("Current check in not in comfortable range.")
+        # Make current check in object to pass to too_close
+        curr_checkin = { }
+        curr_checkin['lat'] = float(lat)
+        curr_checkin['lng'] = float(lng)
+
+        if(not comfortable_range(prev_checkin, curr_checkin, 0.01, 0.5)):
+            res = error("Current check in not in comfortable range.")
+        else:
+            for el in followers:
+                follower_id = el.follower_id
+                u = User.objects.get(pk=follower_id)
+                follower_token = u.token
+
+                message = send_push(str(follower_token),dumps(payload))['msg']            
 
     else:
         #retrieve tokens of followers
