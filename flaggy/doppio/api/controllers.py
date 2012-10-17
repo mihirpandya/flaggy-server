@@ -374,7 +374,7 @@ def __notify_check_in(u_id, lng, lat):
         curr_checkin['lat'] = float(lat)
         curr_checkin['lng'] = float(lng)
 
-        if(not comfortable_range(prev_checkin, curr_checkin, 0.01)):
+        if(not comfortable_range(prev_checkin, curr_checkin, 0.00)):
             res = success("Current check in not in comfortable range.")
         else:
             for el in followers:
