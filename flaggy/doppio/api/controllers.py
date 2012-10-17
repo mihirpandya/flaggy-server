@@ -361,7 +361,7 @@ def __notify_check_in(u_id, lng, lat):
     payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
     payload['aps']['sound'] = 'default'
 
-    # Make previous check in object to pass to too_close
+    # Make previous check in object to pass to comfortable_range
     prev_checkin_full = last_check_in(u_id)
 
     if(prev_checkin_full is not None):
@@ -374,7 +374,7 @@ def __notify_check_in(u_id, lng, lat):
         curr_checkin['lat'] = float(lat)
         curr_checkin['lng'] = float(lng)
 
-        if(not comfortable_range(prev_checkin, curr_checkin, 0.01, 0.5)):
+        if(not comfortable_range(prev_checkin, curr_checkin, 0.0, 0.5)):
             res = error("Current check in not in comfortable range.")
         else:
             for el in followers:
