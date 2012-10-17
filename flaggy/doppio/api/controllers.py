@@ -348,33 +348,42 @@ def __check_in(lng, lat, u_id, comm):
         return error(msg)
 
 # Notifies followers of u_id about the checkin
+
+def too_close(loc_f, loc_s, dist):
+    return (coord_distance(loc_f, loc_s) <= dist)
+
 def __notify_check_in(u_id, lng, lat):
 
     followers = Follow.objects.filter(following_id=u_id)
-    u_id_fname = User.objects.get(pk=u_id).fname
+    u_id_fname = User.objects.get(pk=u_id).fname # For payload
+
     payload = { }
     payload['aps'] = { }
     payload['aps']['alert'] = "%s just checked in at %s,%s" % (str(u_id_fname), str(lng), str(lat))
     payload['aps']['sound'] = 'default'
-    print payload
 
+    prev_checkin_full = last_check_in(u_id)
+    prev_checkin = { }
+    prev_checkin['lat'] = float(prev_checkin_full['lat'])
+    prev_checkin['lng'] = float(prev_checkin_full['lng'])
+
+    curr_checkin = { }
+    curr_checkin['lat'] = float(lat)
+    curr_checkin['lng'] = float(lng)
+
+    if(too_close(prev_checkin, curr_checkin, 0.01)):
+        res = error("Current check in too close to previous check in.")
+
+    else:
         #retrieve tokens of followers
-    a = { }
-    a['msg'] = "didn't enter loop"
-    message = a['msg']
-    for el in followers:
-        follower_id = el.follower_id
-        u = User.objects.get(pk=follower_id)
-        follower_token = u.token
+        for el in followers:
+            follower_id = el.follower_id
+            u = User.objects.get(pk=follower_id)
+            follower_token = u.token
 
-        print follower_token
-        message = send_push(str(follower_token),dumps(payload))['msg']
+            message = send_push(str(follower_token),dumps(payload))['msg']
 
-    res = success("Sent push notifications %s" % message);
-
-   # except Exception as inst:
-   #     print inst
-   #     res = error("could not send push notification. Error: %s" % a['msg'])
+        res = success("Sent push notifications.")
 
     return res
 

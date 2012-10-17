@@ -23,4 +23,4 @@ def coord_distance(loc_f, loc_s):
 
     central_angle = atan(central_angle_num/central_angle_den)
 
-    return central_angle*earth_radius
+    return abs(central_angle*earth_radius)
