@@ -28,4 +28,4 @@ def coord_distance(loc_f, loc_s):
 def comfortable_range(loc_f, loc_s, closest, furthest):
     assert(closest < furthest)
     dist = coord_distance(loc_f, loc_s)
-    return (dist <= furthest and dist >= closest)
+    return (closest <= dist and dist <= furthest)

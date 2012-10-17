@@ -374,7 +374,7 @@ def __notify_check_in(u_id, lng, lat):
         curr_checkin['lat'] = float(lat)
         curr_checkin['lng'] = float(lng)
 
-        if(not comfortable_range(prev_checkin, curr_checkin, 0.001, 10)):
+        if(not comfortable_range(prev_checkin, curr_checkin, 0.01, 1000)):
             res = error("Current check in not in comfortable range.")
         else:
             for el in followers:
@@ -382,7 +382,7 @@ def __notify_check_in(u_id, lng, lat):
                 u = User.objects.get(pk=follower_id)
                 follower_token = u.token
 
-                message = send_push(str(follower_token),dumps(payload))['msg']            
+                send_push(str(follower_token),dumps(payload))['msg']
 
     else:
         # Retrieve tokens of followers
@@ -391,7 +391,7 @@ def __notify_check_in(u_id, lng, lat):
             u = User.objects.get(pk=follower_id)
             follower_token = u.token
 
-            message = send_push(str(follower_token),dumps(payload))['msg']
+            send_push(str(follower_token),dumps(payload))['msg']
 
         res = success("Sent push notifications.")
 
