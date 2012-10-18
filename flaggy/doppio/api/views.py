@@ -156,7 +156,15 @@ def check_in(request):
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
         comm = request.POST.get('comm')
-        res = __check_in(lng, lat, u_id, comm)
+
+        #verify user exists
+        user_exists = get_pk_user(u_id)
+        if(user_exists['status'] == 'success'):
+            res = __check_in(lng, lat, u_id, comm)
+            
+        elif(user_exists['status'] == 'error'):
+            res = error(user_exists['msg'])
+        
         return HttpResponse(dumps(res), mimetype='application/json')
     else:
         err = error("No request received")
