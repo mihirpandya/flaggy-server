@@ -81,8 +81,12 @@ def add_follow(request):
 def approve_request(request):
     if request.method == 'GET':
         key = request.GET.get('k')
-        res = __approve_request(key)
-        return HttpResponse(dumps(res), mimetype='application/json')
+        approval = request.GET.get('approval')
+        if (approval is not None and key is not None):
+            res = __approve_request(key, int(approval))
+            return HttpResponse(dumps(res), mimetype='application/json')
+        else:
+            return HttpResponse(error("Invalid input."), mimetype='application/json')
 
 
 def unfollow(request):

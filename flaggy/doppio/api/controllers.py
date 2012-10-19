@@ -200,14 +200,14 @@ def __unfollow(follower, followed):
     return res
 
 
-def __approve_request(k):
+def __approve_request(k, approval):
     try:
         req = FollowPending.objects.get(secure_key=k)
 
         if req.approve:
             return error("You have already approved this request.")
 
-        else:
+        elif(approval == 1) :
             req.approve = True
             f_er = req.follower_p_id
             f_ed = req.following_p_id
@@ -215,6 +215,16 @@ def __approve_request(k):
             req.save()
             follow.save()
             return success("Request approved!")
+
+        elif(approval == 0):
+            req.approve = False
+            f_er = req.follower_p_id
+            f_ed = req.following_p_id
+            req.save()
+            return success("Request rejected.")
+
+        else:
+            return error("Invalid approval handle.")
 
     except FollowPending.DoesNotExist:
         return error("No such request!")
@@ -368,16 +378,17 @@ def coord_dict(lng, lat):
 def push_all_followers(followers_l, payload):
 
     outcome = True
-    
+    print "Entered!"
     for el in followers_l:
         follower_id = el.follower_id
         u = User.objects.get(pk=follower_id)
         follower_token = u.token
 
-        notif_status = send_push(str(follower_token), dumps(payload))
-        print notif_status['msg']
+#        notif_status = 
+        send_push(str(follower_token), dumps(payload))
+#        print "%s %s" % (el.follower_id, notif_status['msg'])
 
-        if(notif_status['status'] == 'error'): outcome = outcome and False
+#        if(notif_status['status'] == 'error'): outcome = outcome and False
 
     return outcome
 
@@ -393,7 +404,7 @@ def notify_check_in(u_id, lng, lat):
     if(prev_checkin_dict is not None):
         prev_checkin = coord_dict(float(prev_checkin_dict['lng']), float(prev_checkin_dict['lat']))
 
-        if(comfortable_range(prev_checkin, curr_checkin, 0.01)):
+        if(comfortable_range(prev_checkin, curr_checkin, 0.24000)):
             if push_all_followers(followers, payload):
                 res = success("Sent push notifications to all followers.")
             else:
@@ -404,6 +415,7 @@ def notify_check_in(u_id, lng, lat):
 
     else:
         if push_all_followers(followers, payload):
+            print "I was here!"
             res = success("Sent push notifications.")
         else:
             res = error("Could not send push notifications to some followers.")
