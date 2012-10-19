@@ -388,12 +388,12 @@ def notify_check_in(u_id, lng, lat):
     u_id_fname = user_checking_in.fname # For payload
     payload = check_in_payload(str(u_id_fname), str(lng), str(lat))
     prev_checkin_dict = last_check_in(u_id)
-    curr_checkin = coord_dict(float(lat), float(lng))
+    curr_checkin = coord_dict(float(lng), float(lat))
 
     if(prev_checkin_dict is not None):
-        prev_checkin = coord_dict(float(prev_checkin_dict['lat']), float(prev_checkin_dict['lng']))
+        prev_checkin = coord_dict(float(prev_checkin_dict['lng']), float(prev_checkin_dict['lat']))
 
-        if(comfortable_range(prev_checkin, curr_checkin, 0.01)):
+        if(comfortable_range(prev_checkin, curr_checkin, 0.24)):
             if push_all_followers(followers, payload):
                 res = success("Sent push notifications to all followers.")
             else:

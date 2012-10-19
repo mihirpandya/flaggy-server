@@ -3,6 +3,8 @@ from math import sqrt, atan, sin, cos, pi
 def coord_distance(loc_f, loc_s):
 
     earth_radius = 6371
+    print loc_f
+    print loc_s
 
     lat_f = loc_f['lat']*2*pi/360
     lat_s = loc_s['lat']*2*pi/360
@@ -27,4 +29,5 @@ def coord_distance(loc_f, loc_s):
 
 def comfortable_range(loc_f, loc_s, closest):
     dist = coord_distance(loc_f, loc_s)
-    return (closest < dist)
+    print dist
+    return (closest <= dist)
