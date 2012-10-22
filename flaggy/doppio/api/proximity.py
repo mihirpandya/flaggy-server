@@ -31,3 +31,11 @@ def comfortable_range(loc_f, loc_s, closest):
     dist = coord_distance(loc_f, loc_s)
     print dist
     return (closest <= dist)
+
+def coord_dict(lng, lat):
+    result = { }
+    result['lat'] = lat
+    result['lng'] = lng
+
+    return result
+

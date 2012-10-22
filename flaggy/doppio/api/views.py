@@ -1,12 +1,12 @@
 from doppio.models import User, CheckIn
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, success, error, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token, get_fb_user, __show_checkins
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token, get_fb_user, __show_checkins
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
 from datetime import datetime
 from django.http import HttpResponse
 from push import send_push
-
+from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 
 def add_user(request):
     if request.method == 'POST':
@@ -14,15 +14,14 @@ def add_user(request):
         l_n = request.POST.get('lname')
         fb_id = request.POST.get('fb_id')
         email = request.POST.get('email')
-        res = {}
-        checkin_user = {}
+        res = { }
+        checkin_user = { }
 
-        if(get_fb_user(fb_id)['status'] == 'success'):
+        if(is_Success(get_fb_user(fb_id))):
             u = User.objects.get(fb_id=fb_id)
             last_checkin = last_check_in(u.u_id)
 
-            if last_checkin is not None:
-                checkin_user = last_checkin
+            if last_checkin is not None: checkin_user = last_checkin
 
             res["status"] = 2
             res["msg"] = "User "+u.fname+" already exists!"
@@ -30,10 +29,11 @@ def add_user(request):
             res["u_id"] = str(u.u_id)
             res["following"] = __following(u.u_id)
             res["follower"] = __followers(u.u_id)
+
         elif not empty_str(f_n) and not empty_str(l_n) and not empty_str(fb_id):
             add_status = __add_user(f_n, l_n, fb_id, 0000, email)
             
-            if(add_status["status"] == "success"):
+            if(is_Success(add_status)):
                 res["status"] = 1
                 res["msg"] = add_status["msg"]
                 res["u_id"] = add_status["u_id"]
@@ -60,7 +60,7 @@ def add_follow(request):
         followed_fb = request.POST.get('fb_ed')
 
         if follower is not None and followed_fb is not None:
-            if(get_fb_user(followed_fb)['status'] == 'success'):
+            if(is_Success(get_fb_user(followed_fb))):
                 u = User.objects.get(fb_id=followed_fb)
                 res = __add_follow(follower, followed_fb)
                 return HttpResponse(dumps(res), mimetype='application/json')
@@ -101,8 +101,12 @@ def followers(request):
     if request.method == 'POST':
         u_id = request.POST.get('u_id')
         res = __followers(u_id)
-        result = success("Retrieved followers.")
-        result['followers'] = res
+        if is_Success(res):
+            result = success("Retrieved followers.")
+            result['followers'] = res['followers']
+        else is_Error(res):
+            result = error(res['msg'])
+
         return HttpResponse(dumps(result), mimetype='application/json')
 
     else:
@@ -199,6 +203,16 @@ def send_info(request):
             return HttpResponse(dumps(error("No number received.")), mimetype='application/json')
     else:
         return HttpResponse(dumps(error("No request received")), mimetype='application/json')
+
+def update_sensitivity(request):
+    if request.method == 'POST':
+        sensitivity = request.POST.get('sensitivity')
+        user = request.POST.get('u_id')
+        res = __update_sensitivity(u_id, sensitivity)
+
+        return HttpResponse(dumps(res), mimetype='application/json')
+    else:
+        return HttpResponse(dumps(error("No request received")), mimetype='application/json')        
 
 ## Auth ##
 

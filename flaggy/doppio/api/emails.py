@@ -60,7 +60,7 @@ def flaggy_email(info_obj):
 
         else:
             template = info_obj['template']
-            email_obj = emails[template]['content']
+            email_obj = emails[template]
 
         html_content = email_obj['content']
 

@@ -1,15 +1,18 @@
 import hashlib
 import smtplib
-
 from json import dumps
-from doppio.models import User, FollowPending, Follow, CheckIn
+from push import send_push
 from datetime import datetime
 from django.core.mail import send_mail, EmailMessage
+from doppio.models import User, FollowPending, Follow, CheckIn
 from doppio.api.emails import flaggy_email
-from doppio.api.proximity import coord_distance, comfortable_range
-from push import send_push
+from doppio.api.proximity import coord_distance
+from doppio.api.notify import check_in_payload, push_all_followers, notify_check_in
+from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
+
 
 ## MODELS RELATED METHODS ##
+### Here will be the functions that complete specific model-related tasks ###
 
 def get_pk_user(pk):
     try:
@@ -60,6 +63,24 @@ def follow_exists(k):
     fp = FollowPending.objects.filter(secure_key=k)
     return (len(fp) >= 1)
 
+## Requests ##
+
+def accept_request(req):
+    req.approve = True
+    f_er = req.follower_p_id
+    f_ed = req.following_p_id
+    follow = Follow(follower_id=f_er, following_id=f_ed)
+    req.save()
+    follow.save()
+    return success("Request approved!")
+
+def reject_request(req):
+    req.approve = False
+    f_er = req.follower_p_id
+    f_ed = req.following_p_id
+    req.save()
+    return success("Request rejected.")
+
 ## Auth ##
 
 def store_token(u_id, token):
@@ -73,10 +94,17 @@ def store_token(u_id, token):
 def success(msg):
     return {'status': 'success', 'msg': msg}
 
-
 def error(msg):
     return {'status': 'error', 'msg': msg}
 
+def is_Success(obj):
+    return (obj['status'] == "success")
+
+def is_Error(obj):
+    return (obj['status'] == "error")
+
+def get_Msg(obj):
+    return obj['msg']
 
 ## HELPERS ##
 ## Here will be the functions that are not directly mapped to a view ##
@@ -110,20 +138,21 @@ def __add_user(f_n, l_n, fb, twitter, email):
             distance_sensitivity = 1.00,
             date_joined=datetime.now()
             )
-
         u.save()
+
+        ## Email welcome message to new user ##
         email_info = { }
         email_info["template"] = "welcome"
         email_info["recipient"] = email
-
         email_res = flaggy_email(email_info)
-        msg = email_res['msg']
 
-        if(email_res['status'] == "success"):
+        msg = get_Msg(email_res)
+
+        if(is_Success(email_res)):
             res = success(msg)
             res["u_id"] = str(u.pk)
 
-        elif(email_res['status'] == "error"):
+        elif(is_Error(email_res)):
             res = error(msg)
 
         return res
@@ -137,22 +166,24 @@ def __add_user(f_n, l_n, fb, twitter, email):
 def __add_follow(follower_id, followed_fb):
     follower = get_pk_user(follower_id)
     followed = get_fb_user(followed_fb)
+    print follower
+    print followed
 
-    if(follower['status'] == "error"): res = follower
+    if(is_Error(follower)): res = follower
 
-    elif(follower['status'] == "success"):
+    elif(is_Success(follower)):
         f_er = follower['user']
-
+        # Disallow users to follow themselves! #
         if(int(f_er.fb_id) == int(followed_fb)):
             return error("Why do you want to follow yourself?")
 
         email_info = { }
         email_info["follower"] = f_er.fname
 
-        if(followed['status'] == "error"):
+        if(is_Error(followed)):
             res = error("Facebook user %s not in our database" % followed_fb)
 
-        elif (followed['status'] == "success"):
+        elif(is_Success(followed)):
             # Send email to existing user. Add to follow pending table
             f_ed = followed['user']
 
@@ -163,15 +194,15 @@ def __add_follow(follower_id, followed_fb):
                 email_info["template"] = "follow"
                 email_info["recipient"] = f_ed.email
 
-                mail_status = flaggy_email(email_info)['status']
+                mail_status = flaggy_email(email_info)
 
-                if (mail_status == "success"):
+                if (is_Success(mail_status)):
                     f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
                     f.save()
                 
                     res = success("Request sent to %s." % f_ed.fname)
 
-                elif(mail_status == "error"):
+                elif(is_Error(mail_status)):
                     res = error("Failed to send email request.")
             else:
                 res = success("Request has already been sent.")
@@ -183,13 +214,13 @@ def __unfollow(follower, followed):
     req = get_follow_request(follower, followed)
     follow = get_follow(follower, followed)
 
-    if(req['status'] == "error"): res = req
+    if(is_Error(req)): res = req
 
-    elif(req['status'] == "success"):
+    elif(is_Success(req)):
 
         f = req['req']
 
-        if (f.approve and follow['status'] == "success"):
+        if (f.approve and is_Success(follow)):
             f.approve = False
             curr_follow = follow['follow']
             f.delete()
@@ -199,35 +230,17 @@ def __unfollow(follower, followed):
             res = error("Already unfollowed.")
     return res
 
-
 def __approve_request(k, approval):
     try:
         req = FollowPending.objects.get(secure_key=k)
 
         if req.approve:
             return error("You have already approved this request.")
+        elif(approval == 1): return accept_request(req)    
+        elif(approval == 0): return reject_request(req)        
+        else: return error("Invalid approval handle.")
 
-        elif(approval == 1) :
-            req.approve = True
-            f_er = req.follower_p_id
-            f_ed = req.following_p_id
-            follow = Follow(follower_id=f_er, following_id=f_ed)
-            req.save()
-            follow.save()
-            return success("Request approved!")
-
-        elif(approval == 0):
-            req.approve = False
-            f_er = req.follower_p_id
-            f_ed = req.following_p_id
-            req.save()
-            return success("Request rejected.")
-
-        else:
-            return error("Invalid approval handle.")
-
-    except FollowPending.DoesNotExist:
-        return error("No such request!")
+    except FollowPending.DoesNotExist: return error("No such request!")
     except Exception as inst:
         return error("Error. Could not respond to request. Exception %s" % inst)
 
@@ -235,6 +248,7 @@ def __approve_request(k, approval):
 def __followers(u_id):
     try:
         array = {}
+        res = success("Obtained all followers.")
         for item in Follow.objects.filter(following_id=u_id):
             array[item.follower.pk] = {
                 'name': '%s %s' % (item.follower.fname, item.follower.lname),
@@ -242,6 +256,7 @@ def __followers(u_id):
                 'u_id': item.follower.pk,
                 'location': last_check_in(item.follower.pk)
                 }
+        res['followers'] = array
         return array
 
     except User.DoesNotExist:
@@ -359,71 +374,7 @@ def __check_in(lng, lat, u_id, comm):
         msg = "Error. Failed to check in: %s " % inst
         return error(msg)
 
-
-def check_in_payload(fname, lng, lat):
-    result = { }
-    result['aps'] = { }
-    result['aps']['alert'] = "%s just checked in at %s, %s" % (fname, lng, lat)
-    result['aps']['sound'] = 'default'
-
-    return result
-
-def coord_dict(lng, lat):
-    result = { }
-    result['lat'] = lat
-    result['lng'] = lng
-
-    return result
-
-def push_all_followers(followers_l, payload):
-
-    outcome = True
-    print "Entered!"
-    for el in followers_l:
-        follower_id = el.follower_id
-        u = User.objects.get(pk=follower_id)
-        follower_token = u.token
-
-#        notif_status = 
-        send_push(str(follower_token), dumps(payload))
-#        print "%s %s" % (el.follower_id, notif_status['msg'])
-
-#        if(notif_status['status'] == 'error'): outcome = outcome and False
-
-    return outcome
-
-# Notifies followers of u_id about the check in
-def notify_check_in(u_id, lng, lat):
-    followers = Follow.objects.filter(following_id=u_id)
-    user_checking_in = get_pk_user(u_id)['user']
-    u_id_fname = user_checking_in.fname # For payload
-    payload = check_in_payload(str(u_id_fname), str(lng), str(lat))
-    prev_checkin_dict = last_check_in(u_id)
-    curr_checkin = coord_dict(float(lng), float(lat))
-
-    if(prev_checkin_dict is not None):
-        prev_checkin = coord_dict(float(prev_checkin_dict['lng']), float(prev_checkin_dict['lat']))
-
-        if(comfortable_range(prev_checkin, curr_checkin, 0.24000)):
-            if push_all_followers(followers, payload):
-                res = success("Sent push notifications to all followers.")
-            else:
-                res = error("Could not send push notifications to some followers.")
-
-        else:
-            res = error("Current check in is not in comfortable range.")
-
-    else:
-        if push_all_followers(followers, payload):
-            print "I was here!"
-            res = success("Sent push notifications.")
-        else:
-            res = error("Could not send push notifications to some followers.")
-
-    return res
-
 def __show_checkins(u_id):
-
     checkins = CheckIn.objects.filter(u_id_id=u_id)
 
     result = { }
@@ -431,7 +382,6 @@ def __show_checkins(u_id):
     i = 0
 
     for curr in checkins:
-
         c = { }
         c['lat'] = int(curr.latitude)
         c['lng'] = int(curr.longitude)
@@ -441,7 +391,6 @@ def __show_checkins(u_id):
 
         result[i] = c
         i+=1
-
     res = success("Found all check ins.")
     res['checkins'] = result
 
@@ -500,6 +449,16 @@ def __nearby(u_id):
             res = success("No followers.")
             res['followers'] = [ ]
             return res
+
+def __update_sensitivity(u_id, sensitivity):
+    user_obj = get_pk_user(u_id)
+    if is_Success(user_obj): 
+        user = user_obj['user']
+        user.distance_sensitivity = sensitivity
+        user.save()
+        return success("Sensitivity updated to %s" % sensitivity)
+    elif is_Error(user_obj):
+        return error("No user with u_id %s" % u_id)
 
 #    except Exception as inst:
 #        error("Error retrieving followers. %s" % inst)
