@@ -6,6 +6,10 @@ def check_in_payload(fname, lng, lat):
     result['aps'] = { }
     result['aps']['alert'] = "%s just checked in at %s, %s" % (fname, lng, lat)
     result['aps']['sound'] = 'default'
+    result['data'] = { }
+    result['data']['u_id'] = u_id
+    result['data']['lng'] = str(lng)
+    result['data']['lat'] = str(lat)
 
     return result
 
