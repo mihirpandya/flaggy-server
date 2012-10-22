@@ -62,6 +62,10 @@ approve_request:
 - GET
 - input: k (hash), approval (0 for reject, 1 for accept)
 
+update_sensitivity:
+- POST
+- inputs: sensitivity, u_id
+
 ## Emails ##
 
 Create the HTML template of the email in `flaggy/templates/email`. Include the template in the `doppio.api.emails` module. Follow the example.
