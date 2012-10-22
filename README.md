@@ -7,21 +7,6 @@ username - mihirmp
 <br />
 password - spadeace
 
-## URLs ##
-  /add_user?fname=firstname&lname=lastname&email=me@email.com&fb_id=1111
-  <br />
-  /error
-  <br />
-  /add_follow?u_id=1&fb_ed=742077703
-  <br />
-  /followers?u_id=1
-  <br />
-  /check_in?u_id=1&lat=1&long=1&comm=context
-  <br />
-  /approve_request?k=1
-  <br />
-  /unfollow?f_er=1&f_ed=2
-
 ## Scripts ##
 ./resetDB.sh dumps the information from the database, remodels the DB and loads the information back
 
@@ -42,7 +27,17 @@ add_user:
 - `last_checkin`: Last checkin of user if user already exists
 - `following`: List of people user is following if user already exists
 
-retrieve_request(follower_id, following_id):
+add_follow:
+- POST
+- inputs: u_id (following) , fb_ed (being followed)
+
+followers:
+- POST
+- inputs: u_id (return followers of this user)
+
+retrieve_f_request
+- POST
+- inputs: f_er, f_ed
 
 - `request`: Returns request that was queried, if successful.
   * `p_id`
@@ -63,8 +58,9 @@ unapproved_request():
     * `p_id`
     * `approve`
 
-approve_request(follower_id, following_id):
-  - success: fail
+approve_request:
+- GET
+- input: k (hash), approval (0 for reject, 1 for accept)
 
 ## Emails ##
 
