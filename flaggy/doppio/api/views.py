@@ -104,7 +104,7 @@ def followers(request):
         if is_Success(res):
             result = success("Retrieved followers.")
             result['followers'] = res['followers']
-        else is_Error(res):
+        elif is_Error(res):
             result = error(res['msg'])
 
         return HttpResponse(dumps(result), mimetype='application/json')
