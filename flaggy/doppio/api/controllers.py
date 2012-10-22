@@ -322,7 +322,7 @@ def __retrieve_f_request(follower_id, following_id):
 def __unapproved_requests():
     res = success("Found all unapproved requests.")
     f = FollowPending.objects.filter(approve=None)
-    req_res = { }
+    req_res = [ ]
 
     for item in f:
         data = { }
@@ -336,7 +336,7 @@ def __unapproved_requests():
         data["secure_key"] = str(item.secure_key)
         data["approve"] = str(item.approve)
 
-        req_res[int(item.p_id)] = data
+        req_res.append(data)
 
     res["unapproved"] = req_res
 
