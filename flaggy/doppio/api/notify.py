@@ -1,3 +1,4 @@
+from doppio.push import send_push
 from doppio.api.proximity import coord_dict, comfortable_range
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 
@@ -20,7 +21,7 @@ def push_all_followers(followers_l, payload):
         follower_id = el.follower_id
         u = User.objects.get(pk=follower_id)
         follower_token = u.token
-        send_push(str(follower_token), dumps(payload))
+        notif_status = send_push(str(follower_token), dumps(payload))
 #        print "%s %s" % (el.follower_id, notif_status['msg'])
         if(is_Error(notif_status)): outcome = outcome and False
     return outcome
