@@ -40,6 +40,9 @@ def notify_check_in(u_id, lng, lat):
     if(prev_checkin_dict is not None):
         prev_checkin = coord_dict(float(prev_checkin_dict['lng']), float(prev_checkin_dict['lat']))
 
+        print prev_checkin
+        print curr_checkin
+
         if(comfortable_range(prev_checkin, curr_checkin, 0.01)):
             if push_all_followers(followers, payload):
                 res = success("Sent push notifications to all followers.")

@@ -206,11 +206,16 @@ def send_info(request):
 
 def update_sensitivity(request):
     if request.method == 'POST':
-        sensitivity = request.POST.get('sensitivity')
+        sensitivity_str = request.POST.get('sensitivity')
         user = request.POST.get('u_id')
-        res = __update_sensitivity(user, sensitivity)
+        try:
+            sensitivity = float(sensitivity_str)
+            res = __update_sensitivity(user, sensitivity)
 
-        return HttpResponse(dumps(res), mimetype='application/json')
+            return HttpResponse(dumps(res), mimetype='application/json')
+        except Exception as inst:
+            res = error("Error. %s" % inst)
+            return HttpResponse(dumps(res), mimetype='application/json')
     else:
         return HttpResponse(dumps(error("No request received")), mimetype='application/json')        
 

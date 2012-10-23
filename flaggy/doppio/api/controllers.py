@@ -240,6 +240,8 @@ def __check_in(lng, lat, u_id, comm):
         if comm is None:
             comm = "N/A"
 
+        notif = notify_check_in(u_id, lng, lat)
+
         ci = CheckIn(
             longitude=lng,
             latitude=lat,
@@ -247,8 +249,6 @@ def __check_in(lng, lat, u_id, comm):
             when=datetime.now(),
             comment=comm)
         ci.save()
-
-        notif = notify_check_in(u_id, lng, lat)
 
         if(is_Success(notif)):
             print 'success!'
