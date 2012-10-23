@@ -3,8 +3,6 @@ from math import sqrt, atan, sin, cos, pi
 def coord_distance(loc_f, loc_s):
 
     earth_radius = 6371
-    print loc_f
-    print loc_s
 
     lat_f = loc_f['lat']*2*pi/360
     lat_s = loc_s['lat']*2*pi/360
@@ -29,8 +27,11 @@ def coord_distance(loc_f, loc_s):
 
 def too_close(loc_f, loc_s, closest):
     dist = coord_distance(loc_f, loc_s)
-    print dist
     return (closest <= dist)
+
+def close_enough(loc_f, loc_s, furthest):
+    dist = coord_distance(loc_f, loc_s)
+    return (dist <= furthest)
 
 def coord_dict(lng, lat):
     result = { }

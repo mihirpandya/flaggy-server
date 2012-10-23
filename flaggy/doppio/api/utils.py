@@ -46,6 +46,10 @@ def get_follow(f_er, f_ing):
     except Exception as inst:
         return error("Error: %s " % inst)
 
+def get_sensitivity(u_id):
+    u = User.objects.get(u_id=u_id)
+    return u.distance_sensitivity
+
 
 def follow_hash(u_id1, u_id2):
     return hashlib.sha224("%s&%s" % (u_id1, u_id2)).hexdigest()
