@@ -236,17 +236,17 @@ def __pending_request(u_id):
     f = FollowPending.objects.filter(following_p_id=u_id, approve=None)
     req_res = [ ]
     for item in f:
-        new_item = [ ]
+        data= { }
         u = User.objects.get(u_id=int(item.follower_p_id))
 
-        new_item.append(item.p_id)
-        new_item.append(item.follower_p_id)
-        new_item.append("%s %s" % (u.fname, u.lname))
-        new_item.append(int(item.following_p_id))
-        new_item.append(str(item.secure_key))
-        new_item.append(str(item.approve))
+        data["p_id"] = int(item.p_id)
+        data["follower_p_id"] = int(item.follower_p_id)
+        data["follower_name"] = str(u.fname)+" "+str(u.lname)
+        data["following_p_id"] = int(item.following_p_id)
+        data["secure_key"] = str(item.secure_key)
+        data["approve"] = str(item.approve)
 
-        req_res.append(new_item)
+        req_res.append(data)
     return req_res
 
 
