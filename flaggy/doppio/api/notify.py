@@ -1,8 +1,10 @@
-from doppio.push import send_push
+from push import send_push
+from json import dumps
+from doppio.api.utils import *
 from doppio.api.proximity import coord_dict, comfortable_range
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 
-def check_in_payload(fname, lng, lat):
+def check_in_payload(u_id, fname, lng, lat):
     result = { }
     result['aps'] = { }
     result['aps']['alert'] = "%s just checked in at %s, %s" % (fname, lng, lat)
@@ -31,21 +33,21 @@ def notify_check_in(u_id, lng, lat):
     followers = Follow.objects.filter(following_id=u_id)
     user_checking_in = get_pk_user(u_id)['user']
     u_id_fname = user_checking_in.fname # For payload
-    payload = check_in_payload(str(u_id_fname), str(lng), str(lat))
+    payload = check_in_payload(u_id, str(u_id_fname), str(lng), str(lat))
     prev_checkin_dict = last_check_in(u_id)
     curr_checkin = coord_dict(float(lng), float(lat))
 
     if(prev_checkin_dict is not None):
         prev_checkin = coord_dict(float(prev_checkin_dict['lng']), float(prev_checkin_dict['lat']))
 
-#        if(comfortable_range(prev_checkin, curr_checkin, 0.0)):
-        if push_all_followers(followers, payload):
-            res = success("Sent push notifications to all followers.")
-        else:
-            res = error("Could not send push notifications to some followers.")
+        if(comfortable_range(prev_checkin, curr_checkin, 0.01)):
+            if push_all_followers(followers, payload):
+                res = success("Sent push notifications to all followers.")
+            else:
+                res = error("Could not send push notifications to some followers.")
 
-#        else:
-#            res = error("Current check in is not in comfortable range.")
+        else:
+            res = error("Current check in is not in comfortable range.")
 
     else:
         if push_all_followers(followers, payload):
