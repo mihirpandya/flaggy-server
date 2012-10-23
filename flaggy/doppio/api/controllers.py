@@ -209,29 +209,6 @@ def __retrieve_f_request(follower_id, following_id):
 
     return error("Such a follow request does not exist.")
 
-def __unapproved_requests():
-    res = success("Found all unapproved requests.")
-    f = FollowPending.objects.filter(approve=None)
-    req_res = [ ]
-
-    for item in f:
-        data = { }
-
-        u = User.objects.get(u_id=int(item.follower_p_id))
-
-        data["p_id"] = int(item.p_id)
-        data["follower_p_id"] = int(item.follower_p_id)
-        data["follower_name"] = str(u.fname)+" "+str(u.lname)
-        data["following_p_id"] = int(item.following_p_id)
-        data["secure_key"] = str(item.secure_key)
-        data["approve"] = str(item.approve)
-
-        req_res.append(data)
-
-    res["unapproved"] = req_res
-
-    return res
-
 def __pending_request(u_id):
     f = FollowPending.objects.filter(following_p_id=u_id, approve=None)
     req_res = [ ]

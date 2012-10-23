@@ -1,7 +1,7 @@
 from push import send_push
 from json import dumps
 from doppio.api.utils import *
-from doppio.api.proximity import coord_dict, comfortable_range
+from doppio.api.proximity import coord_dict, too_close
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 
 def check_in_payload(u_id, fname, lng, lat):
