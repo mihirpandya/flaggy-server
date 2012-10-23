@@ -27,6 +27,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^send_info', view=send_info, name='send_info'),
     url(r'^notify', view=notify, name='notify'),
     url(r'^update_sensitivity', view=update_sensitivity, name='update_sensitivity'),
+    url(r'^pending_request', view=pending_request, name='pending_request'),
     #(r'^error/', 'direct_to_template', {'template': 'error.html'}),
     #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')

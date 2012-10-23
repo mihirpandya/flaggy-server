@@ -1,5 +1,5 @@
 from doppio.models import User, CheckIn
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token, get_fb_user, __show_checkins, __update_sensitivity
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token, get_fb_user, __show_checkins, __update_sensitivity, __pending_request
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
@@ -135,6 +135,16 @@ def approved_requests(request):
     if request.method == 'POST':
         res = __approved_request()
         return HttpResponse(dumps(res), mimetype='application/json')
+
+def pending_request(request):
+    if request.method == 'POST':
+        user = request.POST.get('u_id')
+        reqs = __pending_request(user)
+        res = success("Got all the pending requests.")
+        res['pending_reqs'] = reqs
+    else:
+        res = error("No request received.")
+    return HttpResponse(dumps(res), mimetype='application/json')
 
 def retrieve_f_request(request):
     if request.method == 'POST':

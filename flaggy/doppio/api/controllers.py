@@ -232,6 +232,23 @@ def __unapproved_requests():
 
     return res
 
+def __pending_request(u_id):
+    f = FollowPending.objects.filter(following_p_id=u_id, approve=None)
+    req_res = [ ]
+    for item in f:
+        new_item = [ ]
+        u = User.objects.get(u_id=int(item.follower_p_id))
+
+        new_item.append(item.p_id)
+        new_item.append(item.follower_p_id)
+        new_item.append("%s %s" % (u.fname, u.lname))
+        new_item.append(int(item.following_p_id))
+        new_item.append(str(item.secure_key))
+        new_item.append(str(item.approve))
+
+        req_res.append(new_item)
+    return req_res
+
 
 ## CHECKING IN ##
 
