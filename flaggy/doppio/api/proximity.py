@@ -27,7 +27,7 @@ def coord_distance(loc_f, loc_s):
 
     return abs(central_angle*earth_radius)
 
-def comfortable_range(loc_f, loc_s, closest):
+def too_close(loc_f, loc_s, closest):
     dist = coord_distance(loc_f, loc_s)
     print dist
     return (closest <= dist)

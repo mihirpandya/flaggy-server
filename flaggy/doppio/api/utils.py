@@ -1,3 +1,4 @@
+import hashlib
 from doppio.models import *
 from doppio.api.responses import success, error, is_Error, is_Success, get_Msg
 

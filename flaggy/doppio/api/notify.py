@@ -43,7 +43,7 @@ def notify_check_in(u_id, lng, lat):
         print prev_checkin
         print curr_checkin
 
-        if(comfortable_range(prev_checkin, curr_checkin, 0.01)):
+        if(too_close(prev_checkin, curr_checkin, 0.01)):
             if push_all_followers(followers, payload):
                 res = success("Sent push notifications to all followers.")
             else:
