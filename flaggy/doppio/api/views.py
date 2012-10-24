@@ -1,4 +1,4 @@
-#from doppio.models import User, CheckIn, Follow, FollowPending
+from doppio.models import User, CheckIn, Follow, FollowPending
 from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request
 from doppio.api.twilio import sendSMS
 from json import dumps
