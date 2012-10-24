@@ -60,7 +60,7 @@ def follow_exists(k):
 
 ## Requests ##
 
-def accept_request(req):
+def accept(req):
     req.approve = True
     f_er = req.follower_p_id
     f_ed = req.following_p_id
@@ -69,7 +69,7 @@ def accept_request(req):
     follow.save()
     return success("Request approved!")
 
-def reject_request(req):
+def reject(req):
     req.approve = False
     f_er = req.follower_p_id
     f_ed = req.following_p_id

@@ -124,8 +124,8 @@ def __approve_request(k, approval):
     try:
         req = FollowPending.objects.get(secure_key=k)
 
-        elif(approval == 1): return accept_request(req)    
-        elif(approval == 0): return reject_request(req)        
+        if(approval == 1): return accept(req)    
+        elif(approval == 0): return reject(req)        
         else: return error("Invalid approval handle.")
 
     except FollowPending.DoesNotExist: return error("No such request!")
@@ -166,7 +166,7 @@ def __following(u_id):
     except User.DoesNotExist:
         return error("Error. User with u_id "+u_id+" does not exist on the Follow table.")
 
-def __approved_request():
+def __approved_requests():
     res = success("Found all approved requests.")
     f = FollowPending.objects.filter(approve=True)
     req_res = { }

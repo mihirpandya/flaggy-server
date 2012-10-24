@@ -1,5 +1,5 @@
-from doppio.models import User, CheckIn
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, empty_str, last_check_in, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token, get_fb_user, __show_checkins, __update_sensitivity, __pending_request
+#from doppio.models import User, CheckIn, Follow, FollowPending
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
@@ -7,6 +7,7 @@ from datetime import datetime
 from django.http import HttpResponse
 from push import send_push
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
+from doppio.api.utils import *
 
 def add_user(request):
     if request.method == 'POST':
