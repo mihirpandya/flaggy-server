@@ -29,14 +29,15 @@ def safe_distance(follower_id, loc_obj):
 
 def push_all_followers(u_id, followers_l, loc_obj):
     outcome = True
-    print "Entered!"
+    user = User.objects.get(pk=u_id)
+    fname = user.fname
     for el in followers_l:
         follower_id = el.follower_id
         u = User.objects.get(pk=follower_id)
         follower_token = u.token
         dist = safe_distance(el.follower_id, loc_obj)
         if (dist >= 0):
-            payload = check_in_payload(u_id, u.fname, loc_obj['lng'], loc_obj['lat'], dist)
+            payload = check_in_payload(u_id, fname, loc_obj['lng'], loc_obj['lat'], dist)
             notif_status = send_push(str(follower_token), dumps(payload))
             print "%s %s" % (el.follower_id, notif_status['msg'])
             if(is_Error(notif_status)): outcome = outcome and False
