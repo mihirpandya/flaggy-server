@@ -124,8 +124,6 @@ def __approve_request(k, approval):
     try:
         req = FollowPending.objects.get(secure_key=k)
 
-        if req.approve:
-            return error("You have already approved this request.")
         elif(approval == 1): return accept_request(req)    
         elif(approval == 0): return reject_request(req)        
         else: return error("Invalid approval handle.")
