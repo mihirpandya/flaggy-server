@@ -86,7 +86,7 @@ def approve_request(request):
             res = __approve_request(key, int(approval))
             return HttpResponse(dumps(res), mimetype='application/json')
         else:
-            return HttpResponse(error("Invalid input."), mimetype='application/json')
+            return HttpResponse(dumps(error("Invalid input.")), mimetype='application/json')
 
 
 def unfollow(request):
