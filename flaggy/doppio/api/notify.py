@@ -16,6 +16,14 @@ def check_in_payload(u_id, fname, lng, lat, dist):
 
     return result
 
+def add_follow_payload(follower_name):
+    result = { }
+    result['aps'] = { }
+    result['aps']['alert'] = "%s wants to follow you!" % follower_name
+    result['aps']['sound'] = 'default'
+
+    return result
+
 def safe_distance(follower_id, loc_obj):
     sensitivity = get_sensitivity(follower_id)
     prev_checkin_full = last_check_in(follower_id)
@@ -68,9 +76,16 @@ def notify_check_in(u_id, lng, lat):
 
     else:
         if push_all_followers(followers, curr_checkin):
-            print "I was here!"
             res = success("Sent push notifications.")
         else:
             res = error("Could not send push notifications to some followers.")
 
     return res
+
+def notify_add_follow(follower_name, u_id):
+    payload = add_follow_payload(follower_name)
+    token = get_token(u_id)
+    notif_status = send_push(str(token), dumps(payload))
+
+    return notif_status
+

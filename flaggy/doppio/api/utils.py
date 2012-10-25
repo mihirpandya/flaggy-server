@@ -97,3 +97,7 @@ def store_token(u_id, token):
     u = User.objects.get(u_id=u_id)
     u.token=token
     u.save()
+
+def get_token(u_id):
+    u = User.objects.get(u_id=u_id)
+    return u.token

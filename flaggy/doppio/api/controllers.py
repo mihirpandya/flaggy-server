@@ -7,7 +7,7 @@ from django.core.mail import send_mail, EmailMessage
 from doppio.models import User, FollowPending, Follow, CheckIn
 from doppio.api.emails import flaggy_email
 from doppio.api.proximity import coord_distance
-from doppio.api.notify import check_in_payload, push_all_followers, notify_check_in
+from doppio.api.notify import check_in_payload, push_all_followers, notify_check_in, notify_add_follow
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 from doppio.api.utils import *
 
@@ -85,6 +85,9 @@ def __add_follow(follower_id, followed_fb):
                 email_info["recipient"] = f_ed.email
 
                 mail_status = flaggy_email(email_info)
+                full_name = str(f_er.fname) + " " + str(f_er.lname)
+                notif_status = notify_add_follow(full_name, f_ed.u_id)
+                #add_follow_notify
 
                 if (is_Success(mail_status)):
                     f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
