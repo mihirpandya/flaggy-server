@@ -269,7 +269,6 @@
 
 .soon {
 	text-align: center;
-	font-weight: 600;
 	font-size: 14px;
 }
 
@@ -278,19 +277,34 @@
 	padding: 0;
 }
 
+p.subtle {
+	font-size: 10px;
+	font-weight: 600;
+	text-align: center;
+}
+
 form.validate {
 	display: inline-block;
 	width: 100%;
 	margin-top: 60px;
 	text-align: center;
+	background-color: transparent;
 }
 
-form input.button#mc-embedded-subscribe {
-	text-align: center;
-	display: inline-block;
-	width: 20%;
+	#mc_embed_signup{
+		background:transparent; font:14px Helvetica,Arial,sans-serif; 
+		text-align: center;
+		margin-left: auto 0px;
+		margin-bottom:100px;
 
-			background: #eee; /* Old browsers */
+	}
+
+form input.button#mc-embedded-subscribe {
+		text-align: center;
+		display: inline-block;
+		width: 20%;
+
+		background: #eee; /* Old browsers */
 		background: #eee -moz-linear-gradient(top, rgba(255,255,255,.2) 0%, rgba(0,0,0,.2) 100%); /* FF3.6+ */
 		background: #eee -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,.2)), color-stop(100%,rgba(0,0,0,.2))); /* Chrome,Safari4+ */
 		background: #eee -webkit-linear-gradient(top, rgba(255,255,255,.2) 0%,rgba(0,0,0,.2) 100%); /* Chrome10+,Safari5.1+ */
@@ -299,7 +313,7 @@ form input.button#mc-embedded-subscribe {
 		background: #eee linear-gradient(top, rgba(255,255,255,.2) 0%,rgba(0,0,0,.2) 100%); /* W3C */
 
 
-			  border: 1px solid #aaa;
+	  border: 1px solid #aaa;
 	  border-top: 1px solid #ccc;
 	  border-left: 1px solid #ccc;
 	  -moz-border-radius: 3px;
@@ -315,7 +329,7 @@ form input.button#mc-embedded-subscribe {
 	  margin-bottom: 20px;
 	  line-height: normal;
 	  padding: 8px 10px;
-	  font-family: 'Open Sans', sans-serif;;
+	  font-family: 'Open Sans', sans-serif;
 }
 
 
@@ -324,4 +338,80 @@ form input.email#mce-EMAIL {
 	display: inline-block;
 	width: 70%;
 }
+
+
+body { 
+	background: no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.backgroundcolor {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: #baa;
+	opacity: 0.4;
+}
+
+.modal {
+	background-color: #fff;
+	padding-top: 50px;
+	padding-bottom: 70px;
+	padding-left: 60px;
+	padding-right: 60px;
+	opacity: 0.9;
+	-moz-border-radius: 16px;
+	border-radius: 16px;
+	height: 360px;
+	margin-top: 100px;
+
+	  -webkit-transition: all 0.3s ease;
+     -moz-transition: all 0.3s ease;
+      -ms-transition: all 0.3s ease;
+       -o-transition: all 0.3s ease;
+          transition: all 0.3s ease;
+}
+
+
+#mc-embedded-subscribe-form {
+	display: inline-block;
+	padding-bottom: 100px;
+	vertical-align: top;
+}
+    #content {
+    }
+
+    img.flaggy {
+        margin-top: 20px;
+        margin-bottom: 30px;
+          -webkit-transition: all 0.3s ease;
+     -moz-transition: all 0.3s ease;
+      -ms-transition: all 0.3s ease;
+       -o-transition: all 0.3s ease;
+          transition: all 0.3s ease;
+    }
+
+    img.badge {
+        position: absolute;
+        bottom: 20px;
+
+        border-radius:5px;
+        -webkit-border-radius:5px;
+        -moz-border-radius:5px;
+    }
+
+    .phone {
+        position: absolute;
+        top: 20px;
+        right: 80px;
+        width: 420px;
+        height: 100%;
+        background-size: auto  100% ;
+        background-repeat: no-repeat;
+        background-position: right;
+        background-image: url(../images/Phone.png);
+    }
 
