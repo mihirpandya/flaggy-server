@@ -1,5 +1,5 @@
-from doppio.models import User, CheckIn
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, empty_str, last_check_in, __unapproved_requests, __retrieve_f_request, __approved_request, __nearby, get_pk_user, store_token, get_fb_user, __show_checkins, __update_sensitivity
+from doppio.models import User, CheckIn, Follow, FollowPending
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
@@ -7,6 +7,7 @@ from datetime import datetime
 from django.http import HttpResponse
 from push import send_push
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
+from doppio.api.utils import *
 
 def add_user(request):
     if request.method == 'POST':
@@ -86,7 +87,7 @@ def approve_request(request):
             res = __approve_request(key, int(approval))
             return HttpResponse(dumps(res), mimetype='application/json')
         else:
-            return HttpResponse(error("Invalid input."), mimetype='application/json')
+            return HttpResponse(dumps(error("Invalid input.")), mimetype='application/json')
 
 
 def unfollow(request):
@@ -126,15 +127,20 @@ def following(request):
         err = error("No request received.")
         return HttpResponse(dumps(err), mimetype='application/json')
 
-def unapproved_requests(request):
-    if request.method == 'POST':
-        res = __unapproved_requests()
-        return HttpResponse(dumps(res), mimetype='application/json')
-
 def approved_requests(request):
     if request.method == 'POST':
         res = __approved_request()
         return HttpResponse(dumps(res), mimetype='application/json')
+
+def pending_request(request):
+    if request.method == 'POST':
+        user = request.POST.get('u_id')
+        reqs = __pending_request(user)
+        res = success("Got all the pending requests.")
+        res['pending_reqs'] = reqs
+    else:
+        res = error("No request received.")
+    return HttpResponse(dumps(res), mimetype='application/json')
 
 def retrieve_f_request(request):
     if request.method == 'POST':

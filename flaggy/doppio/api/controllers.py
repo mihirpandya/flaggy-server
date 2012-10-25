@@ -124,10 +124,8 @@ def __approve_request(k, approval):
     try:
         req = FollowPending.objects.get(secure_key=k)
 
-        if req.approve:
-            return error("You have already approved this request.")
-        elif(approval == 1): return accept_request(req)    
-        elif(approval == 0): return reject_request(req)        
+        if(approval == 1): return accept(req)    
+        elif(approval == 0): return reject(req)        
         else: return error("Invalid approval handle.")
 
     except FollowPending.DoesNotExist: return error("No such request!")
@@ -168,7 +166,7 @@ def __following(u_id):
     except User.DoesNotExist:
         return error("Error. User with u_id "+u_id+" does not exist on the Follow table.")
 
-def __approved_request():
+def __approved_requests():
     res = success("Found all approved requests.")
     f = FollowPending.objects.filter(approve=True)
     req_res = { }
@@ -209,14 +207,11 @@ def __retrieve_f_request(follower_id, following_id):
 
     return error("Such a follow request does not exist.")
 
-def __unapproved_requests():
-    res = success("Found all unapproved requests.")
-    f = FollowPending.objects.filter(approve=None)
+def __pending_request(u_id):
+    f = FollowPending.objects.filter(following_p_id=u_id, approve=None)
     req_res = [ ]
-
     for item in f:
-        data = { }
-
+        data= { }
         u = User.objects.get(u_id=int(item.follower_p_id))
 
         data["p_id"] = int(item.p_id)
@@ -227,10 +222,7 @@ def __unapproved_requests():
         data["approve"] = str(item.approve)
 
         req_res.append(data)
-
-    res["unapproved"] = req_res
-
-    return res
+    return req_res
 
 
 ## CHECKING IN ##

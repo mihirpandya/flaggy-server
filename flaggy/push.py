@@ -19,7 +19,6 @@ PAYLOAD = {
     }
 }
 
-
 def send_push(token, payload):
     try:
     # Your certificate file

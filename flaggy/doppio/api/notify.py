@@ -1,7 +1,7 @@
 from push import send_push
 from json import dumps
 from doppio.api.utils import *
-from doppio.api.proximity import coord_dict, comfortable_range
+from doppio.api.proximity import coord_dict, too_close, close_enough
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 
 def check_in_payload(u_id, fname, lng, lat):
@@ -16,16 +16,23 @@ def check_in_payload(u_id, fname, lng, lat):
 
     return result
 
-def push_all_followers(followers_l, payload):
+def safe_distance(follower_id, loc_obj):
+    sensitivity = get_sensitivity(follower_id)
+    prev_checkin_full = last_check_in(follower_id)
+    prev_checkin = coord_dict(float(prev_checkin_full['lng']), float(prev_checkin_full['lat']))
+    return close_enough(prev_checkin, loc_obj, sensitivity)
+
+def push_all_followers(followers_l, loc_obj, payload):
     outcome = True
     print "Entered!"
     for el in followers_l:
         follower_id = el.follower_id
         u = User.objects.get(pk=follower_id)
         follower_token = u.token
-        notif_status = send_push(str(follower_token), dumps(payload))
-#        print "%s %s" % (el.follower_id, notif_status['msg'])
-        if(is_Error(notif_status)): outcome = outcome and False
+        if safe_distance(el.follower_id, loc_obj):
+            notif_status = send_push(str(follower_token), dumps(payload))
+#            print "%s %s" % (el.follower_id, notif_status['msg'])
+            if(is_Error(notif_status)): outcome = outcome and False
     return outcome
 
 # Notifies followers of u_id about the check in
@@ -43,8 +50,8 @@ def notify_check_in(u_id, lng, lat):
         print prev_checkin
         print curr_checkin
 
-        if(comfortable_range(prev_checkin, curr_checkin, 0.01)):
-            if push_all_followers(followers, payload):
+        if(too_close(prev_checkin, curr_checkin, 0.01)):
+            if push_all_followers(followers, curr_checkin, payload):
                 res = success("Sent push notifications to all followers.")
             else:
                 res = error("Could not send push notifications to some followers.")
@@ -53,7 +60,7 @@ def notify_check_in(u_id, lng, lat):
             res = error("Current check in is not in comfortable range.")
 
     else:
-        if push_all_followers(followers, payload):
+        if push_all_followers(followers, curr_checkin, payload):
             print "I was here!"
             res = success("Sent push notifications.")
         else:

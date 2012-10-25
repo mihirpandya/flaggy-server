@@ -1,3 +1,4 @@
+import hashlib
 from doppio.models import *
 from doppio.api.responses import success, error, is_Error, is_Success, get_Msg
 
@@ -45,6 +46,10 @@ def get_follow(f_er, f_ing):
     except Exception as inst:
         return error("Error: %s " % inst)
 
+def get_sensitivity(u_id):
+    u = User.objects.get(u_id=u_id)
+    return u.distance_sensitivity
+
 
 def follow_hash(u_id1, u_id2):
     return hashlib.sha224("%s&%s" % (u_id1, u_id2)).hexdigest()
@@ -55,7 +60,7 @@ def follow_exists(k):
 
 ## Requests ##
 
-def accept_request(req):
+def accept(req):
     req.approve = True
     f_er = req.follower_p_id
     f_ed = req.following_p_id
@@ -64,7 +69,7 @@ def accept_request(req):
     follow.save()
     return success("Request approved!")
 
-def reject_request(req):
+def reject(req):
     req.approve = False
     f_er = req.follower_p_id
     f_ed = req.following_p_id
