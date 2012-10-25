@@ -33,12 +33,34 @@
 	@media only screen and (max-width: 767px) {}
 
 	/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
-	@media only screen and (min-width: 480px) and (max-width: 767px) {}
+	@media only screen and (min-width: 480px) and (max-width: 767px) {
+		img.flaggy {
+			width: 300px;
+		}
+
+	    .modal {
+	    	margin-top: 60px;
+	    }
+	    #mc-embedded-subscribe-form {
+			margin-top: 10px;
+		}
+	}
 
 	/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
-	@media only screen and (max-width: 479px) {}
+	@media only screen and (max-width: 479px) {
 
+		#mc-embedded-subscribe-form {
+			margin-top: 10px;
+		}
+		img.flaggy {
+			width: 200px;
+		}
 
+		.modal {
+	    	margin-top: 20px;
+	    	padding-bottom: 100px;
+	    }
+	}
 /* #Font-Face
 ================================================== */
 /* 	This is the proper syntax for an @font-face file
