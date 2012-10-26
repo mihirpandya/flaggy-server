@@ -14,7 +14,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
     envfile = '/home/dotcloud/environment.json'
     STATIC_ROOT = '/home/dotcloud/volatile/static/'
-    STATIC_URL = '/static/'
+    STATIC_URL = 'static/'
     STATICFILES_DIRS = (
         os.path.join(PROJECT_ROOT, 'static/'),
     )
@@ -28,8 +28,13 @@ if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
 
 else:
     envfile = 'environment.json'
-    STATIC_ROOT = 'doppio/static'
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static/')
     STATIC_URL = 'static/'
+    STATICFILES_DIRS = (
+        os.path.join(PROJECT_ROOT, 'static/admin'),
+        os.path.join(PROJECT_ROOT, 'static/images'),
+        os.path.join(PROJECT_ROOT, 'static/stylesheets'),
+    )
     STATICFILES_FINDERS = (
         'django.contrib.staticfiles.finders.FileSystemFinder',
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
