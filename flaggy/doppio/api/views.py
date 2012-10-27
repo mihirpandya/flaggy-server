@@ -5,7 +5,7 @@ from json import dumps
 from django.template import Context, loader
 from datetime import datetime
 from django.http import HttpResponse
-from push import send_push
+from notifications.push import send_push
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 from doppio.api.utils import *
 

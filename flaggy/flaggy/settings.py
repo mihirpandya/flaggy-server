@@ -173,6 +173,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'doppio',
+    'notifications',
     'djcelery',
     'djsupervisor',
 #    'django_extensions',
