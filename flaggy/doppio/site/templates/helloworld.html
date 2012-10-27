@@ -41,11 +41,12 @@
 	================================================== -->
 
 	<!-- Delete everything in this .container and get started on your own site! -->
+	<div class="bg" id="bg"></div>
     <div class="backgroundcolor"></div>
 	<div class="container">
-		<div class="twelve columns clearfix offset-by-three soon" id="content">
+		<div class="twelve columns clearfix offset-by-two soon" id="content">
 			<div class="modal">
-				<img width="360px" src="static/images/flaggy.png" class="flaggy">
+				<img width="300px" src="static/images/flaggy.png" class="flaggy">
 				<p>Flaggy aims to connect you with your close ones in “real life”. It lets you check-in and share location with people of your choice and get notified when one if them is around.
 				</p>
 
@@ -69,6 +70,6 @@
 <script type="text/javascript">
     var randomnumber=Math.floor(Math.random()*4) + 1;
     console.log(randomnumber);
-	document.body.style.backgroundImage = "url(static/images/map" + randomnumber + ".png)";
+	document.getElementById('bg').style.backgroundImage = "url(static/images/map" + randomnumber + ".png)";
 </script>
 </html>
