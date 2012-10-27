@@ -60,8 +60,9 @@ def push_all_followers(u_id, followers_l, loc_obj):
             if(is_Error(notif_status)): outcome = outcome and False
     return outcome
 
+
 # Notifies followers of u_id about the check in
-def notify_check_in(u_id, lng, lat):
+def notify_check_in(u_id, lng, lat, when):
     followers = Follow.objects.filter(following_id=u_id)
     user_checking_in = get_pk_user(u_id)['user']
     u_id_fname = user_checking_in.fname # For payload
@@ -69,19 +70,16 @@ def notify_check_in(u_id, lng, lat):
     curr_checkin = coord_dict(float(lng), float(lat))
 
     if(prev_checkin_dict is not None):
-        prev_checkin = coord_dict(float(prev_checkin_dict['lng']), float(prev_checkin_dict['lat']))
+        prev_time = prev_checkin_dict['when']
 
-        print prev_checkin
-        print curr_checkin
-
-        if(too_close(prev_checkin, curr_checkin, 0.01)):
+        if(too_frequent(prev_time, when, 300)): # 5 minutes since last check in
             if push_all_followers(u_id, followers, curr_checkin):
                 res = success("Sent push notifications to all followers.")
             else:
                 res = error("Could not send push notifications to some followers.")
 
         else:
-            res = error("Current check in is not in comfortable range.")
+            res = error("Current check in too soon!")
 
     else:
         if push_all_followers(followers, curr_checkin):

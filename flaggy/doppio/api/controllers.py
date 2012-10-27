@@ -6,7 +6,7 @@ from django.core.mail import send_mail, EmailMessage
 from doppio.models import User, FollowPending, Follow, CheckIn
 from doppio.api.emails import flaggy_email
 from doppio.api.proximity import coord_distance
-from doppio.api.notify import check_in_payload, push_all_followers, notify_check_in, notify_add_follow
+from doppio.api.notify import check_in_payload, push_all_followers, notify_check_in, notify_add_follow, notify_accepted
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 from doppio.api.utils import *
 
@@ -126,7 +126,9 @@ def __approve_request(k, approval):
     try:
         req = FollowPending.objects.get(secure_key=k)
 
-        if(approval == 1): return accept(req)    
+        if(approval == 1): 
+            notify_accepted(req.follower_p_id)
+            return accept(req)    
         elif(approval == 0): return reject(req)        
         else: return error("Invalid approval handle.")
 
@@ -234,13 +236,13 @@ def __check_in(lng, lat, u_id, comm):
         if comm is None:
             comm = "N/A"
 
-        notif = notify_check_in(u_id, lng, lat)
-
+        when = datetime.datetime.now()
+        notif = notify_check_in(u_id, lng, lat, str(when))
         ci = CheckIn(
             longitude=lng,
             latitude=lat,
             u_id=User.objects.get(pk=u_id),
-            when=datetime.now(),
+            when=when,
             comment=comm)
         ci.save()
 

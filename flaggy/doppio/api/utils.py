@@ -1,4 +1,5 @@
 import hashlib
+import datetime
 from doppio.models import *
 from doppio.api.responses import success, error, is_Error, is_Success, get_Msg
 
@@ -68,7 +69,6 @@ def accept(req):
     follow = Follow(follower_id=f_er, following_id=f_ed)
     req.save()
     follow.save()
-    notify_accepted(f_ed)
     return success("Request approved!")
 
 def reject(req):
@@ -103,3 +103,20 @@ def store_token(u_id, token):
 def get_token(u_id):
     u = User.objects.get(u_id=u_id)
     return u.token
+
+## Time based functions ##
+def get_datetime(time_str):
+    try:
+        parse_this_time = time_str.split(time_str[19])[0]
+    except:
+        parse_this_time = time_str
+    return datetime.datetime.strptime(parse_this_time, '%Y-%m-%d %H:%M:%S')
+
+def too_frequent(prev_time, curr_time, diff_seconds):
+    prev = get_datetime(prev_time)
+    curr = get_datetime(curr_time)
+    diff = curr-prev
+
+    if(diff.days > 0): return True
+    
+    return (diff.seconds <= diff_seconds)
