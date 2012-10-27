@@ -28,12 +28,10 @@ if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
 
 else:
     envfile = 'environment.json'
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static/')
-    STATIC_URL = 'static/'
+    STATIC_ROOT = PROJECT_ROOT
+    STATIC_URL = '/static/'
     STATICFILES_DIRS = (
-        os.path.join(PROJECT_ROOT, 'static/admin'),
-        os.path.join(PROJECT_ROOT, 'static/images'),
-        os.path.join(PROJECT_ROOT, 'static/stylesheets'),
+        os.path.join(PROJECT_ROOT, 'static/'),
     )
     STATICFILES_FINDERS = (
         'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -41,7 +39,7 @@ else:
    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
     )
     MEDIA_ROOT = ''
-    MEDIA_URL = ''
+    MEDIA_URL = '/media/'
 
 with open(envfile) as f:
   env = json.load(f)
