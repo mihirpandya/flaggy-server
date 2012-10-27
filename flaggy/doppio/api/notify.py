@@ -1,4 +1,4 @@
-from push import send_push
+from notifications.push import send_push
 from json import dumps
 from doppio.api.utils import *
 from doppio.api.proximity import coord_dict, too_close, close_enough, coord_distance
@@ -23,6 +23,15 @@ def add_follow_payload(follower_name):
     result['aps']['sound'] = 'default'
 
     return result
+
+def accepted_payload(following_name):
+    result = { }
+    result['aps'] = { }
+    result['aps']['alert'] = "%s accepted your request!" % following_name
+    result['aps']['sound'] = 'default'
+
+    return result
+
 
 def safe_distance(follower_id, loc_obj):
     sensitivity = get_sensitivity(follower_id)
@@ -84,6 +93,16 @@ def notify_check_in(u_id, lng, lat):
 
 def notify_add_follow(follower_name, u_id):
     payload = add_follow_payload(follower_name)
+    token = get_token(u_id)
+    notif_status = send_push(str(token), dumps(payload))
+
+    return notif_status
+
+
+def notify_accepted(u_id):
+    user = get_pk_user(u_id)['user']
+    following_name = "%s %s" % (str(user.fname), str(user.lname))
+    payload = accepted_payload(following_name)
     token = get_token(u_id)
     notif_status = send_push(str(token), dumps(payload))
 

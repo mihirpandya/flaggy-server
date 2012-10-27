@@ -60,6 +60,7 @@ def follow_exists(k):
 
 ## Requests ##
 
+# Adds to Follow table and sends notification to person who added #
 def accept(req):
     req.approve = True
     f_er = req.follower_p_id
@@ -67,6 +68,7 @@ def accept(req):
     follow = Follow(follower_id=f_er, following_id=f_ed)
     req.save()
     follow.save()
+    notify_accepted(f_ed)
     return success("Request approved!")
 
 def reject(req):

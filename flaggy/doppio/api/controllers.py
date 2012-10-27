@@ -1,7 +1,6 @@
 import hashlib
 import smtplib
 from json import dumps
-from push import send_push
 from datetime import datetime
 from django.core.mail import send_mail, EmailMessage
 from doppio.models import User, FollowPending, Follow, CheckIn
