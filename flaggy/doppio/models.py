@@ -34,3 +34,9 @@ class FollowPending(models.Model):
     following_p = models.ForeignKey(User, related_name='following_p')
     secure_key = models.CharField(max_length=56)
     approve = models.NullBooleanField()
+
+class Poke(models.Model):
+    poke_id = models.AutoField(primary_key=True)
+    poke_er = models.ForeignKey(User, related_name='poke_er')
+    poke_ed = models.ForeignKey(User, related_name='poke_ed')
+    when = models.DateTimeField()

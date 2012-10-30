@@ -93,6 +93,16 @@ def last_check_in(user_id):
     except CheckIn.DoesNotExist:
         return None
 
+def last_poke(poke_er, poke_ed):
+    try:
+        poke_er_obj = get_pk_user(poke_er)['user']
+        poke_ed_obj = get_pk_user(poke_ed)['user']
+        poke = Poke.objects.filter(poke_er=poke_er_obj, poke_ed=poke_ed_obj).latest('when')
+        return poke.when
+
+    except Poke.DoesNotExist:
+        return None
+
 ## Auth ##
 
 def store_token(u_id, token):
@@ -112,11 +122,13 @@ def get_datetime(time_str):
         parse_this_time = time_str
     return datetime.datetime.strptime(parse_this_time, '%Y-%m-%d %H:%M:%S')
 
-def too_frequent(prev_time, curr_time, diff_seconds):
+def too_frequent(curr_time, prev_time, diff_seconds):
     prev = get_datetime(prev_time)
     curr = get_datetime(curr_time)
-    diff = curr-prev
+    diff = prev-curr
 
-    if(diff.days > 0): return True
+    print "days: %s, seconds: %s" % (diff.days, diff.seconds)
+
+    if(diff.days == 0 and diff.seconds <= diff_seconds): return False
     
-    return (diff.seconds <= diff_seconds)
+    return True

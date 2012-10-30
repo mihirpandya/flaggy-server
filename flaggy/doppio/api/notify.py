@@ -33,6 +33,15 @@ def accepted_payload(following_name):
     return result
 
 
+def poke_payload(name):
+    result = { }
+    result['aps'] = { }
+    result['aps']['alert'] = "%s wants to know where you are!" % name
+    result['aps']['sound'] = 'default'
+
+    return result
+
+
 def safe_distance(follower_id, loc_obj):
     sensitivity = get_sensitivity(follower_id)
     prev_checkin_full = last_check_in(follower_id)
@@ -106,3 +115,12 @@ def notify_accepted(u_id):
 
     return notif_status
 
+def notify_poke(poke_er, poke_ed):
+    user = get_pk_user(poke_ed)['user']
+    poked_by = get_pk_user(poke_er)['user']
+    poked_by_name = str(poked_by.fname)
+    payload = poke_payload(poked_by_name)
+    token = get_token(poke_ed)
+    notif_status = send_push(str(token), dumps(payload))
+
+    return notif_status

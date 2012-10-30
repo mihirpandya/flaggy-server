@@ -6,7 +6,7 @@ from django.core.mail import send_mail, EmailMessage
 from doppio.models import User, FollowPending, Follow, CheckIn
 from doppio.api.emails import flaggy_email
 from doppio.api.proximity import coord_distance
-from doppio.api.notify import check_in_payload, push_all_followers, notify_check_in, notify_add_follow, notify_accepted
+from doppio.api.notify import check_in_payload, push_all_followers, notify_check_in, notify_add_follow, notify_accepted, notify_poke
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 from doppio.api.utils import *
 
@@ -345,6 +345,24 @@ def __update_sensitivity(u_id, sensitivity):
         return success("Sensitivity updated to %s" % sensitivity)
     elif is_Error(user_obj):
         return error("No user with u_id %s" % u_id)
+
+def __poke(poke_er, poke_ed):
+    try:
+#        prev_poke = str(last_poke(poke_er, poke_ed))
+        now = datetime.datetime.now()
+#        if(prev_poke is not None):
+#            if(too_frequent(str(now), prev_poke, 120)):
+#                return error("Poking too soon!")
+
+        poke_er_user = get_pk_user(poke_er)['user']
+        poke_ed_user = get_pk_user(poke_ed)['user']
+        poke_model = Poke(poke_er=poke_er_user, poke_ed=poke_ed_user, when=now)
+        poke_model.save()
+        notify_poke(poke_er, poke_ed)
+
+        return success("Poked and notified!")
+    except Exception as inst:
+        return error("Error poking. %s" % inst)
 
 #    except Exception as inst:
 #        error("Error retrieving followers. %s" % inst)

@@ -1,5 +1,5 @@
 from doppio.models import User, CheckIn, Follow, FollowPending
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request, __poke
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
@@ -247,6 +247,18 @@ def notify(request):
 
     else:
         return HttpResponse(dumps(error("No request received")), mimetype='application/json')
+
+def poke(request):
+    if request.method == 'POST':
+        poke_er = request.POST.get('poke_er')
+        poke_ed = request.POST.get('poke_ed')
+        res = __poke(poke_er, poke_ed)
+
+        return HttpResponse(dumps(res), mimetype='application/json')
+
+    else:
+        return HttpResponse(dumps(error("No request received")), mimetype='application/json')
+
 
 
 
