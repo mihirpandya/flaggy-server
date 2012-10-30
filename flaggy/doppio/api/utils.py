@@ -127,10 +127,11 @@ def too_frequent(curr_time, prev_time, diff_seconds):
     curr = get_datetime(curr_time)
     diff = prev-curr
 
-    print "days: %s, seconds: %s" % (diff.days, diff.seconds)
+    print "days: %s, seconds: %s" % (diff.days, abs(diff.seconds-(3600*4)))
     print "prev: %s" % prev_time
     print "curr: %s" % curr_time
 
-    if(diff.days == 0 and diff.seconds >= diff_seconds): return False
+    if(diff.days == 0 and (abs(diff.seconds-(3600*4)) >= diff_seconds)): 
+        return False
     
     return True

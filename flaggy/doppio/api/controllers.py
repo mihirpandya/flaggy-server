@@ -348,11 +348,11 @@ def __update_sensitivity(u_id, sensitivity):
 
 def __poke(poke_er, poke_ed):
     try:
-#        prev_poke = str(last_poke(poke_er, poke_ed))
+        prev_poke = str(last_poke(poke_er, poke_ed))
         now = datetime.datetime.now()
-#        if(prev_poke is not None):
-#            if(too_frequent(str(now), prev_poke, 120)):
-#                return error("Poking too soon!")
+        if(prev_poke is not None):
+            if(too_frequent(str(now), prev_poke, 120)):
+                return error("Poking too soon!")
 
         poke_er_user = get_pk_user(poke_er)['user']
         poke_ed_user = get_pk_user(poke_ed)['user']

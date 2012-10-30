@@ -31,8 +31,9 @@ def send_push(token, payload):
 
     # Use a socket to connect to APNS over SSL
         s = socket.socket()
+        dev_s = socket.socket()
         sock = ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=cert)
-        sock_dev = ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=dev_cert)
+        sock_dev = ssl.wrap_socket(dev_s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=dev_cert)
         sock.connect(apns_address)
         sock_dev.connect(dev_apns_address)
 
