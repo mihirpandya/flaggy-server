@@ -45,13 +45,16 @@ def poke_payload(name):
 def safe_distance(follower_id, loc_obj):
     sensitivity = get_sensitivity(follower_id)
     prev_checkin_full = last_check_in(follower_id)
-    prev_checkin = coord_dict(float(prev_checkin_full['lng']), float(prev_checkin_full['lat']))
-    if close_enough(prev_checkin, loc_obj, sensitivity):
-        print "close enough."
-        print coord_distance(prev_checkin, loc_obj)
-        return coord_distance(prev_checkin, loc_obj)
+    if(prev_checkin_full is not None):
+        prev_checkin = coord_dict(float(prev_checkin_full['lng']), float(prev_checkin_full['lat']))
+        if close_enough(prev_checkin, loc_obj, sensitivity):
+            print "close enough."
+            print coord_distance(prev_checkin, loc_obj)
+            return coord_distance(prev_checkin, loc_obj)
+        else:
+            return -1
     else:
-        return -1
+        return 1
 
 def push_all_followers(u_id, followers_l, loc_obj):
     outcome = True
