@@ -23,14 +23,18 @@ def send_push(token, payload):
     try:
     # Your certificate file
         cert = os.path.join(os.path.abspath(os.path.dirname(__file__)), "ck_prod.pem")
+        dev_cert = os.path.join(os.path.abspath(os.path.dirname(__file__)), "ck.pem")
 
     # APNS development server
         apns_address = ('gateway.push.apple.com', 2195)
+        dev_apns_address = ('gateway.sandbox.push.apple.com', 2195)
 
     # Use a socket to connect to APNS over SSL
         s = socket.socket()
         sock = ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=cert)
+        sock_dev = ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_SSLv3, certfile=dev_cert)
         sock.connect(apns_address)
+        sock_dev.connect(dev_apns_address)
 
         # Generate a notification packet
         token = binascii.unhexlify(token)
@@ -39,6 +43,8 @@ def send_push(token, payload):
         message = struct.pack(fmt, cmd, len(token), token, len(payload), payload)
         sock.write(message)
         sock.close()
+        sock_dev.write(message)
+        sock_dev.close()
 
         res = success("Payload sent!")
 

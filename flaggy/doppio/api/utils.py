@@ -128,7 +128,9 @@ def too_frequent(curr_time, prev_time, diff_seconds):
     diff = prev-curr
 
     print "days: %s, seconds: %s" % (diff.days, diff.seconds)
+    print "prev: %s" % prev_time
+    print "curr: %s" % curr_time
 
-    if(diff.days == 0 and diff.seconds <= diff_seconds): return False
+    if(diff.days == 0 and diff.seconds >= diff_seconds): return False
     
     return True
