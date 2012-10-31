@@ -84,7 +84,7 @@ def notify_check_in(u_id, lng, lat, when):
     if(prev_checkin_dict is not None):
         prev_time = prev_checkin_dict['when']
 
-        if(too_frequent(prev_time, when, 300)): # 5 minutes since last check in
+        if(not too_frequent(when, prev_time, 120)): # 2 minutes since last check in
             if push_all_followers(u_id, followers, curr_checkin):
                 res = success("Sent push notifications to all followers.")
             else:
@@ -94,7 +94,7 @@ def notify_check_in(u_id, lng, lat, when):
             res = error("Current check in too soon!")
 
     else:
-        if push_all_followers(followers, curr_checkin):
+        if push_all_followers(u_id, followers, curr_checkin):
             res = success("Sent push notifications.")
         else:
             res = error("Could not send push notifications to some followers.")
