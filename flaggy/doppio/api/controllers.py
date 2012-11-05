@@ -346,12 +346,21 @@ def __update_sensitivity(u_id, sensitivity):
     elif is_Error(user_obj):
         return error("No user with u_id %s" % u_id)
 
+def __get_sensitivity(u_id):
+    user_resp = get_pk_user(u_id)
+    if is_Error(user_resp): return user_resp
+    else:
+        res = success("Found sensitivity")
+        res["sensitivity"] = user_resp['user'].distance_sensitivity
+
+        return res
+
 def __poke(poke_er, poke_ed):
     try:
         prev_poke = str(last_poke(poke_er, poke_ed))
         now = datetime.datetime.now()
 
-        if(prev_poke != None):
+        if(prev_poke is not None):
             print "wtf %s" % prev_poke
             if(too_frequent(str(now), prev_poke, 120)): # 2 minutes before next poke
                 return error("Poking too soon!")

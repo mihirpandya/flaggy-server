@@ -1,5 +1,5 @@
 from doppio.models import User, CheckIn, Follow, FollowPending
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request, __poke
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request, __poke, __get_sensitivity
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
@@ -224,6 +224,16 @@ def update_sensitivity(request):
             return HttpResponse(dumps(res), mimetype='application/json')
     else:
         return HttpResponse(dumps(error("No request received")), mimetype='application/json')        
+
+
+def get_sensitivity(request):
+    if request.method == 'POST':
+        user = request.POST.get('u_id')
+        resp = __get_sensitivity(user)
+
+        return HttpResponse(dumps(resp), mimetype='application/json')
+    else:
+        return HttpResponse(dumps(error("No request received")), mimetype='application/json')
 
 ## Auth ##
 
