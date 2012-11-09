@@ -4,7 +4,7 @@ from doppio.api.utils import *
 from doppio.api.proximity import coord_dict, too_close, close_enough, coord_distance
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 
-def check_in_payload(u_id, fname, lng, lat, dist):
+def check_in_payload(u_id, fname, lng, lat, dist, time):
     result = { }
     result['aps'] = { }
     result['aps']['alert'] = "%s just checked in %smi away from you (%s, %s)" % (fname, dist, lng, lat)
@@ -13,6 +13,7 @@ def check_in_payload(u_id, fname, lng, lat, dist):
     result['data']['u_id'] = u_id
     result['data']['lng'] = str(lng)
     result['data']['lat'] = str(lat)
+    result['data']['time'] = time
 
     return result
 
@@ -66,7 +67,7 @@ def push_all_followers(u_id, followers_l, loc_obj):
         follower_token = u.token
         dist = safe_distance(el.follower_id, loc_obj)
         if (dist >= 0):
-            payload = check_in_payload(u_id, fname, loc_obj['lng'], loc_obj['lat'], dist)
+            payload = check_in_payload(u_id, fname, loc_obj['lng'], loc_obj['lat'], dist, when)
             notif_status = send_push(str(follower_token), dumps(payload))
             print "%s %s" % (el.follower_id, notif_status['msg'])
             if(is_Error(notif_status)): outcome = outcome and False
