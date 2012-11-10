@@ -1,5 +1,5 @@
 from doppio.models import User, CheckIn, Follow, FollowPending
-from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request, __poke, __get_sensitivity
+from doppio.api.controllers import __add_user, __add_follow, __unfollow, __approve_request, __followers, __following, __check_in, __retrieve_f_request, __approved_requests, __nearby, __show_checkins, __update_sensitivity, __pending_request, __poke, __get_sensitivity, __add_incognito
 from doppio.api.twilio import sendSMS
 from json import dumps
 from django.template import Context, loader
@@ -173,10 +173,10 @@ def check_in(request):
 
         #verify user exists
         user_exists = get_pk_user(u_id)
-        if(user_exists['status'] == 'success'):
+        if(is_Success(user_exists)):
             res = __check_in(lng, lat, u_id, comm)
             
-        elif(user_exists['status'] == 'error'):
+        else:
             res = error(user_exists['msg'])
         
         return HttpResponse(dumps(res), mimetype='application/json')
@@ -269,6 +269,20 @@ def poke(request):
     else:
         return HttpResponse(dumps(error("No request received")), mimetype='application/json')
 
+def add_incognito(request):
+    if request.method == 'POST':
+        u_id = request.POST.get('u_id')
+        lng = request.POST.get('lng')
+        lat = request.POST.get('lat')
+
+        if(is_Success(get_pk_user(u_id))):
+            res = __add_incognito(u_id, lng, lat)
+        else:
+            res = error("No user %s" % u_id)
+
+        return HttpResponse(dumps(res), mimetype='application/json')
+    else:
+        return HttpResponse(dumps(error("No request received")), mimetype='application/json')
 
 
 

@@ -29,6 +29,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^pending_request', view=pending_request, name='pending_request'),
     url(r'^poke', view=poke, name='poke'),
     url(r'^get_sensitivity', view=get_sensitivity, name='get_sensitivity'),
+    url(r'^add_incognito', view=add_incognito, name='add_incognito'),
     #(r'^error/', 'direct_to_template', {'template': 'error.html'}),
     #url(r'^custom/', view=custom, name='custom'),
 	#url(r'^userAdded/', view=userAdded, name='userAdded')

@@ -40,3 +40,8 @@ class Poke(models.Model):
     poke_er = models.ForeignKey(User, related_name='poke_er')
     poke_ed = models.ForeignKey(User, related_name='poke_ed')
     when = models.DateTimeField()
+
+class IncognitoLocation(models.Model):
+    u_id = models.ForeignKey(User, primary_key=True)
+    longitude = models.DecimalField(max_digits=10, decimal_places=7)
+    latitude = models.DecimalField(max_digits=10, decimal_places=7)

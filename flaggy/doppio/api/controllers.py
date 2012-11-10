@@ -3,7 +3,7 @@ import smtplib
 from json import dumps
 from datetime import datetime
 from django.core.mail import send_mail, EmailMessage
-from doppio.models import User, FollowPending, Follow, CheckIn
+from doppio.models import User, FollowPending, Follow, CheckIn, IncognitoLocation
 from doppio.api.emails import flaggy_email
 from doppio.api.proximity import coord_distance
 from doppio.api.notify import check_in_payload, push_all_followers, notify_check_in, notify_add_follow, notify_accepted, notify_poke
@@ -248,7 +248,9 @@ def __check_in(lng, lat, u_id, comm):
 
         if(is_Success(notif)):
             print 'success!'
-            return success("Checked In! %s" % notif['msg'])
+            res = success("Checked In! %s" % notif['msg'])
+            res['payload'] = notif['payload']
+            return res
 
         elif(is_Error(notif)):
             return error("Checked in but %s" % notif['msg'])
@@ -375,12 +377,26 @@ def __poke(poke_er, poke_ed):
     except Exception as inst:
         return error("Error poking. %s" % inst)
 
-#    except Exception as inst:
-#        error("Error retrieving followers. %s" % inst)
+def __add_incognito(u_id, lng, lat):
+    try:
+        i_obj = IncognitoLocation.objects.get(u_id_id=u_id)
+        i_obj.lng = lng
+        i_obj.lat = lat
+        i_obj.save()
+
+        return success("Updated user %s's location" % u_id)
+
+    except IncognitoLocation.DoesNotExist:
+        i_obj = IncognitoLocation(u_id_id=u_id, longitude=lng, latitude=lat)
+        i_obj.save()
+
+        return success("Saved new entry of user %s" % u_id)
+
+    except Exception as inst:
+        return error("Error. %s" % inst)
 
 
 
 
-#def all_following_info(user_id):
-#    try:
-#        f = Follow.objects.filter(follower_id=user_id)
+
+

@@ -4,10 +4,10 @@ from doppio.api.utils import *
 from doppio.api.proximity import coord_dict, too_close, close_enough, coord_distance
 from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 
-def check_in_payload(u_id, fname, lng, lat, dist, time):
+def check_in_payload(u_id, fname, lng, lat, time):
     result = { }
     result['aps'] = { }
-    result['aps']['alert'] = "%s just checked in %smi away from you (%s, %s)" % (fname, dist, lng, lat)
+    result['aps']['alert'] = "%s just checked in near you (%s, %s)" % (fname, lng, lat)
     result['aps']['sound'] = 'default'
     result['data'] = { }
     result['data']['u_id'] = u_id
@@ -45,7 +45,7 @@ def poke_payload(name):
 
 def safe_distance(follower_id, loc_obj):
     sensitivity = get_sensitivity(follower_id)
-    prev_checkin_full = last_check_in(follower_id)
+    prev_checkin_full = get_incognito_location(follower_id)
     if(prev_checkin_full is not None):
         prev_checkin = coord_dict(float(prev_checkin_full['lng']), float(prev_checkin_full['lat']))
         if close_enough(prev_checkin, loc_obj, sensitivity):
@@ -57,7 +57,7 @@ def safe_distance(follower_id, loc_obj):
     else:
         return 1
 
-def push_all_followers(u_id, followers_l, loc_obj):
+def push_all_followers(u_id, followers_l, loc_obj, payload):
     outcome = True
     user = User.objects.get(pk=u_id)
     fname = user.fname
@@ -67,7 +67,6 @@ def push_all_followers(u_id, followers_l, loc_obj):
         follower_token = u.token
         dist = safe_distance(el.follower_id, loc_obj)
         if (dist >= 0):
-            payload = check_in_payload(u_id, fname, loc_obj['lng'], loc_obj['lat'], dist, when)
             notif_status = send_push(str(follower_token), dumps(payload))
             print "%s %s" % (el.follower_id, notif_status['msg'])
             if(is_Error(notif_status)): outcome = outcome and False
@@ -86,8 +85,10 @@ def notify_check_in(u_id, lng, lat, when):
         prev_time = prev_checkin_dict['when']
 
         if(not too_frequent(when, prev_time, 120)): # 2 minutes since last check in
-            if push_all_followers(u_id, followers, curr_checkin):
+            payload = check_in_payload(u_id, u_id_fname, curr_checkin['lng'], curr_checkin['lat'], when)
+            if push_all_followers(u_id, followers, curr_checkin, payload):
                 res = success("Sent push notifications to all followers.")
+                res['payload'] = payload
             else:
                 res = error("Could not send push notifications to some followers.")
 
@@ -97,6 +98,7 @@ def notify_check_in(u_id, lng, lat, when):
     else:
         if push_all_followers(u_id, followers, curr_checkin):
             res = success("Sent push notifications.")
+            res['payload'] = payload
         else:
             res = error("Could not send push notifications to some followers.")
 

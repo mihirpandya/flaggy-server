@@ -93,6 +93,16 @@ def last_check_in(user_id):
     except CheckIn.DoesNotExist:
         return None
 
+def get_incognito_location(u_id):
+    try:
+        obj = IncognitoLocation.objects.get(u_id_id=u_id)
+        return {
+            'lng': str(obj.longitude),
+            'lat': str(obj.latitude),
+        }
+    except IncognitoLocation.DoesNotExist:
+        return None
+
 def last_poke(poke_er, poke_ed):
     try:
         poke_er_obj = get_pk_user(poke_er)['user']
