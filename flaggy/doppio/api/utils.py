@@ -66,10 +66,16 @@ def accept(req):
     req.approve = True
     f_er = req.follower_p_id
     f_ed = req.following_p_id
-    follow = Follow(follower_id=f_er, following_id=f_ed)
-    req.save()
-    follow.save()
-    return success("Request approved!")
+    try:
+        f = Follow.objects.get(follower_id=f_er, following_id=f_ed)
+        return success("Request already approved before.")
+    except Follow.DoesNotExist:
+        follow = Follow(follower_id=f_er, following_id=f_ed)
+        req.save()
+        follow.save()
+        return success("Request approved!")
+    except Exception as inst:
+        return error("Error. %s" % inst)
 
 def reject(req):
     req.approve = False
