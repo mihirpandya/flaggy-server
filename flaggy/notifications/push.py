@@ -55,5 +55,5 @@ def send_push(token, payload):
     return res
 
 
-if __name__ == '__main__':
-    send_push(TOKEN, json.dumps(PAYLOAD))
+#if __name__ == '__main__':
+#    send_push(TOKEN, json.dumps(PAYLOAD))
