@@ -142,13 +142,13 @@ def get_datetime(time_str):
 def too_frequent(curr_time, prev_time, diff_seconds):
     prev = get_datetime(prev_time)
     curr = get_datetime(curr_time)
-    diff = prev-curr
+    diff = curr-prev
 
-    print "days: %s, seconds: %s" % (diff.days, abs(diff.seconds-(3600*4)))
+    print "days: %s, seconds: %s" % (diff.days, diff.seconds)
     print "prev: %s" % prev_time
     print "curr: %s" % curr_time
 
-    if(abs(diff.seconds-(3600*4)) >= diff_seconds):
+    if(diff.seconds >= diff_seconds):
         print "not too frequent"
         return False
     
