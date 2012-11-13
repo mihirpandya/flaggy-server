@@ -112,10 +112,10 @@ def notify_add_follow(follower_name, u_id):
     return notif_status
 
 
-def notify_accepted(u_id):
-    user = get_pk_user(u_id)['user']
-    following_name = "%s %s" % (str(user.fname), str(user.lname))
-    payload = accepted_payload(following_name)
+def notify_accepted(u_id, followed_id):
+    followed = get_pk_user(followed_id)['user']
+    followed_name = "%s %s" % (str(followed.fname), str(followed.lname))
+    payload = accepted_payload(followed_name)
     token = get_token(u_id)
     notif_status = send_push(str(token), dumps(payload))
 
@@ -130,3 +130,6 @@ def notify_poke(poke_er, poke_ed):
     notif_status = send_push(str(token), dumps(payload))
 
     return notif_status
+
+
+
