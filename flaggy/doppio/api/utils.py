@@ -134,6 +134,7 @@ def get_token(u_id):
 def get_datetime(time_str):
     try:
         parse_this_time = time_str.split(time_str[19])[0]
+        print "parse_this_time: %s" % parse_this_time
     except:
         parse_this_time = time_str
     return datetime.datetime.strptime(parse_this_time, '%Y-%m-%d %H:%M:%S')
@@ -147,7 +148,8 @@ def too_frequent(curr_time, prev_time, diff_seconds):
     print "prev: %s" % prev_time
     print "curr: %s" % curr_time
 
-    if(diff.days == 0 and (abs(diff.seconds-(3600*4)) >= diff_seconds)): 
+    if(abs(diff.seconds-(3600*4)) >= diff_seconds):
+        print "not too frequent"
         return False
     
     return True

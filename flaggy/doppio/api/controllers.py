@@ -364,7 +364,7 @@ def __poke(poke_er, poke_ed):
 
         if(prev_poke is not None):
             print "wtf %s" % prev_poke
-            if(too_frequent(str(now), prev_poke, 120)): # 2 minutes before next poke
+            if(too_frequent(str(now), prev_poke, 30)): # 2 minutes before next poke
                 return error("Poking too soon!")
 
         poke_er_user = get_pk_user(poke_er)['user']

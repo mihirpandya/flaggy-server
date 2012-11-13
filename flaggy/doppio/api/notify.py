@@ -84,7 +84,7 @@ def notify_check_in(u_id, lng, lat, when):
     if(prev_checkin_dict is not None):
         prev_time = prev_checkin_dict['when']
 
-        if(not too_frequent(when, prev_time, 120)): # 2 minutes since last check in
+        if(not too_frequent(when, prev_time, 10)): # 10 seconds since last check in
             payload = check_in_payload(u_id, u_id_fname, curr_checkin['lng'], curr_checkin['lat'], when)
             if push_all_followers(u_id, followers, curr_checkin, payload):
                 res = success("Sent push notifications to all followers.")
