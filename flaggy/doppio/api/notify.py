@@ -45,7 +45,7 @@ def poke_payload(name):
 
 def safe_distance(follower_id, loc_obj):
     sensitivity = get_sensitivity(follower_id)
-    prev_checkin_full = last_check_in(follower_id)
+    prev_checkin_full = get_incognito_location(follower_id)
     if(prev_checkin_full is not None):
         prev_checkin = coord_dict(float(prev_checkin_full['lng']), float(prev_checkin_full['lat']))
         print "In safe_distance. %s, %s, %s" % (follower_id, prev_checkin, loc_obj)

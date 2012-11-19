@@ -12,11 +12,16 @@ class User(models.Model):
     distance_sensitivity = models.FloatField()
     token = models.CharField(max_length=100)
 
+class UserTokens(models.Model):
+    t_id = models.AutoField(primary_key=True)
+    u_id = models.ForeignKey(User)
+    token = models.CharField(max_length=100)
+
 
 class CheckIn(models.Model):
     c_id = models.AutoField(primary_key=True)
-    longitude = models.DecimalField(max_digits=10, decimal_places=7)
-    latitude = models.DecimalField(max_digits=10, decimal_places=7)
+    longitude = models.DecimalField(max_digits=10, decimal_places=10)
+    latitude = models.DecimalField(max_digits=10, decimal_places=10)
     u_id = models.ForeignKey(User)
     when = models.DateTimeField()
     comment = models.TextField()
@@ -43,5 +48,5 @@ class Poke(models.Model):
 
 class IncognitoLocation(models.Model):
     u_id = models.ForeignKey(User, primary_key=True)
-    longitude = models.DecimalField(max_digits=10, decimal_places=7)
-    latitude = models.DecimalField(max_digits=10, decimal_places=7)
+    longitude = models.DecimalField(max_digits=10, decimal_places=10)
+    latitude = models.DecimalField(max_digits=10, decimal_places=10)
