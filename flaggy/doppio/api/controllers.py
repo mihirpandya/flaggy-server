@@ -246,14 +246,17 @@ def __check_in(lng, lat, u_id, comm):
             comment=comm)
         ci.save()
 
-        if(is_Success(notif)):
+        ## Add incognito location ##
+        incognito = __add_incognito(u_id, lng, lat)
+
+        if(is_Success(notif) and is_Success(incognito)):
             print 'success!'
             res = success("Checked In! %s" % notif['msg'])
             res['payload'] = notif['payload']
             return res
 
-        elif(is_Error(notif)):
-            return error("Checked in but %s" % notif['msg'])
+        else:
+            return error("Error. %s. %s" % (notif['msg'], incognito['msg']))
 
     except User.DoesNotExist:
         return error("User with u_id "+str(u_id)+" does not exist.")
@@ -382,8 +385,8 @@ def __poke(poke_er, poke_ed):
 def __add_incognito(u_id, lng, lat):
     try:
         i_obj = IncognitoLocation.objects.get(u_id_id=u_id)
-        i_obj.lng = lng
-        i_obj.lat = lat
+        i_obj.longitude = lng
+        i_obj.latitude = lat
         i_obj.save()
 
         return success("Updated user %s's location" % u_id)

@@ -45,12 +45,12 @@ def poke_payload(name):
 
 def safe_distance(follower_id, loc_obj):
     sensitivity = get_sensitivity(follower_id)
-    prev_checkin_full = get_incognito_location(follower_id)
+    prev_checkin_full = last_check_in(follower_id)
     if(prev_checkin_full is not None):
         prev_checkin = coord_dict(float(prev_checkin_full['lng']), float(prev_checkin_full['lat']))
+        print "In safe_distance. %s, %s, %s" % (follower_id, prev_checkin, loc_obj)
         if close_enough(prev_checkin, loc_obj, sensitivity):
             print "close enough."
-            print coord_distance(prev_checkin, loc_obj)
             return coord_distance(prev_checkin, loc_obj)
         else:
             return -1
@@ -66,7 +66,8 @@ def push_all_followers(u_id, followers_l, loc_obj, payload):
         u = User.objects.get(pk=follower_id)
         follower_token = u.token
         dist = safe_distance(el.follower_id, loc_obj)
-        if (dist >= 0):
+        print "dist: %s" % dist
+        if (dist > 0):
             notif_status = send_push(str(follower_token), dumps(payload))
             print "%s %s" % (el.follower_id, notif_status['msg'])
             if(is_Error(notif_status)): outcome = outcome and False
