@@ -387,19 +387,21 @@ def __add_incognito(u_id, lng, lat):
         i_obj = IncognitoLocation.objects.get(u_id_id=u_id)
         i_obj.longitude = lng
         i_obj.latitude = lat
+        print "when: %s" % i_obj.when
+        i_obj.when = datetime.datetime.now()
         i_obj.save()
 
         return success("Updated user %s's location" % u_id)
 
     except IncognitoLocation.DoesNotExist:
-        i_obj = IncognitoLocation(u_id_id=u_id, longitude=lng, latitude=lat)
+        i_obj = IncognitoLocation(u_id_id=u_id, longitude=lng, 
+                                  latitude=lat, when=datetime.datetime.now())
         i_obj.save()
 
         return success("Saved new entry of user %s" % u_id)
 
     except Exception as inst:
         return error("Error. %s" % inst)
-
 
 
 

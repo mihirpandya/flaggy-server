@@ -79,7 +79,7 @@ def notify_check_in(u_id, lng, lat, when):
     followers = Follow.objects.filter(following_id=u_id)
     user_checking_in = get_pk_user(u_id)['user']
     u_id_fname = user_checking_in.fname # For payload
-    prev_checkin_dict = last_check_in(u_id)
+    prev_checkin_dict = get_incognito_location(u_id)
     curr_checkin = coord_dict(float(lng), float(lat))
 
     if(prev_checkin_dict is not None):
@@ -97,7 +97,8 @@ def notify_check_in(u_id, lng, lat, when):
             res = error("Current check in too soon!")
 
     else:
-        if push_all_followers(u_id, followers, curr_checkin):
+        payload = check_in_payload(u_id, u_id_fname, curr_checkin['lng'], curr_checkin['lat'], None)
+        if push_all_followers(u_id, followers, curr_checkin, payload):
             res = success("Sent push notifications.")
             res['payload'] = payload
         else:
@@ -131,6 +132,5 @@ def notify_poke(poke_er, poke_ed):
     notif_status = send_push(str(token), dumps(payload))
 
     return notif_status
-
 
 

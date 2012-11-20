@@ -276,14 +276,13 @@ def add_incognito(request):
         lat = request.POST.get('lat')
 
         if(is_Success(get_pk_user(u_id))):
-            res = __add_incognito(u_id, lng, lat)
+            res = __add_incognito(u_id, lng, lat, datetime.datetime.now())
         else:
             res = error("No user %s" % u_id)
 
         return HttpResponse(dumps(res), mimetype='application/json')
     else:
         return HttpResponse(dumps(error("No request received")), mimetype='application/json')
-
 
 
 
