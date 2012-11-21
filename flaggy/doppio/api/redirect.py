@@ -19,5 +19,5 @@ def redirect(request):
 		return HttpResponse(dumps(error("Error. No request received.")), mimetype='application/json')
 		
 def foursquare_approve(request):
-	data =HttpRequest.read()
+	data = HttpRequest.read()
 	print data

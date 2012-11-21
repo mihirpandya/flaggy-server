@@ -10,12 +10,12 @@ class User(models.Model):
     email = models.EmailField(max_length=100)
     date_joined = models.DateField()
     distance_sensitivity = models.FloatField()
-    token = models.CharField(max_length=100)
 
 class UserTokens(models.Model):
     t_id = models.AutoField(primary_key=True)
     u_id = models.ForeignKey(User)
     token = models.CharField(max_length=100)
+    device = models.CharField(max_length=100)
 
 
 class CheckIn(models.Model):

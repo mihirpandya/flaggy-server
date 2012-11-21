@@ -64,7 +64,7 @@ def push_all_followers(u_id, followers_l, loc_obj, payload):
     for el in followers_l:
         follower_id = el.follower_id
         u = User.objects.get(pk=follower_id)
-        follower_token = u.token
+        follower_token = get_token(u_id, None)
         dist = safe_distance(el.follower_id, loc_obj)
         print "dist: %s" % dist
         if (dist > 0):

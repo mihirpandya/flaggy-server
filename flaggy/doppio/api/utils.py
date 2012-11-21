@@ -105,6 +105,7 @@ def get_incognito_location(u_id):
         return {
             'lng': str(obj.longitude),
             'lat': str(obj.latitude),
+            'when': str(obj.when)
         }
     except IncognitoLocation.DoesNotExist:
         return None
@@ -121,14 +122,16 @@ def last_poke(poke_er, poke_ed):
 
 ## Auth ##
 
-def store_token(u_id, token):
-    u = User.objects.get(u_id=u_id)
-    u.token=token
-    u.save()
+def store_token(u_id, token, device):
+    tok_u = UserTokens(u_id_id=u_id, token=token, device=device)
+    tok_u.save()
 
-def get_token(u_id):
-    u = User.objects.get(u_id=u_id)
-    return u.token
+def get_token(u_id, device):
+    if device is None:
+        tok = UserTokens.objects.filter(u_id_id=u_id, device="iPhone")[0].token
+    else: 
+        tok = UserTokens.objects.filter(u_id_id=u_id, device=device)[0].token
+    return tok
 
 ## Time based functions ##
 def get_datetime(time_str):
