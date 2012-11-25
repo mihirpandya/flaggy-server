@@ -108,7 +108,7 @@ def notify_check_in(u_id, lng, lat, when):
 
 def notify_add_follow(follower_name, u_id):
     payload = add_follow_payload(follower_name)
-    token = get_token(u_id)
+    token = get_token(u_id, None)
     notif_status = send_push(str(token), dumps(payload))
 
     return notif_status
@@ -118,7 +118,7 @@ def notify_accepted(u_id, followed_id):
     followed = get_pk_user(followed_id)['user']
     followed_name = "%s %s" % (str(followed.fname), str(followed.lname))
     payload = accepted_payload(followed_name)
-    token = get_token(u_id)
+    token = get_token(u_id, None)
     notif_status = send_push(str(token), dumps(payload))
 
     return notif_status
@@ -128,7 +128,7 @@ def notify_poke(poke_er, poke_ed):
     poked_by = get_pk_user(poke_er)['user']
     poked_by_name = str(poked_by.fname)
     payload = poke_payload(poked_by_name)
-    token = get_token(poke_ed)
+    token = get_token(poke_ed, None)
     notif_status = send_push(str(token), dumps(payload))
 
     return notif_status
