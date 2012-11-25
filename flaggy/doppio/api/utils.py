@@ -126,6 +126,7 @@ def store_token(u_id, token, device):
     tok_u = UserTokens(u_id_id=u_id, token=token, device=device)
     tok_u.save()
 
+# default action is to return token of iPhone #
 def get_token(u_id, device):
     if device is None:
         tok = UserTokens.objects.filter(u_id_id=u_id, device="iPhone")[0].token
