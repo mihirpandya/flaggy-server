@@ -134,6 +134,11 @@ def get_token(u_id, device):
         tok = UserTokens.objects.filter(u_id_id=u_id, device=device)[0].token
     return tok
 
+# takes care of 5 hour offset because of time difference with server #
+def server_offset(time):
+    d = datetime.timedelta(seconds=5*60*60)
+    return time-d
+
 ## Time based functions ##
 def get_datetime(time_str):
     try:
@@ -144,13 +149,13 @@ def get_datetime(time_str):
     return datetime.datetime.strptime(parse_this_time, '%Y-%m-%d %H:%M:%S')
 
 def too_frequent(curr_time, prev_time, diff_seconds):
-    prev = get_datetime(prev_time)
+    prev = server_offset(get_datetime(prev_time))
     curr = get_datetime(curr_time)
     diff = curr-prev
 
-    print "days: %s, seconds: %s" % (diff.days, diff.seconds)
-    print "prev: %s" % prev_time
-    print "curr: %s" % curr_time
+    print "days: %s, seconds: %s" % (diff.days, diff.seconds) # offset of 5 hours from server
+    print "prev: %s" % prev
+    print "curr: %s" % curr
 
     if(diff.seconds >= diff_seconds):
         print "not too frequent"
