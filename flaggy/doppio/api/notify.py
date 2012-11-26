@@ -7,7 +7,7 @@ from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 def check_in_payload(u_id, fname, lng, lat, time):
     result = { }
     result['aps'] = { }
-    result['aps']['alert'] = "%s just checked in near you."
+    result['aps']['alert'] = "%s just checked in near you." % fname
     result['aps']['sound'] = 'default'
     result['data'] = { }
     result['data']['u_id'] = u_id
@@ -86,7 +86,7 @@ def notify_check_in(u_id, lng, lat, when):
         prev_time = prev_checkin_dict['when']
         #offset_prev = prev_time
 
-        if(not too_frequent(when, prev_time, 30)): # 30 seconds since last check in
+        if(not too_frequent(when, prev_time, 0)): # 30 seconds since last check in
             payload = check_in_payload(u_id, u_id_fname, curr_checkin['lng'], curr_checkin['lat'], when)
             if push_all_followers(u_id, followers, curr_checkin, payload):
                 res = success("Sent push notifications to all followers.")
