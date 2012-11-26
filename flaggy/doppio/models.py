@@ -11,6 +11,7 @@ class User(models.Model):
     date_joined = models.DateField()
     distance_sensitivity = models.FloatField()
 
+
 class UserTokens(models.Model):
     t_id = models.AutoField(primary_key=True)
     u_id = models.ForeignKey(User)

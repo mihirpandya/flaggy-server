@@ -7,7 +7,7 @@ from doppio.api.responses import success, error, is_Success, is_Error, get_Msg
 def check_in_payload(u_id, fname, lng, lat, time):
     result = { }
     result['aps'] = { }
-    result['aps']['alert'] = "%s just checked in near you (%s, %s)" % (fname, lng, lat)
+    result['aps']['alert'] = "%s just checked in near you."
     result['aps']['sound'] = 'default'
     result['data'] = { }
     result['data']['u_id'] = u_id
