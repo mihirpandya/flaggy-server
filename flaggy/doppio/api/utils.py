@@ -118,7 +118,7 @@ def last_poke(poke_er, poke_ed):
         return poke.when
 
     except Poke.DoesNotExist:
-        return datetime.datetime.fromordinal(1);
+        return datetime.datetime.fromordinal(1)+datetime.timedelta(seconds=5*3600);
 
 ## Auth ##
 
