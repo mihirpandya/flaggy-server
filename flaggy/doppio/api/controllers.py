@@ -362,12 +362,12 @@ def __get_sensitivity(u_id):
 
 def __poke(poke_er, poke_ed):
     try:
-        prev_poke = last_poke(poke_er, poke_ed)-datetime.timedelta(0, 3600*5)
+        prev_poke = last_poke(poke_er, poke_ed)
         now = datetime.datetime.now()
 
         if(prev_poke is not None):
             print "wtf %s" % prev_poke
-            if(too_frequent(str(now), str(prev_poke), 30)): # 2 minutes before next poke
+            if(too_frequent(str(now), str(prev_poke), 30)): # 30 seconds before next poke
                 return error("Poking too soon!")
 
         poke_er_user = get_pk_user(poke_er)['user']

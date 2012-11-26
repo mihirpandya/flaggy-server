@@ -280,7 +280,7 @@ def add_incognito(request):
         lat = request.POST.get('lat')
 
         if(is_Success(get_pk_user(u_id))):
-            res = __add_incognito(u_id, lng, lat, datetime.datetime.now())
+            res = __add_incognito(u_id, lng, lat)
         else:
             res = error("No user %s" % u_id)
 
