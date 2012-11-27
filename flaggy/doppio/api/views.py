@@ -15,8 +15,7 @@ def add_user(request):
         l_n = request.POST.get('lname')
         fb_id = request.POST.get('fb_id')
         email = request.POST.get('email')
-        tok = request.POST.get('tok')
-        device = request.POST.get('device')
+
         res = { }
         checkin_user = { }
 
@@ -35,7 +34,7 @@ def add_user(request):
 
         elif not empty_str(f_n) and not empty_str(l_n) and not empty_str(fb_id):
             add_status = __add_user(f_n, l_n, fb_id, 0000, email)
-            u = User.objects.get(fb_id=db_id)
+            u = User.objects.get(fb_id=fb_id)
             #store_token(u.u_id, token, device)
             
             if(is_Success(add_status)):
