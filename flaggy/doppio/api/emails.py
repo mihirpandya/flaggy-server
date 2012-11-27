@@ -11,7 +11,7 @@ emails = { }
 
 emails['welcome'] = {
                        'subject': 'Welcome to Flaggy!',
-                       'content': render_to_string('welcome.html')
+                       'content': render_to_string('email_templates/welcome.html')
                     }
 
 def follow_email(follower, key):
