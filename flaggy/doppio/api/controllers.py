@@ -25,7 +25,7 @@ def __add_user(f_n, l_n, fb, twitter, email):
             twitter_id=twitter,
             email=email,
             distance_sensitivity = 1.00,
-            date_joined=datetime.now()
+            date_joined=datetime.datetime.now()
             )
         u.save()
 
