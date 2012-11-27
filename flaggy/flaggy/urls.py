@@ -12,6 +12,7 @@ admin.autodiscover()
 urlpatterns = patterns('django.views.generic.simple',
 	url(r'^$', view=hello_view, name='hello_page'),
 	url(r'^add_user', view=add_user, name='add_user'),
+    url(r'^add_token', view=add_token, name='add_token'),
     url(r'^add_follow', view=add_follow, name='add_follow'),
     url(r'^followers', view=followers, name='followers'),
     url(r'^following', view=following, name='following'),

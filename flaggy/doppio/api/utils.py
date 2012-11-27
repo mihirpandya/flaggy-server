@@ -123,8 +123,13 @@ def last_poke(poke_er, poke_ed):
 ## Auth ##
 
 def store_token(u_id, token, device):
-    tok_u = UserTokens(u_id_id=u_id, token=token, device=device)
-    tok_u.save()
+    try:
+        u = UserTokens.objects.get(u_id_id=u_id, device=device)
+        u.token = token
+        u.save()
+    except UserTokens.DoesNotExist:
+        tok_u = UserTokens(u_id_id=u_id, token=token, device=device)
+        tok_u.save()
 
 # default action is to return token of iPhone #
 def get_token(u_id, device):

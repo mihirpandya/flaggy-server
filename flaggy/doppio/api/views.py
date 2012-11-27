@@ -36,7 +36,7 @@ def add_user(request):
         elif not empty_str(f_n) and not empty_str(l_n) and not empty_str(fb_id):
             add_status = __add_user(f_n, l_n, fb_id, 0000, email)
             u = User.objects.get(fb_id=db_id)
-            store_token(u.u_id, token, device)
+            #store_token(u.u_id, token, device)
             
             if(is_Success(add_status)):
                 res["status"] = 1
@@ -57,6 +57,18 @@ def add_user(request):
     else:
         return HttpResponse(dumps(error("No POST request received.")), mimetype='application/json')
 
+
+def add_token(request):
+    if request.method == 'POST':
+        u_id = request.POST.get('u_id')
+        device = request.POST.get('device')
+        tok = request.POST.get('tok')
+
+        store_token(u_id, tok, device)
+
+        return HttpResponse(dumps(success("Added token")), mimetype='application/json')
+    else:
+        return HttpResponse(dumps(error("No POST request received.")), mimetype='application/json')        
 
 ## Methods related to following. ##
 def add_follow(request):
