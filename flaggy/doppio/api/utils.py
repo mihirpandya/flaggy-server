@@ -134,10 +134,15 @@ def store_token(u_id, token, device):
 # default action is to return token of iPhone #
 def get_token(u_id, device):
     if device is None:
-        tok = UserTokens.objects.filter(u_id_id=u_id, device="iPhone")[0].token
+        try:
+            tok = UserTokens.objects.get(u_id_id=u_id, device="iPhone").token
+        except:
+            return None
     else: 
-        tok = UserTokens.objects.filter(u_id_id=u_id, device=device)[0].token
-    return tok
+        try:
+            tok = UserTokens.objects.get(u_id_id=u_id, device=device).token
+        except:
+            return None
 
 # takes care of 5 hour offset because of time difference with server #
 def server_offset(time):
