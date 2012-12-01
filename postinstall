@@ -9,6 +9,7 @@ dotcloud_get_env() {
 python mkadmin.py
 mkdir -p /home/dotcloud/volatile/static /home/dotcloud/data/media
 python $app_name/manage.py collectstatic --noinput
+python $app_name/manage.py test doppio
 
 setup_django_celery() {
     cat > $HOME/current/supervisord.conf << EOF

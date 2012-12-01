@@ -29,7 +29,7 @@ def get_fb_user(fb_id):
 def get_follow_request(f_er, f_ing):
     try:
         req = FollowPending.objects.get(follower_p_id=f_er, following_p_id=f_ing)
-        res = success()
+        res = success("Found follow request")
         res['req'] = req
 
         return res
