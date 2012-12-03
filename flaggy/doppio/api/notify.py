@@ -67,7 +67,7 @@ def push_all_followers(u_id, followers_l, loc_obj, payload):
         follower_token = get_token(u.u_id, None)
         dist = safe_distance(el.follower_id, loc_obj)
         print "dist: %s" % dist
-        if (dist > 0):
+        if (dist >= 0):
             notif_status = send_push(str(follower_token), dumps(payload))
             print "%s %s" % (el.follower_id, notif_status['msg'])
             if(is_Error(notif_status)): outcome = outcome and False

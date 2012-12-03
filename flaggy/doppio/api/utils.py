@@ -139,7 +139,6 @@ def get_token(u_id, device):
             tok = UserTokens.objects.get(u_id_id=int(u_id), device="iPhone").token
             return tok
         except Exception as inst:
-            print "exception: %s" % inst
             return None
     else: 
         try:
