@@ -3,7 +3,3 @@ www:
     prebuild: ./prebuild.sh
 db:
     type: mysql
-broker:
-    type: rabbitmq
-workers:
-    type: python-worker
