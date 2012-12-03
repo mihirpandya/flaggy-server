@@ -374,9 +374,12 @@ def __poke(poke_er, poke_ed):
         poke_ed_user = get_pk_user(poke_ed)['user']
         poke_model = Poke(poke_er=poke_er_user, poke_ed=poke_ed_user, when=now)
         poke_model.save()
-        notify_poke(poke_er, poke_ed)
-        res = success("Poked and notified!")
-        res['poke_ed'] = "%s %s" % (poke_ed_user.fname, poke_ed_user.lname)
+        notif_status = notify_poke(poke_er, poke_ed)
+        if is_Success(notif_status):
+            res = success("Poked and notified!")
+            res['poke_ed'] = "%s %s" % (poke_ed_user.fname, poke_ed_user.lname)
+        else:
+            res = error(notif_status['msg'])
 
         return res
     except Exception as inst:

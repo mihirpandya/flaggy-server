@@ -22,6 +22,7 @@ PAYLOAD = {
 def send_push(token, payload):
     try:
     # Your certificate file
+        print "token: %s payload %s" % (token, payload)
         cert = os.path.join(os.path.abspath(os.path.dirname(__file__)), "ck_prod.pem")
         dev_cert = os.path.join(os.path.abspath(os.path.dirname(__file__)), "ck.pem")
 

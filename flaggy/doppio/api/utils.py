@@ -133,14 +133,18 @@ def store_token(u_id, token, device):
 
 # default action is to return token of iPhone #
 def get_token(u_id, device):
+    print "u_id: %s, device: %s" % (u_id, device)
     if device is None:
         try:
-            tok = UserTokens.objects.get(u_id_id=u_id, device="iPhone").token
-        except:
+            tok = UserTokens.objects.get(u_id_id=int(u_id), device="iPhone").token
+            return tok
+        except Exception as inst:
+            print "exception: %s" % inst
             return None
     else: 
         try:
-            tok = UserTokens.objects.get(u_id_id=u_id, device=device).token
+            tok = UserTokens.objects.get(u_id_id=int(u_id), device=device).token
+            return tok
         except:
             return None
 
