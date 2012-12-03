@@ -3,9 +3,9 @@
 import os
 import pwd
 import json
-import djcelery
+#import djcelery
 
-djcelery.setup_loader()
+#djcelery.setup_loader()
 
 settings_dir = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
@@ -44,7 +44,7 @@ else:
 with open(envfile) as f:
   env = json.load(f)
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -67,9 +67,9 @@ DATABASES = {
 
 #Broker for Celery
 
-BROKER_URL = env['DOTCLOUD_BROKER_AMQP_URL']
+#BROKER_URL = env['DOTCLOUD_BROKER_AMQP_URL']
 
-CELERY_IMPORTS = ('doppio.api.tasks',)
+#CELERY_IMPORTS = ('doppio.api.tasks',)
 
 # Email
 
@@ -174,8 +174,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'doppio',
     'notifications',
-    'djcelery',
-    'djsupervisor',
+#    'djcelery',
+#    'djsupervisor',
 #    'django_extensions',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
