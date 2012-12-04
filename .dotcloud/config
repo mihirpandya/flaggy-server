@@ -1,6 +1,6 @@
 {
     "push_branch": null, 
-    "application": "flaggy", 
+    "application": "flaggylive", 
     "version": "0.9.1", 
     "push_protocol": "rsync"
 }
