@@ -53,6 +53,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+print "user: %s, pw: %s, host: %s, port: %s" % (env['DOTCLOUD_DB_MYSQL_LOGIN'], env['DOTCLOUD_DB_MYSQL_PASSWORD'], env['DOTCLOUD_DB_MYSQL_HOST'], int(env['DOTCLOUD_DB_MYSQL_PORT']))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
