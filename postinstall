@@ -1,6 +1,6 @@
 app_name=flaggy
 
-#python $app_name/manage.py syncdb --noinput
+python $app_name/manage.py syncdb --noinput
 
 dotcloud_get_env() {
     sed -n "/$1/ s/.*: \"\(.*\)\".*/\1/p" < "$HOME/environment.json"
