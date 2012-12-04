@@ -84,8 +84,6 @@ class ControllerFollowTestCase(unittest.TestCase):
 
 		self.hashed_key = follow_hash(self.id_1, self.id_2)
 
-		print 'hash: %s' % self.hashed_key
-
 	def testFollowRequest(self):
 		u1 = User.objects.get(fb_id=self.fb_id1)
 		u2 = User.objects.get(fb_id=self.fb_id2)
