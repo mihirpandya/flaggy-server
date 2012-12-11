@@ -67,7 +67,7 @@ def flaggy_email(info_obj):
         msg = EmailMessage(email_obj['subject'],
                            html_content,
                            "notification@flaggyapp.com",
-                           [info_obj['recipient']]
+                           [info_obj['follower']]
                            )
         msg.content_subtype = "html"
 
