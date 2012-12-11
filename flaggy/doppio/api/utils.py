@@ -68,14 +68,16 @@ def accept(req):
     f_ed = req.following_p_id
     try:
         f = Follow.objects.get(follower_id=f_er, following_id=f_ed)
-        return success("Request already approved before.")
+        msg = "You are now connected with %s." % get_pk_user(f_er)['user'].fname
+        return success(msg)
     except Follow.DoesNotExist:
         follow = Follow(follower_id=f_er, following_id=f_ed)
         req.save()
         follow.save()
-        return success("Request approved!")
+        msg = "Request by %s already approved." % get_pk_user(f_er)['user'].fname
+        return success(msg)
     except Exception as inst:
-        return error("Error. %s" % inst)
+        return error("Error. Please report.")
 
 def reject(req):
     req.approve = False

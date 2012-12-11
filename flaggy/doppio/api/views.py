@@ -100,9 +100,18 @@ def approve_request(request):
         approval = request.GET.get('approval')
         if (approval is not None and key is not None):
             res = __approve_request(key, int(approval))
-            return HttpResponse(dumps(res), mimetype='application/json')
+            t = loader.get_template('approve_request.html')
+            c = Context({
+                'message': res['msg'],
+            })
+            return HttpResponse(t.render(c))
         else:
-            return HttpResponse(dumps(error("Invalid input.")), mimetype='application/json')
+            res = error("Error. Please report.")
+            t = loader.get_template('approve_request.html')
+            c = Context({
+                'message': res['msg'],
+            })
+            return HttpResponse(t.render(c))
 
 
 def unfollow(request):
