@@ -18,7 +18,7 @@ def follow_email(follower, key):
     result = { }
     result['subject'] = "%s wants to follow you on Flaggy!" % follower
 
-    approve_url = "http://flaggy-mihirmp.dotcloud.com/approve_request?approval=1&k=%s" % key
+    approve_url = "http://flaggyapp.com/approve_request?approval=1&k=%s" % key
     
     follow_content = render_to_string('email_templates/follow.html')
     
