@@ -81,7 +81,7 @@ def __add_follow(follower_id, followed_fb):
             if(not follow_exists(k)):
                 email_info["key"] = k
                 email_info["template"] = "follow"
-                email_info["recipient"] = f_ed.email
+                email_info["follower"] = f_ed.email
 
                 mail_status = flaggy_email(email_info)
                 full_name = str(f_er.fname) + " " + str(f_er.lname)
