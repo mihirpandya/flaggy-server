@@ -1,0 +1,74 @@
+[db.0] ==> /var/log/mysql/error.log <==
+[db.0] 121204  6:21:28 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:22:01 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:22:33 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:23:04 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:23:36 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:24:08 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:24:39 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:25:11 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:25:42 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:26:17 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:26:49 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:27:21 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:27:48 [Note] Plugin 'FEDERATED' is disabled.
+[db.0] 121204  6:27:49  InnoDB: Started; log sequence number 0 44233
+[db.0] 121204  6:27:49 [Note] Recovering after a crash using /var/log/mysql/mysql-bin
+[db.0] 121204  6:27:49 [Note] Starting crash recovery...
+[db.0] 121204  6:27:49 [Note] Crash recovery finished.
+[db.0] 121204  6:27:49 [Note] Event Scheduler: Loaded 0 events
+[db.0] 121204  6:27:49 [Note] /usr/sbin/mysqld: ready for connections.
+[db.0] Version: '5.1.41-3ubuntu12.10-log'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  (Ubuntu)
+[db.0] ==> /var/log/mysql/mysql-slow.log <==
+[db.0] /usr/sbin/mysqld, Version: 5.1.41-3ubuntu12.10-log ((Ubuntu)). started with:
+[db.0] Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+[db.0] Time                 Id Command    Argument
+[db.0] /usr/sbin/mysqld, Version: 5.1.41-3ubuntu12.10-log ((Ubuntu)). started with:
+[db.0] Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+[db.0] Time                 Id Command    Argument
+[db.0] /usr/sbin/mysqld, Version: 5.1.41-3ubuntu12.10-log ((Ubuntu)). started with:
+[db.0] Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+[db.0] Time                 Id Command    Argument
+[www.0] ==> /var/log/supervisor/supervisord.log <==
+[www.0] 2012-12-04 06:53:39,531 WARN Included extra file "/etc/supervisor/conf.d/uwsgi.conf" during parsing
+[www.0] 2012-12-04 06:53:39,612 INFO RPC interface 'supervisor' initialized
+[www.0] 2012-12-04 06:53:39,612 WARN cElementTree not installed, using slower XML parser for XML-RPC
+[www.0] 2012-12-04 06:53:39,613 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+[www.0] 2012-12-04 06:53:39,618 INFO daemonizing the supervisord process
+[www.0] 2012-12-04 06:53:39,621 INFO supervisord started with pid 148
+[www.0] 2012-12-04 06:53:40,629 INFO spawned: 'uwsgi' with pid 155
+[www.0] 2012-12-04 06:53:41,700 INFO success: uwsgi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+[www.0] 2012-12-04 06:59:59,941 INFO exited: uwsgi (terminated by SIGKILL; not expected)
+[www.0] 2012-12-04 07:00:00,948 INFO spawned: 'uwsgi' with pid 177
+[www.0] 2012-12-04 07:00:01,141 INFO exited: uwsgi (terminated by SIGKILL; not expected)
+[www.0] ==> /var/log/supervisor/uwsgi.log <==
+[www.0] Tue Dec  4 07:00:00 2012 - detected binary path: /opt/ve/2.6/bin/uwsgi
+[www.0] Tue Dec  4 07:00:00 2012 - your process address space limit is 64000000000 bytes (61035 MB)
+[www.0] Tue Dec  4 07:00:00 2012 - your memory page size is 4096 bytes
+[www.0] Tue Dec  4 07:00:00 2012 - detected max file descriptor number: 100000
+[www.0] Tue Dec  4 07:00:00 2012 - lock engine: pthread robust mutexes
+[www.0] Tue Dec  4 07:00:00 2012 - uwsgi socket 0 bound to UNIX address /var/dotcloud/uwsgi.sock fd 3
+[www.0] Tue Dec  4 07:00:00 2012 - Python version: 2.6.5 (r265:79063, Apr 16 2010, 14:15:55)  [GCC 4.4.3]
+[www.0] Tue Dec  4 07:00:00 2012 - Set PythonHome to /home/dotcloud/env
+[www.0] Tue Dec  4 07:00:01 2012 - *** Python threads support is disabled. You can enable it with --enable-threads ***
+[www.0] Tue Dec  4 07:00:01 2012 - Python main interpreter initialized at 0x68be70
+[www.0] Tue Dec  4 07:00:01 2012 - your server socket listen backlog is limited to 100 connections
+[www.0] Tue Dec  4 07:00:01 2012 - *** Operational MODE: preforking ***
+[www.0] Tue Dec  4 07:00:01 2012 - added /home/dotcloud/current/ to pythonpath.
+[www.0] Tue Dec  4 07:00:01 2012 - *** no app loaded. going in full dynamic mode ***
+[www.0] Tue Dec  4 07:00:01 2012 - *** uWSGI is running in multiple interpreter mode ***
+[www.0] Tue Dec  4 07:00:01 2012 - spawned uWSGI master process (pid: 178)
+[www.0] Tue Dec  4 07:00:01 2012 - spawned uWSGI worker 1 (pid: 179, cores: 1)
+[www.0] Tue Dec  4 07:00:01 2012 - spawned uWSGI worker 2 (pid: 180, cores: 1)
+[www.0] Tue Dec  4 07:00:01 2012 - spawned uWSGI worker 3 (pid: 181, cores: 1)
+[www.0] Tue Dec  4 07:00:01 2012 - spawned uWSGI worker 4 (pid: 182, cores: 1)
+[www.0] ==> /var/log/nginx/access.log <==
+[www.0] ==> /var/log/nginx/error.log <==
+[www.0] ==> /var/log/nginx/flaggylive-default-www-0.access.log <==
+[www.0] 10.127.77.84 (::ffff:24.3.16.48) - - [04/Dec/2012:06:59:06 +0000] "GET / HTTP/1.1" 500 192 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8) AppleWebKit/536.25 (KHTML, like Gecko) Version/6.0 Safari/536.25"
+[www.0] 10.79.37.178 (::ffff:67.186.7.61) - - [04/Dec/2012:06:59:59 +0000] "GET / HTTP/1.1" 500 192 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17"
+[www.0] ==> /var/log/nginx/flaggylive-default-www-0.error.log <==
+[www.0] 2012/12/04 06:59:06 [error] 71#0: *1 upstream prematurely closed connection while reading response header from upstream, client: 10.127.77.84, server: flaggylive-default-www-0, request: "GET / HTTP/1.1", upstream: "uwsgi://unix:///var/dotcloud/uwsgi.sock:", host: "flaggylive-mihirmp.dotcloud.com"
+[www.0] 2012/12/04 06:59:06 [error] 71#0: *1 could not find named location "@502" while sending to client, client: 10.127.77.84, server: flaggylive-default-www-0, request: "GET / HTTP/1.1", upstream: "uwsgi://unix:///var/dotcloud/uwsgi.sock:", host: "flaggylive-mihirmp.dotcloud.com"
+[www.0] 2012/12/04 06:59:59 [error] 71#0: *3 upstream prematurely closed connection while reading response header from upstream, client: 10.79.37.178, server: flaggylive-default-www-0, request: "GET / HTTP/1.1", upstream: "uwsgi://unix:///var/dotcloud/uwsgi.sock:", host: "flaggylive-mihirmp.dotcloud.com"
+[www.0] 2012/12/04 06:59:59 [error] 71#0: *3 could not find named location "@502" while sending to client, client: 10.79.37.178, server: flaggylive-default-www-0, request: "GET / HTTP/1.1", upstream: "uwsgi://unix:///var/dotcloud/uwsgi.sock:", host: "flaggylive-mihirmp.dotcloud.com"
