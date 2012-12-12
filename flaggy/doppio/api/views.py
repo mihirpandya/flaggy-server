@@ -76,14 +76,8 @@ def add_follow(request):
         followed_fb = request.POST.get('fb_ed')
 
         if follower is not None and followed_fb is not None:
-            if(is_Success(get_fb_user(followed_fb))):
-                u = User.objects.get(fb_id=followed_fb)
-                res = __add_follow(follower, followed_fb)
-                return HttpResponse(dumps(res), mimetype='application/json')
-
-            else:
-                resp = success("Facebook user %s is not on our database." % followed_fb)
-                return HttpResponse(dumps(resp), mimetype='application/json')
+            resp = __add_follow(follower, followed_fb)
+            return HttpResponse(dumps(resp), mimetype='application/json')
 
         elif followed_fb is None:
             err = error("Facebook ID of the person you want to follow is missing.")

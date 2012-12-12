@@ -67,7 +67,7 @@ def flaggy_email(info_obj):
         msg = EmailMessage(email_obj['subject'],
                            html_content,
                            "notification@flaggyapp.com",
-                           [info_obj['follower']]
+                           [info_obj['recipient']]
                            )
         msg.content_subtype = "html"
 
@@ -75,7 +75,7 @@ def flaggy_email(info_obj):
             return success("Sent Welcome Email.")
 
     except Exception as inst:
-        err = "Failed to send email. Exception: %s" % str(inst)
+        err = str(inst)
         return error(err)
 
 def success(msg):

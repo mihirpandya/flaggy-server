@@ -70,7 +70,7 @@ def __add_follow(follower_id, followed_fb):
         email_info["follower"] = f_er.fname
 
         if(is_Error(followed)):
-            res = error("Facebook user %s not in our database" % followed_fb)
+            res = error("Facebook user %s not in on Flaggy" % followed_fb)
 
         elif(is_Success(followed)):
             # Send email to existing user. Add to follow pending table
@@ -81,21 +81,21 @@ def __add_follow(follower_id, followed_fb):
             if(not follow_exists(k)):
                 email_info["key"] = k
                 email_info["template"] = "follow"
-                email_info["follower"] = f_ed.email
+                email_info["recipient"] = f_ed.email
 
                 mail_status = flaggy_email(email_info)
                 full_name = str(f_er.fname) + " " + str(f_er.lname)
-                notif_status = notify_add_follow(full_name, f_ed.u_id)
                 #add_follow_notify
 
                 if (is_Success(mail_status)):
                     f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
                     f.save()
+                    notif_status = notify_add_follow(full_name, f_ed.u_id)
                 
                     res = success("Request sent to %s." % f_ed.fname)
 
                 elif(is_Error(mail_status)):
-                    res = error("Failed to send email request.")
+                    res = error("Failed to send email request. Error: %s" % mail_status['msg'])
             else:
                 res = success("Request has already been sent.")
 
