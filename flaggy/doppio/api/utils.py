@@ -74,7 +74,7 @@ def accept(req):
         follow = Follow(follower_id=f_er, following_id=f_ed)
         req.save()
         follow.save()
-        notify_accepted(req.follower_p_id, req.following_p_id)
+        #notify_accepted(req.follower_p_id, req.following_p_id)
         msg = "You are now connected with %s." % get_pk_user(f_er)['user'].fname
         return success(msg)
     except Exception as inst:

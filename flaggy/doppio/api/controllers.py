@@ -127,8 +127,9 @@ def __approve_request(k, approval):
         req = FollowPending.objects.get(secure_key=k)
 
         if(approval == 1): 
-            #notify_accepted(req.follower_p_id, req.following_p_id)
-            return accept(req)    
+            res accept(req)
+            notify_accepted(req.follower_p_id, req.following_p_id)
+            return res    
         elif(approval == 0): return reject(req)        
         else: return error("Invalid approval handle.")
 
