@@ -127,7 +127,7 @@ def __approve_request(k, approval):
         req = FollowPending.objects.get(secure_key=k)
 
         if(approval == 1): 
-            res accept(req)
+            res = accept(req)
             notify_accepted(req.follower_p_id, req.following_p_id)
             return res    
         elif(approval == 0): return reject(req)        
