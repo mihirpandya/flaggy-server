@@ -5,7 +5,7 @@ class User(models.Model):
     u_id = models.AutoField(primary_key=True)
     fname = models.CharField(max_length=30)
     lname = models.CharField(max_length=30)
-    fb_id = models.IntegerField()
+    fb_id = models.BigIntegerField()
     twitter_id = models.IntegerField()
     email = models.EmailField(max_length=100)
     date_joined = models.DateField()

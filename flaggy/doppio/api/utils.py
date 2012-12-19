@@ -18,9 +18,9 @@ def get_pk_user(pk):
 
 def get_fb_user(fb_id):
     try:
-        user = User.objects.get(fb_id=fb_id)
+        user = User.objects.filter(fb_id=fb_id)
         res = success('Found FB user.')
-        res['user'] = user
+        res['user'] = user[0]
 
         return res
     except Exception as inst:
