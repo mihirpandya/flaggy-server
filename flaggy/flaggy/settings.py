@@ -44,7 +44,7 @@ else:
 with open(envfile) as f:
   env = json.load(f)
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
