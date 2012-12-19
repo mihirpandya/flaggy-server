@@ -148,7 +148,7 @@ def __followers(u_id):
                 'location': last_check_in(item.follower.pk)
                 }
         res['followers'] = array
-        return array
+        return res
 
     except User.DoesNotExist:
         return error("Error. User does not exist.")
