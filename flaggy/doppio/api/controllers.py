@@ -157,6 +157,7 @@ def __followers(u_id):
 def __following(u_id):
     try:
         array = {}
+        res = success("Obtained all being followed")
         for item in Follow.objects.filter(follower_id=u_id):
             array[item.following.pk] = {
                 'name': "%s %s" % (item.following.fname, item.following.lname),
@@ -164,7 +165,8 @@ def __following(u_id):
                 'u_id': item.following.pk,
                 'location': last_check_in(item.following.pk)
                 }
-        return array
+        res['following'] = array
+        return res
 
     except User.DoesNotExist:
         return error("Error. User with u_id "+u_id+" does not exist on the Follow table.")

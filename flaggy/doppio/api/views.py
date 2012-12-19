@@ -137,8 +137,12 @@ def following(request):
     if request.method == 'POST':
         u_id = request.POST.get('u_id')
         res = __following(u_id)
-        result = success("Retrieved people you are following.")
-        result['following'] = res
+        if is_Success(res):
+            result = success("Retrieved people you are following.")
+            result['following'] = res['following']
+        elif is_Error(res):
+            result = error(res['msg'])
+            
         return HttpResponse(dumps(result), mimetype='application/json')
 
     else:
