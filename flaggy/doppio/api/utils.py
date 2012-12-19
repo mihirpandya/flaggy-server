@@ -78,14 +78,14 @@ def accept(req):
         msg = "You are now connected with %s." % get_pk_user(f_er)['user'].fname
         return success(msg)
     except Exception as inst:
-        return error("Error. Please report.")
+        return error("Error approving request.\n We've been informed and we're looking into it :)")
 
 def reject(req):
     req.approve = False
     f_er = req.follower_p_id
     f_ed = req.following_p_id
     req.save()
-    return success("Request rejected.")
+    return success("%s will not know where you are." % get_pk_user(f_er)['user'].fname)
 
 def empty_str(s):
     return s == "" or s is None

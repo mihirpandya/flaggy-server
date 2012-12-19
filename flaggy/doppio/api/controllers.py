@@ -127,7 +127,7 @@ def __approve_request(k, approval):
         if(approval == 1): 
             res = accept(req)
             notify_accepted(req.follower_p_id, req.following_p_id)
-            return res    
+            return res
         elif(approval == 0): return reject(req)        
         else: return error("Invalid approval handle.")
 

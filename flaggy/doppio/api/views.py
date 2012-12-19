@@ -96,7 +96,7 @@ def approve_request(request):
             res = __approve_request(key, int(approval))
             t = loader.get_template('approve_request.html')
             c = Context({
-                'message': "Error approving request.\n We've been informed and we're looking into it :)",
+                'message': res['msg'],
             })
             return HttpResponse(t.render(c))
         else:
