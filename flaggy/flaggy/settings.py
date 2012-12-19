@@ -48,9 +48,9 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-     ('Mihir Pandya', 'mihir.m.pandya@gmail.com'),
-     ('Ilter Canberk', 'ilteriscanberk@gmail.com'),
-     ('Darren Lane', 'lanedarren@gmail.com')
+     #('Mihir Pandya', 'mihir.m.pandya@gmail.com'),
+     #('Ilter Canberk', 'ilteriscanberk@gmail.com'),
+     #('Darren Lane', 'lanedarren@gmail.com')
 )
 
 MANAGERS = ADMINS
@@ -65,13 +65,6 @@ DATABASES = {
         'PORT': int(env['DOTCLOUD_DB_MYSQL_PORT']),
     }
 }
-
-
-#Broker for Celery
-
-#BROKER_URL = env['DOTCLOUD_BROKER_AMQP_URL']
-
-#CELERY_IMPORTS = ('doppio.api.tasks',)
 
 # Email
 
