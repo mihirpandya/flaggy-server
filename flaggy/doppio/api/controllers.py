@@ -62,6 +62,7 @@ def __add_follow(follower_id, followed_fb):
 
     elif(is_Success(follower)):
         f_er = follower['user']
+
         # Disallow users to follow themselves! #
         if(int(f_er.fb_id) == int(followed_fb)):
             return error("Why do you want to follow yourself?")
@@ -86,16 +87,13 @@ def __add_follow(follower_id, followed_fb):
                 mail_status = flaggy_email(email_info)
                 full_name = str(f_er.fname) + " " + str(f_er.lname)
                 #add_follow_notify
+                f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
+                f.save()
+                notif_status = notify_add_follow(full_name, f_ed.u_id)
+                res = success("Request sent to %s." % f_ed.fname)
 
-                if (is_Success(mail_status)):
-                    f = FollowPending(follower_p=f_er, following_p=f_ed, secure_key=k)
-                    f.save()
-                    notif_status = notify_add_follow(full_name, f_ed.u_id)
-                
-                    res = success("Request sent to %s." % f_ed.fname)
-
-                elif(is_Error(mail_status)):
-                    res = error("Failed to send email request. Error: %s" % mail_status['msg'])
+                if(is_Error(mail_status)):
+                    res = error("Added but failed to send email request. Error: %s" % mail_status['msg'])
             else:
                 res = success("Request has already been sent.")
 
