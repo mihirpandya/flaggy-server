@@ -1,11 +1,4 @@
 # FLAGGY #
-###http://flaggy-mihirmp.dotcloud.com###
-
-
-## dotcloud account info ##
-username - mihirmp
-<br />
-password - spadeace
 
 ## Scripts ##
 ./resetDB.sh dumps the information from the database, remodels the DB and loads the information back
